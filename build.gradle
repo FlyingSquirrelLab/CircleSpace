@@ -1,19 +1,12 @@
 plugins {
-<<<<<<< HEAD
-    id 'java'
-    id 'org.springframework.boot' version '3.3.4'
-    id 'io.spring.dependency-management' version '1.1.6'
-=======
 	id 'java'
 	id 'org.springframework.boot' version '3.3.1'
 	id 'io.spring.dependency-management' version '1.1.5'
->>>>>>> 32c5799 (replace)
 }
 
 group = 'com'
 version = '0.0.1-SNAPSHOT'
 
-<<<<<<< HEAD
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
@@ -38,10 +31,6 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
-=======
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -130,4 +119,3 @@ tasks.named('test') {
 //		commandLine npmPath, "install"
 //	}
 //}
->>>>>>> 32c5799 (replace)
