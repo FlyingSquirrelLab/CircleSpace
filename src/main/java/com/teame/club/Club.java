@@ -1,4 +1,4 @@
-package com.teamE.member;
+package com.teamE.club;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,26 +10,24 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@ToString
 @Getter
 @Setter
-public class Member {
+@ToString
+public class Club {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(unique = true, nullable=false)
-  private String username;
-  private String displayName;
+  private String title;
   private String realName;
 
-  @Column(nullable=false)
-  private String password;
+  @Column(nullable = false)
+  private Long managerId;
 
-  private String phoneNumber;
-  private String role;
-  private String affiliation;
+  private String logoImage;
+
 
   @CreationTimestamp
   @Column(updatable = false)
