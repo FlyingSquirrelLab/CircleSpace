@@ -16,7 +16,6 @@ public class S3Controller {
 
   private final S3Service s3Service;
 
-  // PreSigned URl 보내기
   @PostMapping("/api/s3/getPreSignedUrl")
   public ResponseEntity<Map<String, String>> getPreSignedUrl(@RequestBody Map<String, String> request) {
     try {

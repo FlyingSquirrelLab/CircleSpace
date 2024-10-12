@@ -1,5 +1,6 @@
 package com.teamE.member;
 
+import com.teamE.club.Like;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @ToString
@@ -29,7 +32,6 @@ public class Member {
 
   private String phoneNumber;
   private String role;
-  private String affiliation;
 
   @CreationTimestamp
   @Column(updatable = false)
@@ -37,5 +39,9 @@ public class Member {
 
   @UpdateTimestamp
   private LocalDateTime updatedAt;
+
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Like> likes = new ArrayList<>();
+
 
 }
