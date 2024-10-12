@@ -1,4 +1,4 @@
-package com.teamE.s3;
+package com.teame.s3;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

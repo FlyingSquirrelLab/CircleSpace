@@ -1,4 +1,4 @@
-package com.teamE.member;
+package com.teame.member;
 
 public class MemberDTO {
   public Long id;

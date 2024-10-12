@@ -1,4 +1,4 @@
-package com.teamE.member;
+package com.teame.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

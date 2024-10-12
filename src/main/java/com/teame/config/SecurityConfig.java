@@ -1,9 +1,9 @@
-package com.teamE.config;
+package com.teame.config;
 
-import com.teamE.member.customUser.CustomUserDetailsService;
-import com.teamE.member.jwt.JWTFilter;
-import com.teamE.member.jwt.JWTUtil;
-import com.teamE.member.jwt.LoginFilter;
+import com.teame.member.customUser.CustomUserDetailsService;
+import com.teame.member.jwt.JWTFilter;
+import com.teame.member.jwt.JWTUtil;
+import com.teame.member.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

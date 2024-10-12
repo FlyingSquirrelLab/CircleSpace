@@ -1,10 +1,10 @@
-package com.teamE.member.register;
+package com.teame.member.register;
 
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.teamE.member.Member;
-import com.teamE.member.MemberRepository;
+import com.teame.member.Member;
+import com.teame.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
-package com.teamE.member;
+package com.teame.member;
 
-import com.teamE.member.customUser.CustomUserDetails;
-import com.teamE.member.register.TokenBlacklistService;
+import com.teame.member.customUser.CustomUserDetails;
+import com.teame.member.register.TokenBlacklistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

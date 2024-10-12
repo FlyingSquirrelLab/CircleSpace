@@ -1,4 +1,4 @@
-package com.teamE.member.jwt;
+package com.teame.member.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

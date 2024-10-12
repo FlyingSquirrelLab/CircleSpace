@@ -1,10 +1,10 @@
-package com.teamE.member.customUser;
+package com.teame.member.customUser;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import com.teamE.member.Member;
+import com.teame.member.Member;
 
 import java.util.Collections;
 
