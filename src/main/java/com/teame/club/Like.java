@@ -1,9 +1,9 @@
 package com.teamE.club;
 
+import com.teamE.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,22 +12,20 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@ToString
-public class Club {
+@Table(name = "likes")
+public class Like {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true, nullable=false)
-  private String title;
+  @ManyToOne
+  @JoinColumn(name = "member_id", nullable = false)
+  private Member member;
 
-  @Column(nullable = false)
-  private Long managerId;
-
-  private String logoImage;
-  private String detailImage;
-  private String joinInfo;
+  @ManyToOne
+  @JoinColumn(name = "club_id", nullable = false)
+  private Club club;
 
   @CreationTimestamp
   @Column(updatable = false)
@@ -37,7 +35,4 @@ public class Club {
   private LocalDateTime updatedAt;
 
 }
-
-
-
 
