@@ -1,7 +1,7 @@
-package com.teamE.member.jwt;
+package com.teame.member.jwt;
 
 import com.google.gson.Gson;
-import com.teamE.member.customUser.CustomUserDetails;
+import com.teame.member.customUser.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

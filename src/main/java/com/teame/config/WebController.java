@@ -1,4 +1,4 @@
-package com.teamE.config;
+package com.teame.config;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;

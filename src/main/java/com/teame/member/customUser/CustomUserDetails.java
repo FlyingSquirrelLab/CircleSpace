@@ -1,9 +1,9 @@
-package com.teamE.member.customUser;
+package com.teame.member.customUser;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import com.teamE.member.Member;
+import com.teame.member.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

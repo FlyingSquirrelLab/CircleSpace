@@ -1,7 +1,7 @@
-package com.teamE.member.customUser;
+package com.teame.member.customUser;
 
-import com.teamE.member.Member;
-import com.teamE.member.MemberRepository;
+import com.teame.member.Member;
+import com.teame.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

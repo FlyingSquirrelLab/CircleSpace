@@ -1,7 +1,7 @@
-package com.teamE.member.jwt;
+package com.teame.member.jwt;
 
-import com.teamE.member.Member;
-import com.teamE.member.customUser.CustomUserDetails;
+import com.teame.member.Member;
+import com.teame.member.customUser.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

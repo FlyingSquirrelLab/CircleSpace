@@ -1,6 +1,6 @@
-package com.teamE.member;
+package com.teame.member;
 
-import com.teamE.member.customUser.CustomUserDetails;
+import com.teame.member.customUser.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;

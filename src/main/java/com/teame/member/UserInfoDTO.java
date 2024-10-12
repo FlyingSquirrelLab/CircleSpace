@@ -1,4 +1,4 @@
-package com.teamE.member;
+package com.teame.member;
 
 import lombok.Getter;
 import lombok.Setter;

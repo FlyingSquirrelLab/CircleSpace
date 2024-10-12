@@ -1,4 +1,4 @@
-package com.teamE.member.register;
+package com.teame.member.register;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

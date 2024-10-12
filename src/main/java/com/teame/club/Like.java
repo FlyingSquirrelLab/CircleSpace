@@ -1,6 +1,6 @@
-package com.teamE.club;
+package com.teame.club;
 
-import com.teamE.member.Member;
+import com.teame.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

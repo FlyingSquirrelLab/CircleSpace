@@ -1,4 +1,4 @@
-package com.teamE.member.jwt;
+package com.teame.member.jwt;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;

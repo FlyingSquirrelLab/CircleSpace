@@ -1,4 +1,4 @@
-package com.teamE.member.register;
+package com.teame.member.register;
 
 import org.springframework.stereotype.Service;
 

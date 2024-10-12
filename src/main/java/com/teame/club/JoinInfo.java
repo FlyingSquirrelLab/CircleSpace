@@ -1,4 +1,4 @@
-package com.teamE.club;
+package com.teame.club;
 
 import jakarta.persistence.Embeddable;
 
