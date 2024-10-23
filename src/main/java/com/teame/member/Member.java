@@ -1,6 +1,7 @@
 package com.teame.member;
 
-import com.teame.club.Like;
+import com.teame.club.Club;
+import com.teame.club.like.Like;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @ToString
@@ -32,6 +35,7 @@ public class Member {
 
   private String phoneNumber;
   private String role;
+  private String schoolCode;
 
   @CreationTimestamp
   @Column(updatable = false)
@@ -42,6 +46,15 @@ public class Member {
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Like> likes = new ArrayList<>();
+
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @JoinTable(
+      name = "member_club",
+      joinColumns = @JoinColumn(name = "member_id"),
+      inverseJoinColumns = @JoinColumn(name = "club_id")
+  )
+  private Set<Club> clubs = new HashSet<>();
+
 
 
 }

@@ -1,5 +1,6 @@
-package com.teame.club;
+package com.teame.club.like;
 
+import com.teame.club.Club;
 import com.teame.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
