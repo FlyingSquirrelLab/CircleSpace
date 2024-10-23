@@ -1,5 +1,6 @@
 package com.teame.club;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Club {
 
   @Id
@@ -22,8 +24,8 @@ public class Club {
   @Column(unique = true, nullable=false)
   private String title;
 
-  @Column(nullable = false)
   private Long managerId;
+  private String description;
 
   private String logoImage;
   private String detailImage;
