@@ -20,12 +20,12 @@ public class ClubController {
   private final ClubService clubService;
   private final CategoryService categoryService;
 
-  @PutMapping("/api/admin/featureClub/{id}")
+  @PutMapping("/api/admin/featureClubById/{id}")
   public ResponseEntity<String> featureClubAPI(@PathVariable Long id) {
     return clubService.setFeatured(id, true);
   }
 
-  @PutMapping("/api/admin/unfeatureClub/{id}")
+  @PutMapping("/api/admin/unfeatureClubById/{id}")
   public ResponseEntity<String> unfeatureClubAPI(@PathVariable Long id) {
     return clubService.setFeatured(id, false);
   }
@@ -49,7 +49,7 @@ public class ClubController {
         .collect(Collectors.toList());
   }
 
-  @GetMapping("/api/club/getByCategory/{category}")
+  @GetMapping("/api/club/getClubByCategory/{category}")
   public ResponseEntity<?> getClubsByCategoryAPI(@PathVariable String category) {
     return categoryService.getClubsByCategory(category);
   }

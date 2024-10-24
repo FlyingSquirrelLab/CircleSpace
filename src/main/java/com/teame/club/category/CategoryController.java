@@ -26,7 +26,7 @@ public class CategoryController {
     return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
   }
 
-  @PutMapping("/api/admin/category/update/{id}")
+  @PutMapping("/api/admin/category/updateById/{id}")
   public ResponseEntity<Category> updateCategory(@PathVariable Long id,
                                                  @RequestBody Category newCategoryData) {
     Category category = categoryRepository.findById(id)
@@ -36,7 +36,7 @@ public class CategoryController {
     return ResponseEntity.ok(category);
   }
 
-  @DeleteMapping("/api/admin/category/delete/{id}")
+  @DeleteMapping("/api/admin/category/deleteById/{id}")
   public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
     return categoryService.deleteCategory(id);
   }

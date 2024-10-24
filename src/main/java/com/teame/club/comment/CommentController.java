@@ -18,8 +18,7 @@ public class CommentController {
   private final CommentService commentService;
   private final MemberRepository memberRepository;
 
-  // REVIEW
-  @PostMapping("/api/comment/addReview")
+  @PostMapping("/api/review/add")
   public ResponseEntity<String> addReviewAPI(@RequestBody Map<String, Object> request,
                                              Authentication auth) {
     String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
@@ -27,23 +26,23 @@ public class CommentController {
     return commentService.addReview(request, username, displayName);
   }
 
-  @GetMapping("/api/comment/review/{clubId}")
-  public ResponseEntity<?> fetchReviewByClubAPI(@PathVariable Long clubId) {
+  @GetMapping("/api/review/fetchByClubId/{clubId}")
+  public ResponseEntity<?> fetchReviewByClubIdAPI(@PathVariable Long clubId) {
     return commentService.fetchReviewByClubId(clubId);
   }
 
-  @GetMapping("/api/comment/member/review")
+  @GetMapping("/api/review/fetchByMember")
   public ResponseEntity<?> fetchReviewByMemberAPI(Authentication auth) {
     String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
     return commentService.fetchReviewByMember(username);
   }
 
-  @DeleteMapping("/api/comment/deleteReview/{reviewId}")
-  public ResponseEntity<String> deleteReviewAPI(@PathVariable Long reviewId) {
+  @DeleteMapping("/api/review/deleteById/{reviewId}")
+  public ResponseEntity<String> deleteReviewByIdAPI(@PathVariable Long reviewId) {
     return commentService.deleteReview(reviewId);
   }
 
-  @PostMapping("/api/comment/addQnA")
+  @PostMapping("/api/qna/add")
   public ResponseEntity<String> addQnAAPI(@RequestBody Map<String, Object> request,
                                           Authentication auth) {
     String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
@@ -51,50 +50,49 @@ public class CommentController {
     return commentService.addQnA(request, username, displayName);
   }
 
-  @GetMapping("/api/comment/allQnA")
+  @GetMapping("/api/qna/fetchAll")
   public ResponseEntity<?> fetchQnAAPI() {
     return commentService.fetchAllQnA();
   }
 
-  @GetMapping("/api/comment/qna/{qnaId}")
+  @GetMapping("/api/qna/fetchById/{qnaId}")
   public ResponseEntity<?> fetchQnAByIdAPI(@PathVariable Long qnaId) {
     return commentService.fetchQnAById(qnaId);
   }
 
-  @GetMapping("/api/comment/member/qna")
+  @GetMapping("/api/qna/fetchByMember")
   public ResponseEntity<?> fetchQnAByMemberAPI(Authentication auth) {
     String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
     return commentService.fetchQnAByMember(username);
   }
 
-  @DeleteMapping("/api/comment/deleteQnA/{qnaId}")
-  public ResponseEntity<String> deleteQnAAPI(@PathVariable Long qnaId,
-                                             Authentication auth) {
+  @DeleteMapping("/api/qna/deleteById/{qnaId}")
+  public ResponseEntity<String> deleteQnAByIdAPI(@PathVariable Long qnaId,
+                                                 Authentication auth) {
     String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
     return commentService.deleteQnA(qnaId, username);
   }
 
-  // REPLY
-  @PostMapping("/api/comment/addReply")
+  @PostMapping("/api/reply/add")
   public ResponseEntity<Reply> addReplyAPI(@RequestBody Map<String, Object> request,
-                                            Authentication auth) {
+                                           Authentication auth) {
     String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
     String displayName = (memberRepository.findByUsername(username)).getDisplayName();
     return commentService.addReply(request, username, displayName);
   }
 
-  @GetMapping("/api/comment/reply/{qnaId}")
-  public ResponseEntity<?> fetchReplyByParentAPI(@PathVariable Long qnaId) {
+  @GetMapping("/api/reply/fetchByQnAId/{qnaId}")
+  public ResponseEntity<?> fetchReplyByQnAIdAPI(@PathVariable Long qnaId) {
     return commentService.fetchReplyByParent(qnaId);
   }
 
-  @GetMapping("/api/comment/member/reply")
+  @GetMapping("/api/reply/fetchByMember")
   public ResponseEntity<?> fetchReplyByMemberAPI(Authentication auth) {
     String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
     return commentService.fetchReplyByMember(username);
   }
 
-  @DeleteMapping("/api/comment/deleteReply/{replyId}")
+  @DeleteMapping("/api/reply/deleteById/{replyId}")
   public ResponseEntity<String> deleteReplyAPI(@PathVariable Long replyId) {
     return commentService.deleteReply(replyId);
   }

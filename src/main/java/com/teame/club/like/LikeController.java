@@ -33,16 +33,16 @@ public class LikeController {
     return ResponseEntity.ok(like);
   }
 
-  @PostMapping("/api/like/add/{title}")
-  public ResponseEntity<String> addToLike(@PathVariable String title,
-                                          Authentication auth) {
+  @PostMapping("/api/like/addByTitle/{title}")
+  public ResponseEntity<String> addLikeByTitleAPI(@PathVariable String title,
+                                                 Authentication auth) {
     String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
     return likeService.addToLike(username, title);
   }
 
-  @DeleteMapping("/api/like/delete/{title}")
-  public ResponseEntity<String> deleteFromLike(@PathVariable String title,
-                                               Authentication auth) {
+  @DeleteMapping("/api/like/deleteByTitle/{title}")
+  public ResponseEntity<String> deleteLikeByTitleAPI(@PathVariable String title,
+                                                     Authentication auth) {
     String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
     return likeService.deleteFromLike(username, title);
   }
