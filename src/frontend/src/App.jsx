@@ -1,20 +1,64 @@
-import './App.css';
 import {Routes, Route, useLocation} from 'react-router-dom'
-import List from "./pages/list.jsx";
 import Home from "./pages/home.jsx";
 import Detail from "./pages/detail.jsx";
+import {AuthProvider} from "./authContext.jsx";
+import Header from "./components/header.jsx";
+import ClubList from "./pages/clubList.jsx";
+import Login from "./pages/login.jsx";
+import EditClub from "./pages/editClub.jsx";
+import MyPage from "./pages/myPage.jsx";
+import Register from "./pages/register.jsx";
+import CategoryManage from "./pages/categoryManage.jsx";
+import AdminPage from "./pages/adminPage.jsx";
+import UploadClub from "./pages/uploadClub.jsx";
+import LikeList from "./pages/likeList.jsx";
+import QnADetail from "./pages/qnaDetail.jsx";
+import QnAPage from "./pages/qnaPage.jsx";
+import QnAUpload from "./pages/qnaUpload.jsx";
+import EditPassword from "./pages/editPassword.jsx";
+import EditUserInfo from "./pages/editUserInfo.jsx";
 
 function App() {
 
+  const location = useLocation();
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+  };
+
+
   return (
+    <AuthProvider>
       <div className="App">
+        {location.pathname !== '/login' && <Header/>}
         <Routes>
           <Route path='*' element={<div>존재하지 않는 페이지입니다.</div>} />
-          <Route path='/' element={<Home/>}/>
-          <Route path='/list' element={<List/>} />
+          <Route path='/adminPage' element={<AdminPage/>} />
+          <Route path='/categoryManage' element={<CategoryManage/>} />
+          <Route path='/clubList/:category' element={<ClubList/>} />
           <Route path='/detail/:id' element={<Detail/>}/>
+          <Route path='/editClub/:id' element={<EditClub/>} />
+          <Route path='/editPassword' element={<EditPassword/>} />
+          <Route path='/editUserInfo' element={<EditUserInfo/>} />
+          <Route path='/' element={<Home/>}/>
+          <Route path='/likeList' element={<LikeList/>} />
+          <Route path='/login' element={<Login/>} />
+          <Route path='/myPage' element={<MyPage/>} />
+          <Route path='/qna/detail/:id' element={<QnADetail formatDate={formatDate}/>} />
+          <Route path='/qna/page' element={<QnAPage formatDate={formatDate}/>} />
+          <Route path='/qna/upload' element={<QnAUpload/>} />
+          <Route path='/register' element={<Register/>} />
+          <Route path='/uploadClub' element={<UploadClub/>} />
         </Routes>
       </div>
+    </AuthProvider>
   );
 }
 

@@ -1,10 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import {useAuth} from "../authContext.jsx";
 
 const LogoutButton = () => {
+  const { logout } = useAuth();
   const nav = useNavigate();
 
   const handleLogout = () => {
+    logout();
     nav('/login');
   };
 
