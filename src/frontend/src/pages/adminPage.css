@@ -1,0 +1,18 @@
+.adminpage-body{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px 100px;
+}
+.admin-list{
+    margin-top: 40px;
+}
+@media screen and (min-width: 811px){
+    .mypage-admin{
+        display: none;
+    }
+}
+@media screen and (max-width: 810px){
+    .adminpage-body{
+        padding: 30px;
+    }
+}

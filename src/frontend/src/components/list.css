@@ -1,0 +1,52 @@
+.list-body {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    justify-content: flex-start;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 10px;
+    text-align: start;
+    width: 100%;
+    max-width: 235px;
+    cursor: pointer;
+}
+
+.list-text{
+    margin-top: 5px;
+}
+
+.list h5 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.list p{
+    margin-top: 7px;
+    font-size: 10px;
+}
+
+.list-img{
+    border-radius: 5px;
+    width: 100%;
+    height: auto;
+}
+
+.list {
+    cursor: pointer;
+    transition: transform 0.3s;
+    box-sizing: border-box;
+}
+
+.list:hover {
+    transform: scale(1.05);
+}
+
+

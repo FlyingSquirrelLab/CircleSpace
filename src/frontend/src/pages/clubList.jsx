@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import List from "../components/list.jsx";
+import './clubList.css';
 
 const ClubList=()=>{
 
@@ -19,7 +20,7 @@ const ClubList=()=>{
   }, [category]);
 
   return(
-    <div className="clubbody">
+    <div className="club-body">
       <div className='mobile-club-category'>
         <div
           className='category-mobile'

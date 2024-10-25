@@ -8,6 +8,7 @@ import blankStar from '../assets/blankStar.png'
 import filledStar from '../assets/filledStar.png'
 import axiosInstance from "../axiosInstance.jsx";
 import Review from "../components/review.jsx";
+import './detail.css';
 
 const Detail=()=>{
 
@@ -83,7 +84,7 @@ const Detail=()=>{
 
   return(
     club && (
-      <div className="detailbody">
+      <div className="detail-body">
         {
           role === "ROLE_ADMIN" ?
             <div className='detail-edit-bn'>

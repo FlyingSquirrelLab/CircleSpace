@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import axiosInstance from "../axiosInstance.jsx";
+import './Register.css'
 
 const EditUserInfo = () => {
 
@@ -14,7 +15,6 @@ const EditUserInfo = () => {
 
   const [realName, setRealName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
 
   const [error, setError] = useState('');
 

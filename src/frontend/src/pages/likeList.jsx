@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../authContext.jsx";
 import axiosInstance from "../axiosInstance.jsx";
+import './likeList.css';
 
 const LikeList = () => {
 
@@ -34,24 +35,32 @@ const LikeList = () => {
 
   return(
     <div>
-      <h4>내가 찜한 동아리</h4>
-      <div className=''>
-        {Array.isArray(likeList) && likeList.length > 0 ? (
-          likeList.map((likedClub) => (
-            <div className=''>
-              <img className='' src={likedClub.imageUrl} alt="동아리사진" width='80px'
-                   onClick={() => nav(`/detail/${likedClub.id}`)}/>
-              <div className=''>
-                <div className=''>
-                  <h4>{likedClub.title}</h4>
-                </div>
-                <button className="remove" onClick={() => handleRemoveItem(likedClub.title)}>삭제</button>
+      <div className="likebody">
+        <div className="like">
+          <h4>내가 찜한 동아리</h4>
+          <div className="like-list">
+            <div className="like-club">
+              <div className='likelist-row'>
+                  {Array.isArray(likeList) && likeList.length > 0 ? (
+                    likeList.map((likedClub) => (
+                      <div className='likelist'>
+                        <img className='likelist-img' src={likedClub.imageUrl} alt="동아리사진" width='80px'
+                             onClick={() => nav(`/detail/${likedClub.id}`)}/>
+                        <div className='like-inf-handle'>
+                          <div className='likelist-text'>
+                            <h4>{likedClub.title}</h4>
+                          </div>
+                          <button className="remove" onClick={() => handleRemoveItem(likedClub.title)}>삭제</button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>찜한 동아리가 없습니다.</p>
+                  )}
               </div>
             </div>
-          ))
-        ) : (
-          <p>찜한 동아리가 없습니다.</p>
-        )}
+          </div>
+        </div>
       </div>
     </div>
   );

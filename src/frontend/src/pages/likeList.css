@@ -1,0 +1,88 @@
+.likebody {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.like {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.like > h4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.like-club {
+    padding: 24px 0;
+}
+
+.likelist-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.likelist {
+    display: flex;
+    align-items: center;
+    padding: 15px 0px;
+    border-bottom: 1px solid #ececec;
+    transition: background-color 0.3s ease;
+}
+
+.likelist:hover {
+    background-color: #fafafa;
+}
+
+.likelist-img {
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.likelist-text {
+    flex: 1;
+    margin-left: 16px;
+}
+
+.likelist-text h4 {
+    font-size: 14px;
+    margin: 0;
+    color: #333;
+}
+
+.likelist-text p {
+    font-size: 12px;
+}
+
+.like-inf-handle{
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    width: 100%;
+}
+
+.remove {
+    display: flex;
+    justify-content: center;
+    color: gray;
+    border: none;
+    border-bottom: 1px solid grey;
+    transition: background-color 0.3s ease;
+    background-color: white;
+    padding: 0px;
+    font-size: 11px;
+}
+
+.remove:hover {
+    color: red;
+    border-bottom: 1px solid red;
+}

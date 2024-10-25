@@ -1,0 +1,64 @@
+
+.join-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.join-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+}
+
+.register-title{
+    display: flex;
+    justify-content: center;
+}
+
+.register-infobox {
+    margin-bottom: 20px;
+}
+
+.join-heading {
+    margin-bottom: 15px;
+}
+
+.join-heading p {
+    margin-bottom: 5px;
+}
+
+.username, .displayName, input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+}
+
+.join-button, .join-heading button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    border: none;
+}
+
+.join-button{
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    border-radius: 3px;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+}
+
+.rq-input {
+    color: blue;
+    font-size: small;
+}

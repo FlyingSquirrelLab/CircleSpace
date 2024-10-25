@@ -4,6 +4,7 @@ import mainLogo from '../assets/logo80x30.png';
 import LogoutButton from "./logoutButton.jsx";
 import { useAuth } from "../authContext.jsx";
 import { useEffect, useState } from "react";
+import './header.css';
 
 const Header = () => {
   const nav = useNavigate();
@@ -37,28 +38,28 @@ const Header = () => {
         </div>
         <div className='left-nav'>
             <div
-              className='club'
+              className='club-category'
               onClick={() => nav('/clubList/sports')}
-            >체육동아리
+            >스포츠
             </div>
             <div
-              className='club'
+              className='club-category'
               onClick={() => nav('/clubList/academic')}
-            >학술동아리
+            >학술
             </div>
             <div
-              className='club'
+              className='club-category'
               onClick={() => nav('/clubList/cultural')}
-            >문화동아리
+            >문화예술
             </div>
             <div
-              className='club'
+              className='club-category'
               onClick={() => nav('/clubList/science')}
-            >과학, 기술동아리
+            >과학기술
             </div>
           </div>
           <div
-            className='club'
+            className='club-category'
             onClick={() => nav('/qna/page')}
           >Q&A
           </div>
@@ -88,7 +89,7 @@ const Header = () => {
               <div
                 className='wishlisticon'
                 onClick={() => nav('/like')}>
-                <img src={likeIcon} width='20px' height='19px' alt='동아리 찜'/>
+                <img src={likeIcon} width='20px' height='19px' alt='관심동아리'/>
               </div>
             </div>
             : <p></p>}

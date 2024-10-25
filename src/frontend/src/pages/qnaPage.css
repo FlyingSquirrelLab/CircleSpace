@@ -1,0 +1,31 @@
+.qnapage-body{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 15px;
+}
+.qnapage-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.qnapage-contents{
+    width: 100%;
+    border-top: 1px solid lightgray;
+    margin: 20px;
+}
+.qna-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid lightgray;
+    padding: 10px;
+}
+
+.upload-qna{
+    display: flex;
+    border: none;
+    background-color: black;
+    color: white;
+    padding: 15px;
+    border-radius: 3px;
+}

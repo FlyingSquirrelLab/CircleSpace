@@ -3,6 +3,7 @@ import BannerMobile from '../assets/Banner750x760.jpg'
 import {useEffect, useState} from "react";
 import axios from "axios";
 import List from "../components/list.jsx";
+import './home.css';
 
 const Home =()=>{
 

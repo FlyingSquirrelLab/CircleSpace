@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useAuth} from "../authContext.jsx";
 import LogoutButton from "../components/logoutButton.jsx";
 import Login from "./login.jsx";
+import './myPage.css';
 
 const MyPage = ()=>{
   const nav = useNavigate();
