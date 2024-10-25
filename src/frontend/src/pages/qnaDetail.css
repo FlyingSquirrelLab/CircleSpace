@@ -1,0 +1,89 @@
+.qnadetail-body{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.qnadetail-container, .qnareply-body, .qnareply-add-form, .qnadetail-delete{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.qnadetail-container{
+    margin-bottom: 30px;
+}
+.qnalist-title{
+    display: flex;
+    justify-content: center;
+}
+.qnareply-list{
+    width: 100%;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.qnareply-container{
+    display: flex;
+    margin: 12px 12px 0px 12px;
+    border-top: 1px solid #cdcdcd;
+    flex-direction: column;
+
+}
+
+.reply-displayname{
+    font-size: 13px;
+}
+
+.createdate{
+    font-size: 10px;
+    color: grey;
+    margin: 0px;
+}
+
+.reply-delete{
+    display: flex;
+    justify-content: flex-end;
+    font-size: 11px;
+    margin-right: 15px;
+    color: gray;
+}
+
+.reply-delete:hover{
+    color: red;
+}
+
+.qnareply-add-form{
+    margin: 20px;
+    border-top: 1px solid lightgray;
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    justify-content: center;
+}
+
+.qnareply-add-input{
+    margin: 30px;
+}
+
+.qnadetail-info{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.qnareply-add-inputbox{
+    width: 100%;
+    border: 1px solid lightgray;
+    border-radius: 30px;
+    padding: 10px 30px;
+}
+
+.qnareply-submit-bt{
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    background-color: #25ac56;
+    color: white;
+}

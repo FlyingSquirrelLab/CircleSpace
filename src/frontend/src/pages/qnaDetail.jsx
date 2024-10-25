@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import axiosInstance from "../axiosInstance.jsx";
 import {useAuth} from "../authContext.jsx";
+import './qnaDetail.css';
 
 const QnADetail = ({formatDate}) => {
 

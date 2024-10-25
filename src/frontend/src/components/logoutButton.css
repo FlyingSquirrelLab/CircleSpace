@@ -1,0 +1,12 @@
+.logoutButton{
+    display: flex;
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    color: #8f8f8f;
+    height: 15px;
+    font-size: 12px;
+    border-bottom: 1px solid #8f8f8f;
+    background-color: transparent;
+    align-items: center;
+}

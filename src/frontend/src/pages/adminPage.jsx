@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {useNavigate} from "react-router-dom";
 import LogoutButton from "../components/logoutButton.jsx";
 import {useAuth} from "../authContext.jsx";
+import './adminPage.css';
 
 const AdminPage = () => {
   const nav = useNavigate();

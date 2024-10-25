@@ -1,0 +1,31 @@
+.mypage-body{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 100px;
+}
+.mypage-list{
+    gap: 20px;
+}
+.myorder-table{
+    width: 100%;
+    padding: 15px;
+}
+.myorder-thead th{
+    padding: 12px;
+    border-bottom: 1px solid lightgray;
+}
+.myorder-info td{
+    font-size: 12px;
+    text-align: center;
+    padding-top: 10px;
+}
+@media screen and (min-width: 811px){
+    .mypage-logout{
+        display: none;
+    }
+}
+@media screen and (max-width: 810px){
+    .mypage-body{
+        padding: 30px;
+    }
+}

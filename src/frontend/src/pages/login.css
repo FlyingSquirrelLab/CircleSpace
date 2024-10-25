@@ -1,0 +1,52 @@
+.login{
+    display: flex;
+    max-width: 400px;
+    margin: 0 auto;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 30px;
+}
+
+.loginform {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.loginform input, .loginform button {
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.loginButton, .findButton, .joinButton{
+    width: 100%;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.loginButton{
+    background-color: #2e9c54;
+    border: none;
+    font-weight: bold;
+    font-size: large;
+    color: white;
+    border-radius: 3px;
+
+}
+
+.findButton{
+    border: none;
+    background-color: white;
+}
+
+.joinButton{
+    background-color: black;
+    color: white;
+    border: none;
+    font-size: large;
+    font-weight: bold;
+    border-radius: 3px;
+}

@@ -1,0 +1,12 @@
+@font-face {
+    font-family: "Pyeongtaek";
+    src: url("./assets/fonts/PyeongtaekRegular.ttf") format("truetype");
+}
+
+html, body{
+    margin: 0px;
+}
+
+body * {
+    font-family: "Pyeongtaek";
+}
