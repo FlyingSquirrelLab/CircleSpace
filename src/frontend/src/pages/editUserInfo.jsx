@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import axiosInstance from "../axiosInstance.jsx";
-import './Register.css'
+import './register.css'
 
 const EditUserInfo = () => {
 
