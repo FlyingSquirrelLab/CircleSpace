@@ -13,8 +13,8 @@ import java.util.Date;
 public class JWTUtil {
 
   private final SecretKey secretKey;
-  private final Long accessTokenValidity = 1000 * 60 * 180L; // 180 minutes
-  private final Long refreshTokenValidity = 1000 * 60 * 60 * 24 * 7L; // 7 days
+  private final Long accessTokenValidity = 1000 * 60 * 60 * 24 * 7L;
+//  private final Long refreshTokenValidity = 1000 * 60 * 60 * 24 * 7L; // 7 days
 
 
   public JWTUtil(@Value("${spring.jwt.secretKey}") String secretKey) {
@@ -49,15 +49,15 @@ public class JWTUtil {
         .compact();
   }
 
-  public String createRefreshToken(String username, String role) {
-    return Jwts.builder()
-        .claim("username", username)
-        .claim("role", role)
-        .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() + refreshTokenValidity))
-        .signWith(secretKey)
-        .compact();
-  }
+//  public String createRefreshToken(String username, String role) {
+//    return Jwts.builder()
+//        .claim("username", username)
+//        .claim("role", role)
+//        .issuedAt(new Date(System.currentTimeMillis()))
+//        .expiration(new Date(System.currentTimeMillis() + refreshTokenValidity))
+//        .signWith(secretKey)
+//        .compact();
+//  }
 
   public boolean validateToken(String token) {
     try {

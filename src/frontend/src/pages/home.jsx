@@ -1,4 +1,4 @@
-import BannerMain from'../assets/Banner750x760.jpg'
+import BannerMain from'../assets/banner.png'
 import BannerMobile from '../assets/Banner750x760.jpg'
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -23,9 +23,9 @@ const Home =()=>{
         <img
           className="deskTopSize"
           src={BannerMain} />
-        <img
-          className="mobileSize"
-          src={BannerMobile} />
+        {/*<img*/}
+        {/*  className="mobileSize"*/}
+        {/*  src={BannerMobile} />*/}
       </div>
       <div className='home-list'>
         <div className='home-featuredfont'>추천 동아리</div>

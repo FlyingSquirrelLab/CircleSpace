@@ -27,11 +27,12 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
       console.error('Token is invalid or expired.');
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      localStorage.removeItem('displayName');
+      localStorage.removeItem('role');
       window.location.href = '/login';
     }
-
     return Promise.reject(error);
   }
 );

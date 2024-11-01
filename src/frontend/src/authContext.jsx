@@ -3,8 +3,8 @@ import React, { createContext, useState, useContext } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [username, setUsername] = useState(localStorage.getItem('username') || '');
   const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const [username, setUsername] = useState(localStorage.getItem('username') || '');
   const [displayName, setDisplayName] = useState(localStorage.getItem('displayName') || '');
   const [role, setRole] = useState(localStorage.getItem('role') || '');
 
@@ -13,8 +13,8 @@ export const AuthProvider = ({ children }) => {
     setUsername(username);
     setDisplayName(displayName);
     setRole(role);
-    localStorage.setItem('username', username);
     localStorage.setItem('token', newToken);
+    localStorage.setItem('username', username);
     localStorage.setItem('displayName', displayName);
     localStorage.setItem('role', role);
   };

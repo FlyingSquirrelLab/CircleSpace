@@ -1,22 +1,22 @@
 import {Routes, Route, useLocation} from 'react-router-dom'
 import Home from "./pages/home.jsx";
-import Detail from "./pages/detail.jsx";
+import Detail from "./pages/club/detail.jsx";
 import {AuthProvider} from "./authContext.jsx";
 import Header from "./components/header.jsx";
-import ClubList from "./pages/clubList.jsx";
-import Login from "./pages/login.jsx";
-import EditClub from "./pages/editClub.jsx";
-import MyPage from "./pages/myPage.jsx";
-import Register from "./pages/register.jsx";
-import CategoryManage from "./pages/categoryManage.jsx";
-import AdminPage from "./pages/adminPage.jsx";
-import UploadClub from "./pages/uploadClub.jsx";
-import LikeList from "./pages/likeList.jsx";
-import QnADetail from "./pages/qnaDetail.jsx";
-import QnAPage from "./pages/qnaPage.jsx";
-import QnAUpload from "./pages/qnaUpload.jsx";
-import EditPassword from "./pages/editPassword.jsx";
-import EditUserInfo from "./pages/editUserInfo.jsx";
+import ClubList from "./pages/club/clubList.jsx";
+import Login from "./pages/member/login.jsx";
+import EditClub from "./pages/club/editClub.jsx";
+import MyPage from "./pages/member/myPage.jsx";
+import Register from "./pages/member/register.jsx";
+import CategoryManage from "./pages/admin/categoryManage.jsx";
+import AdminPage from "./pages/admin/adminPage.jsx";
+import UploadClub from "./pages/club/uploadClub.jsx";
+import LikeList from "./pages/member/likeList.jsx";
+import QnADetail from "./pages/qna/qnaDetail.jsx";
+import QnAPage from "./pages/qna/qnaPage.jsx";
+import QnAUpload from "./pages/qna/qnaUpload.jsx";
+import EditPassword from "./pages/member/editPassword.jsx";
+import EditUserInfo from "./pages/member/editUserInfo.jsx";
 
 function App() {
 
@@ -42,7 +42,7 @@ function App() {
           <Route path='*' element={<div>존재하지 않는 페이지입니다.</div>} />
           <Route path='/adminPage' element={<AdminPage/>} />
           <Route path='/categoryManage' element={<CategoryManage/>} />
-          <Route path='/clubList/:category' element={<ClubList/>} />
+          <Route path='/clubList/:category/:pageParam' element={<ClubList/>} />
           <Route path='/detail/:id' element={<Detail/>}/>
           <Route path='/editClub/:id' element={<EditClub/>} />
           <Route path='/editPassword' element={<EditPassword/>} />

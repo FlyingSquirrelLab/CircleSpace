@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {useNavigate} from "react-router-dom";
-import LogoutButton from "../components/logoutButton.jsx";
-import {useAuth} from "../authContext.jsx";
+import LogoutButton from "../../components/logoutButton.jsx";
+import {useAuth} from "../../authContext.jsx";
 import './adminPage.css';
 
 const AdminPage = () => {
@@ -21,14 +21,16 @@ const AdminPage = () => {
     <div className='adminpage-body'>
       {displayName ? <h3>{displayRole} {displayName} 님</h3> : <p></p>}
       <div className='admin-list'>
-        <div className='upload-bn' onClick={() => nav('/categoryManage')}>
-          카테고리 관리
-        </div>
+        <div className='upload-bn' onClick={() => nav('/categoryManage')}
+        >카테고리 관리</div>
+        <br/>
+        <div className='upload-bn' onClick={() => nav('/uploadClub')}
+        >동아리 등록</div>
         <br/>
         <div
           className='mypage-admin'
           onClick={() => {
-            nav('/myPage')
+            nav('/mypage')
           }}
         >마이페이지</div>
         <br/>

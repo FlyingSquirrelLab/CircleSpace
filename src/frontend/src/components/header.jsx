@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import likeIcon from '../assets/blank_like.png'
-import mainLogo from '../assets/logo80x30.png';
+import mainLogo from '../assets/logo.png';
 import LogoutButton from "./logoutButton.jsx";
 import { useAuth } from "../authContext.jsx";
 import { useEffect, useState } from "react";
@@ -34,29 +34,28 @@ const Header = () => {
       </div>
       <div className='header'>
         <div>
-          <img src={mainLogo} width='100px' onClick={() => {nav('/')}}/>
+          <img src={mainLogo} width='200' onClick={() => {nav('/')}}/>
         </div>
         <div className='left-nav'>
-            <div
-              className='club-category'
-              onClick={() => nav('/clubList/sports')}
-            >스포츠
-            </div>
-            <div
-              className='club-category'
-              onClick={() => nav('/clubList/academic')}
-            >학술
-            </div>
-            <div
-              className='club-category'
-              onClick={() => nav('/clubList/cultural')}
-            >문화예술
-            </div>
-            <div
-              className='club-category'
-              onClick={() => nav('/clubList/science')}
-            >과학기술
-            </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/clubList/SPORTS/1')}
+          >스포츠
+          </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/clubList/ACADEMIC/1')}
+          >학술
+          </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/clubList/CULTURAL/1')}
+          >문화예술
+          </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/clubList/SCIENCE/1')}
+          >과학기술
           </div>
           <div
             className='club-category'
@@ -64,7 +63,7 @@ const Header = () => {
           >Q&A
           </div>
           <div
-            className='mypage'
+            className='club-category'
             onClick={() => {
               if (username === '') {
                 nav('/login')
@@ -72,14 +71,16 @@ const Header = () => {
                 nav('/myPage')
               }
             }}
-          > 마이페이지
+          >마이페이지
           </div>
-          <div className='admin-nav'>
+          <div>
             {role === "ROLE_ADMIN" ?
-              <div className='adminpage' onClick={() => nav('/adminPage')}>관리</div>
+              <div className='club-category' onClick={() => nav('/adminPage')}
+              >관리</div>
               : <p></p>}
           </div>
         </div>
+
         <div className='right-nav'>
           {/*{location.pathname !== '/search' && (*/}
           {/*  <img className='search-icon' src={searchIcon_bk} width='21px' onClick={() => nav('/search')} />*/}
@@ -88,14 +89,15 @@ const Header = () => {
             <div className='header-icons'>
               <div
                 className='wishlisticon'
-                onClick={() => nav('/like')}>
+                onClick={() => nav('/likeList')}>
                 <img src={likeIcon} width='20px' height='19px' alt='관심동아리'/>
               </div>
             </div>
             : <p></p>}
+        </div>
       </div>
     </div>
-  );
+      );
 }
 
 export default Header;

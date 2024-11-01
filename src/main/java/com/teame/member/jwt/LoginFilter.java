@@ -69,20 +69,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     Map<String, Object> claims = new HashMap<>();
 
     String accessToken = jwtUtil.createAccessToken(username, role);
-    String refreshToken = jwtUtil.createRefreshToken(username, role);
+//    String refreshToken = jwtUtil.createRefreshToken(username, role);
 
     claims.put("accessToken", accessToken);
-    claims.put("refreshToken", refreshToken);
     claims.put("username", username);
     claims.put("displayName", displayName);
     claims.put("role", role);
+//    claims.put("refreshToken", refreshToken);
 
     Gson gson = new Gson();
     String jsonStr = gson.toJson(claims);
 
     // Header 로 토큰 전송
     response.addHeader("Authorization", "Bearer " + accessToken);
-    response.addHeader("Refresh-Token", refreshToken);
+//    response.addHeader("Refresh-Token", refreshToken);
 
 
     response.setContentType("application/json; charset=UTF-8");

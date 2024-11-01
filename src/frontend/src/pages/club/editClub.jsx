@@ -52,7 +52,7 @@ const EditClub = () => {
 
   const handleDelete = () => {
     if (window.confirm("동아리를 삭제하시겠습니까?")) {
-      axios.delete(`/api/admin/deleteClub/${club.id}`)
+      axios.delete(`/api/club/delete/${club.id}`)
         .then(() => {
           nav('/');
         })
@@ -94,7 +94,7 @@ const EditClub = () => {
         categoryNames: categories
       };
 
-      const response = await axios.put(`/api/admin/editClubProc/${club.id}`, clubData);
+      const response = await axios.put(`/api/club/edit/${club.id}`, clubData);
       console.log("동아리 수정 성공");
       console.log(response.data);
       nav('/');
