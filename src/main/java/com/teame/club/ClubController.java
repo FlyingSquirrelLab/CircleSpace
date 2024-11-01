@@ -3,6 +3,7 @@ package com.teame.club;
 import com.teame.club.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,23 +21,13 @@ public class ClubController {
   private final ClubService clubService;
   private final CategoryService categoryService;
 
-  @PutMapping("/api/admin/featureClubById/{id}")
-  public ResponseEntity<String> featureClubAPI(@PathVariable Long id) {
-    return clubService.setFeatured(id, true);
-  }
-
-  @PutMapping("/api/admin/unfeatureClubById/{id}")
-  public ResponseEntity<String> unfeatureClubAPI(@PathVariable Long id) {
-    return clubService.setFeatured(id, false);
-  }
-
-  @PutMapping("/api/admin/editClubProc/{id}")
+  @PutMapping("/api/club/edit/{id}")
   public ResponseEntity<String> editClubProcAPI(@PathVariable Long id,
                                                 @RequestBody Map<String, Object> request) {
     return clubService.editClubProc(id, request);
   }
 
-  @DeleteMapping("/api/admin/deleteClub/{id}")
+  @DeleteMapping("/api/club/delete/{id}")
   public ResponseEntity<String> deleteClubAPI(@PathVariable Long id) {
     return clubService.deleteClub(id);
   }
@@ -49,9 +40,12 @@ public class ClubController {
         .collect(Collectors.toList());
   }
 
-  @GetMapping("/api/club/getClubByCategory/{category}")
-  public ResponseEntity<?> getClubsByCategoryAPI(@PathVariable String category) {
-    return categoryService.getClubsByCategory(category);
+  @GetMapping("/api/club/getByCategory/{category}/{page}/{size}")
+  public ResponseEntity<?> getItemsByCategoryAPI(@PathVariable String category,
+                                                 @PathVariable int page,
+                                                 @PathVariable int size,
+                                                 PagedResourcesAssembler<Club> assembler) {
+    return categoryService.getClubsByCategory(category, page, size, assembler);
   }
 
   @GetMapping("/api/club/getById/{id}")

@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import axiosInstance from "../axiosInstance.jsx";
+import axiosInstance from "../../axiosInstance.jsx";
 import './register.css'
 
 const EditPassword = () => {

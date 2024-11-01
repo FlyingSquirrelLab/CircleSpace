@@ -32,6 +32,7 @@ public class Club {
   private String title;
 
   private Long managerId;
+
   private String description;
 
   private String imageUrl;

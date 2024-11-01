@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import axiosInstance from "../axiosInstance.jsx";
+import axiosInstance from "../../axiosInstance.jsx";
 
 const QnAUpload = () => {
 

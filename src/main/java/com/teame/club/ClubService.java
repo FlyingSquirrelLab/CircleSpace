@@ -138,17 +138,6 @@ public class ClubService {
     return club.getFeatured();
   }
 
-  public ResponseEntity<String> setFeatured(Long id, Boolean featured) {
-    try {
-      Club club = clubRepository.findById(id).orElseThrow(() -> new RuntimeException("동아리를 찾을 수 없습니다."));
-      club.setFeatured(featured);
-      clubRepository.save(club);
-      return ResponseEntity.status(HttpStatus.OK).body("추천 동아리 설정 완료");
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("추천 동아리 설정 실패" + e.getMessage());
-    }
-  }
-
   public ResponseEntity<?> getFeaturedClubs() {
     try {
       List<Club> featuredList = clubRepository.findByFeatured(true);

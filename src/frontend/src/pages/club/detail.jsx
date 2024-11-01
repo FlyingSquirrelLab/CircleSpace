@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {useAuth} from "../authContext.jsx";
+import {useAuth} from "../../authContext.jsx";
 import axios from 'axios'
-import blankLike from '../assets/blank_like.png'
-import filledLike from '../assets/filled_like.png'
-import blankStar from '../assets/blankStar.png'
-import filledStar from '../assets/filledStar.png'
-import axiosInstance from "../axiosInstance.jsx";
-import Review from "../components/review.jsx";
+import blankLike from '../../assets/blank_like.png'
+import filledLike from '../../assets/filled_like.png'
+import blankStar from '../../assets/blankStar.png'
+import filledStar from '../../assets/filledStar.png'
+import axiosInstance from "../../axiosInstance.jsx";
+import Review from "../../components/review.jsx";
 import './detail.css';
 
 const Detail=()=>{

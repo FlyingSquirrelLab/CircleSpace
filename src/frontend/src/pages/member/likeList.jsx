@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "../authContext.jsx";
-import axiosInstance from "../axiosInstance.jsx";
+import {useAuth} from "../../authContext.jsx";
+import axiosInstance from "../../axiosInstance.jsx";
 import './likeList.css';
 
 const LikeList = () => {
@@ -37,7 +37,7 @@ const LikeList = () => {
     <div>
       <div className="likebody">
         <div className="like">
-          <h4>내가 찜한 동아리</h4>
+          <h4>관심 등록한 동아리</h4>
           <div className="like-list">
             <div className="like-club">
               <div className='likelist-row'>
@@ -55,7 +55,7 @@ const LikeList = () => {
                       </div>
                     ))
                   ) : (
-                    <p>찜한 동아리가 없습니다.</p>
+                    <p>관심 등록한 동아리가 없습니다.</p>
                   )}
               </div>
             </div>
