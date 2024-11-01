@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import './categoryManage.css';
+import './manageCategory.css';
 
-const CategoryManage = () => {
+const ManageCategory = () => {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState('');
   const [editingCategory, setEditingCategory] = useState(null);
@@ -103,4 +103,4 @@ const CategoryManage = () => {
   );
 }
 
-export default CategoryManage;
+export default ManageCategory;

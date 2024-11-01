@@ -18,6 +18,9 @@ const MyPage = ()=>{
     }
   }, [role]);
 
+  // 특정 회원이 관리자로 있는 동아리를 보여줌
+  // 그 동아리들에 대해서 수정, 삭제 할 수 있음
+
   return(
     <div className='mypage-body'>
       <div className='mypage-user'>
@@ -30,6 +33,7 @@ const MyPage = ()=>{
               <br/>
               <div onClick={() => nav('/editPassword')}>비밀번호수정</div>
               <br/>
+              <div onClick={() => nav('/uploadClub')}>동아리등록하기</div>
             </div>
             : <p></p>}
           <div className='mypage-logout'>
