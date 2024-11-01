@@ -37,7 +37,7 @@ public class ClubService {
     }
   }
 
-  public ResponseEntity<String> uploadClub(Map<String, Object> request) {
+  public ResponseEntity<String> uploadClub(Map<String, Object> request, Long id) {
     try {
       Club club = new Club();
       String title = (String) request.get("title");
@@ -45,6 +45,7 @@ public class ClubService {
       String description = (String) request.get("description");
       List<String> categoryNames = (List<String>) request.get("categoryNames");
 
+      club.setManagerId(id);
       club.setTitle(title);
       club.setImageUrl(imageUrl);
       club.setDescription(description);
@@ -74,9 +75,9 @@ public class ClubService {
     }
   }
 
-  public ResponseEntity<String> editClubProc(Long id, Map<String, Object> request) {
+  public ResponseEntity<String> editClubProc(Map<String, Object> request, Long clubId) {
     try {
-      Optional<Club> clubOptional = clubRepository.findById(id);
+      Optional<Club> clubOptional = clubRepository.findById(clubId);
 
       if (clubOptional.isPresent()) {
 

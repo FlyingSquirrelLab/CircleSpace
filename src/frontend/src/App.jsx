@@ -8,7 +8,7 @@ import Login from "./pages/member/login.jsx";
 import EditClub from "./pages/club/editClub.jsx";
 import MyPage from "./pages/member/myPage.jsx";
 import Register from "./pages/member/register.jsx";
-import CategoryManage from "./pages/admin/categoryManage.jsx";
+import CategoryManage from "./pages/admin/manageCategory.jsx";
 import AdminPage from "./pages/admin/adminPage.jsx";
 import UploadClub from "./pages/club/uploadClub.jsx";
 import LikeList from "./pages/member/likeList.jsx";
@@ -17,6 +17,7 @@ import QnAPage from "./pages/qna/qnaPage.jsx";
 import QnAUpload from "./pages/qna/qnaUpload.jsx";
 import EditPassword from "./pages/member/editPassword.jsx";
 import EditUserInfo from "./pages/member/editUserInfo.jsx";
+import ManageCategory from "./pages/admin/manageCategory.jsx";
 
 function App() {
 
@@ -41,7 +42,7 @@ function App() {
         <Routes>
           <Route path='*' element={<div>존재하지 않는 페이지입니다.</div>} />
           <Route path='/adminPage' element={<AdminPage/>} />
-          <Route path='/categoryManage' element={<CategoryManage/>} />
+          <Route path='/manageCategory' element={<ManageCategory/>} />
           <Route path='/clubList/:category/:pageParam' element={<ClubList/>} />
           <Route path='/detail/:id' element={<Detail/>}/>
           <Route path='/editClub/:id' element={<EditClub/>} />

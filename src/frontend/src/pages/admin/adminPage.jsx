@@ -21,7 +21,7 @@ const AdminPage = () => {
     <div className='adminpage-body'>
       {displayName ? <h3>{displayRole} {displayName} 님</h3> : <p></p>}
       <div className='admin-list'>
-        <div className='upload-bn' onClick={() => nav('/categoryManage')}
+        <div className='upload-bn' onClick={() => nav('/manageCategory')}
         >카테고리 관리</div>
         <br/>
         <div className='upload-bn' onClick={() => nav('/uploadClub')}

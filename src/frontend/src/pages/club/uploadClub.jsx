@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import './uploadClub.css';
+import axiosInstance from "../../axiosInstance.jsx";
 
 const UploadClub = () => {
 
@@ -91,7 +92,7 @@ const UploadClub = () => {
           categoryNames: categories
         };
 
-        await axios.post('/api/club/upload', clubData);
+        await axiosInstance.post('/club/upload', clubData);
         console.log("동아리 등록 성공");
         nav('/');
       } catch (error) {

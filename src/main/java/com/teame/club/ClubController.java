@@ -1,10 +1,12 @@
 package com.teame.club;
 
 import com.teame.club.category.CategoryService;
+import com.teame.member.customUser.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -21,10 +23,10 @@ public class ClubController {
   private final ClubService clubService;
   private final CategoryService categoryService;
 
-  @PutMapping("/api/club/edit/{id}")
-  public ResponseEntity<String> editClubProcAPI(@PathVariable Long id,
+  @PutMapping("/api/club/edit/{clubId}")
+  public ResponseEntity<String> editClubProcAPI(@PathVariable Long clubId,
                                                 @RequestBody Map<String, Object> request) {
-    return clubService.editClubProc(id, request);
+    return clubService.editClubProc(request, clubId);
   }
 
   @DeleteMapping("/api/club/delete/{id}")
@@ -54,8 +56,10 @@ public class ClubController {
   }
 
   @PostMapping("/api/club/upload")
-  public ResponseEntity<String> uploadClubAPI(@RequestBody Map<String, Object> request) {
-    return clubService.uploadClub(request);
+  public ResponseEntity<String> uploadClubAPI(@RequestBody Map<String, Object> request,
+                                              Authentication auth) {
+    Long id = ((CustomUserDetails) auth.getPrincipal()).getMember().getId();
+    return clubService.uploadClub(request, id);
   }
 
   @GetMapping("/api/club/checkFeatured/{id}")
