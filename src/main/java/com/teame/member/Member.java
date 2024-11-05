@@ -47,14 +47,4 @@ public class Member {
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Like> likes = new ArrayList<>();
 
-  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-  @JoinTable(
-      name = "member_club",
-      joinColumns = @JoinColumn(name = "member_id"),
-      inverseJoinColumns = @JoinColumn(name = "club_id")
-  )
-  private Set<Club> clubs = new HashSet<>();
-
-
-
 }

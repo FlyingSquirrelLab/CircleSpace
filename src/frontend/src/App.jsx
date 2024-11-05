@@ -8,7 +8,6 @@ import Login from "./pages/member/login.jsx";
 import EditClub from "./pages/club/editClub.jsx";
 import MyPage from "./pages/member/myPage.jsx";
 import Register from "./pages/member/register.jsx";
-import CategoryManage from "./pages/admin/manageCategory.jsx";
 import AdminPage from "./pages/admin/adminPage.jsx";
 import UploadClub from "./pages/club/uploadClub.jsx";
 import LikeList from "./pages/member/likeList.jsx";
@@ -18,6 +17,8 @@ import QnAUpload from "./pages/qna/qnaUpload.jsx";
 import EditPassword from "./pages/member/editPassword.jsx";
 import EditUserInfo from "./pages/member/editUserInfo.jsx";
 import ManageCategory from "./pages/admin/manageCategory.jsx";
+import ManageUniversity from "./pages/admin/manageUniversity.jsx";
+import SeleniumTester from "./pages/admin/seleniumTester.jsx";
 
 function App() {
 
@@ -43,7 +44,8 @@ function App() {
           <Route path='*' element={<div>존재하지 않는 페이지입니다.</div>} />
           <Route path='/adminPage' element={<AdminPage/>} />
           <Route path='/manageCategory' element={<ManageCategory/>} />
-          <Route path='/clubList/:category/:pageParam' element={<ClubList/>} />
+          <Route path='/manageUniversity' element={<ManageUniversity/>} />
+          <Route path='/clubList/:category' element={<ClubList/>} />
           <Route path='/detail/:id' element={<Detail/>}/>
           <Route path='/editClub/:id' element={<EditClub/>} />
           <Route path='/editPassword' element={<EditPassword/>} />
@@ -57,6 +59,7 @@ function App() {
           <Route path='/qna/upload' element={<QnAUpload/>} />
           <Route path='/register' element={<Register/>} />
           <Route path='/uploadClub' element={<UploadClub/>} />
+          <Route path='/test' element={<SeleniumTester/>}/>
         </Routes>
       </div>
     </AuthProvider>

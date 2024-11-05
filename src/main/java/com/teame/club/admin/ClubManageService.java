@@ -4,6 +4,8 @@ import com.teame.club.Club;
 import com.teame.club.ClubRepository;
 import com.teame.club.category.Category;
 import com.teame.club.category.CategoryRepository;
+import com.teame.club.university.University;
+import com.teame.club.university.UniversityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -16,8 +18,20 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class ClubManageService {
 
+  private final UniversityRepository universityRepository;
   private final CategoryRepository categoryRepository;
   private final ClubRepository clubRepository;
+
+  public ResponseEntity<String> setFeatured(Long id, Boolean featured) {
+    try {
+      Club club = clubRepository.findById(id).orElseThrow(() -> new RuntimeException("동아리를 찾을 수 없습니다."));
+      club.setFeatured(featured);
+      clubRepository.save(club);
+      return ResponseEntity.status(HttpStatus.OK).body("추천 동아리 설정 완료");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("추천 동아리 설정 실패" + e.getMessage());
+    }
+  }
 
   public ResponseEntity<Void> deleteCategory(Long id) {
     try {
@@ -36,17 +50,21 @@ public class ClubManageService {
     }
   }
 
-  public ResponseEntity<String> setFeatured(Long id, Boolean featured) {
+  public ResponseEntity<Void> deleteUniversity(Long id) {
     try {
-      Club club = clubRepository.findById(id).orElseThrow(() -> new RuntimeException("동아리를 찾을 수 없습니다."));
-      club.setFeatured(featured);
-      clubRepository.save(club);
-      return ResponseEntity.status(HttpStatus.OK).body("추천 동아리 설정 완료");
+      University university = universityRepository.findById(id)
+          .orElseThrow(() -> new IllegalArgumentException("대학교를 찾을 수 없습니다: " + id));
+
+      for (Club club : university.getClubs()) {
+        club.getUniversities().remove(university);
+        clubRepository.save(club);
+      }
+
+      universityRepository.delete(university);
+      return ResponseEntity.noContent().build();
     } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("추천 동아리 설정 실패" + e.getMessage());
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "대학교 삭제 실패: " + e.getMessage());
     }
   }
-
-
 
 }

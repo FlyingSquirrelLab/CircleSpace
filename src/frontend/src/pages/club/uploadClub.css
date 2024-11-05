@@ -107,3 +107,10 @@
     width: 100px;
     border-radius: 3px;
 }
+
+.editor-categories {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px; /* 각 체크박스 간격을 조정 */
+}

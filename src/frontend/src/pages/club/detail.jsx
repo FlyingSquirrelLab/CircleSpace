@@ -22,12 +22,17 @@ const Detail=()=>{
   const [featured, setFeatured] = useState(false);
   const [detailImageList, setDetailImageList] = useState([]);
 
+  const [categories, setCategories] = useState([]);
+  const [universities, setUniversities] = useState([]);
+
   useEffect(() => {
     try {
-      axios.get(`/api/club/getById/${id}`).then((data) => {
-        setClub(data.data)
-        setTitle(data.data.title)
-        setDetailImageList(data.data.detailImages)
+      axios.get(`/api/club/getById/${id}`).then((response) => {
+        setClub(response.data);
+        setTitle(response.data.title);
+        setDetailImageList(response.data.detailImages);
+        setCategories(response.data.categories);
+        setUniversities(response.data.universities);
       })
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -106,11 +111,33 @@ const Detail=()=>{
           <img className='club-img' src={club.imageUrl} alt="동아리 대표이미지"/>
           <div className='detail-contents'>
             <div className='detail-box'>
-              <p className='club-description'>{club.description}</p>
               <h4 className='club-title'>{club.title}</h4>
+              <p className='club-description'>{club.description}</p>
+            </div>
+            <div>
+              <div>
+                <p>소속 카데고리</p>
+              {Array.isArray(categories) && categories.length > 0 ? (
+                categories.map((category) => (
+                  <p key={category.id}>{category.name}</p>
+                ))
+              ) : (
+                <p></p>
+              )}
+              </div>
+              <div>
+                <p>소속 대학교</p>
+                {Array.isArray(universities) && universities.length > 0 ? (
+                  universities.map((university) => (
+                    <p key={university.id}>{university.title}</p>
+                  ))
+                ) : (
+                  <p></p>
+                )}
+              </div>
             </div>
             <div className='wishlist'>
-              <p>위시리스트</p>
+              <p>관심동아리 등록</p>
               <img
                 src={liked ? filledLike : blankLike}
                 width='18px'

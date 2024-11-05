@@ -2,23 +2,30 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import './qnaPage.css';
+import PageController from "../../components/pageController.jsx";
 
 const QnAPage = ({formatDate}) => {
 
   const nav = useNavigate();
+  const size = 2;
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [qnaList, setQnAList] = useState([]);
 
   useEffect(() => {
-    const fetchQnA = async() => {
+    const fetchQnAs = async () => {
       try {
-        const response = await axios.get('/api/qna/fetchAll');
-        setQnAList(response.data);
+        const response = await axios.get(`/api/qna/fetchAll/${page}/${size}`);
+        console.log(response.status);
+        setQnAList(response.data._embedded.qnAList);
+        setTotalPages(response.data.page.totalPages);
       } catch (error) {
-        console.error("Error Fetching QnA List");
+        console.error("Error fetching QnAs", error);
       }
     };
-    fetchQnA();
-  }, []);
+    fetchQnAs();
+    window.scrollTo(0, 0);
+  }, [page]);
 
   return (
     <div className='qnapage-body'>
@@ -40,6 +47,7 @@ const QnAPage = ({formatDate}) => {
           <p>QnA 가 없습니다.</p>
         )}
       </div>
+      <PageController page={page} setPage={setPage} totalPages={totalPages}/>
       <button className='upload-qna' onClick={() => nav('/qna/upload')}>QnA 작성하기</button>
     </div>
   );

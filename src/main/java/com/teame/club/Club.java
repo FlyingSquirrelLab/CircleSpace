@@ -3,6 +3,7 @@ package com.teame.club;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.teame.club.category.Category;
+import com.teame.club.university.University;
 import com.teame.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -50,9 +51,14 @@ public class Club {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @ManyToMany(mappedBy = "clubs")
-  @JsonBackReference
-  private Set<Member> members = new HashSet<>();
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @JoinTable(
+      name = "club_university",
+      joinColumns = @JoinColumn(name = "club_id"),
+      inverseJoinColumns = @JoinColumn(name = "university_id")
+  )
+  private Set<University> universities = new HashSet<>();
+
 
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
@@ -65,6 +71,11 @@ public class Club {
   public void addCategory(Category category) {
     this.categories.add(category);
     category.getClubs().add(this);
+  }
+
+  public void addUniversity(University university) {
+    this.universities.add(university);
+    university.getClubs().add(this);
   }
 
 }

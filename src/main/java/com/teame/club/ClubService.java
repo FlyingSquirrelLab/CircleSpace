@@ -2,6 +2,8 @@ package com.teame.club;
 
 import com.teame.club.category.Category;
 import com.teame.club.category.CategoryRepository;
+import com.teame.club.university.University;
+import com.teame.club.university.UniversityRepository;
 import com.teame.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,6 +27,7 @@ public class ClubService {
   private final ClubRepository clubRepository;
   private final S3Service s3Service;
   private final CategoryRepository categoryRepository;
+  private final UniversityRepository universityRepository;
 
   public ResponseEntity<?> getById(Long id) {
     try {
@@ -44,6 +47,7 @@ public class ClubService {
       String imageUrl = s3Service.getObjectUrl((String) request.get("imagePath"));
       String description = (String) request.get("description");
       List<String> categoryNames = (List<String>) request.get("categoryNames");
+      List<String> universityTitles = (List<String>) request.get("universityTitles");
 
       club.setManagerId(id);
       club.setTitle(title);
@@ -65,6 +69,12 @@ public class ClubService {
         Category category = categoryRepository.findByName(categoryName)
             .orElseThrow(() -> new IllegalArgumentException("Category not found: " + categoryName));
         club.addCategory(category);
+      }
+
+      for (String universityTitle : universityTitles) {
+        University university = universityRepository.findByTitle(universityTitle)
+            .orElseThrow(() -> new IllegalArgumentException("University Not Found" + universityTitle));
+        club.addUniversity(university);
       }
 
       clubRepository.save(club);
@@ -94,6 +104,7 @@ public class ClubService {
 
         String description = (String) request.get("description");
         List<String> categoryNames = (List<String>) request.get("categoryNames");
+        List<String> universityTitles = (List<String>) request.get("universityTitles");
 
         club.setTitle(title);
         club.setImageUrl(imageUrl);
@@ -104,6 +115,13 @@ public class ClubService {
           Category category = categoryRepository.findByName(categoryName)
               .orElseThrow(() -> new IllegalArgumentException("Category not found: " + categoryName));
           club.addCategory(category);
+        }
+
+        club.getUniversities().clear();
+        for (String universityTitle : universityTitles) {
+          University university = universityRepository.findByTitle(universityTitle)
+              .orElseThrow(() -> new IllegalArgumentException("University Not Found" + universityTitle));
+          club.addUniversity(university);
         }
 
         clubRepository.save(club);
@@ -162,7 +180,7 @@ public class ClubService {
     dto.setDetailImages(club.getDetailImages());
 
     dto.setCategories(club.getCategories());
-    dto.setMembers(club.getMembers());
+    dto.setUniversities(club.getUniversities());
 
     dto.setCreatedAt(club.getCreatedAt());
     dto.setUpdatedAt(club.getUpdatedAt());

@@ -17,17 +17,23 @@ const EditClub = () => {
   const [categories, setCategories] = useState([]);
   const [availableCategories, setAvailableCategories] = useState([]);
 
+  const [universities, setUniversities] = useState([]);
+  const [availableUniversities, setAvailableUniversities] = useState([]);
+
 
   useEffect(() => {
     axios.get(`/api/club/getById/${id}`)
-      .then((data) => {
-        setClub(data.data);
-        setTitle(data.data.title);
-        setDescription(data.data.description);
-        setImagePath(data.data.imageUrl);
+      .then((response) => {
+        setClub(response.data);
+        setTitle(response.data.title);
+        setDescription(response.data.description);
+        setImagePath(response.data.imageUrl);
 
-        const assignedCategories = data.data.categories.map(category => category.name);
+        const assignedCategories = response.data.categories.map(category => category.name);
         setCategories(assignedCategories);
+
+        const assignedUniversities = response.data.universities.map(university => university.title);
+        setUniversities(assignedUniversities);
       }).catch (error => {
       console.error('Error fetching data:', error);
     });
@@ -43,12 +49,31 @@ const EditClub = () => {
       });
   }, []);
 
+  useEffect(() => {
+    axios.get('/api/university/getAll')
+      .then(response => {
+        setAvailableUniversities(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching universities', error);
+      });
+  }, []);
+
+
   const handleCategoryChange = (e) => {
     const value = e.target.value;
     setCategories(prev =>
       prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
     );
   };
+
+  const handleUniversityChange = (e) => {
+    const value = e.target.value;
+    setUniversities(prev =>
+      prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
+    );
+  };
+
 
   const handleDelete = () => {
     if (window.confirm("동아리를 삭제하시겠습니까?")) {
@@ -91,7 +116,8 @@ const EditClub = () => {
         title,
         description,
         imagePath: updatedImagePath,
-        categoryNames: categories
+        categoryNames: categories,
+        universityTitles: universities
       };
 
       const response = await axios.put(`/api/club/edit/${club.id}`, clubData);
@@ -140,6 +166,22 @@ const EditClub = () => {
                       checked={categories.includes(category.name)}
                     />
                     {category.name}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className='head'>
+              <h4>소속 대학교 선택</h4>
+              <div className='editor-categories'>
+                {availableUniversities.map(university => (
+                  <label key={university.id}>
+                    <input
+                      type="checkbox"
+                      value={university.title}
+                      onChange={handleUniversityChange}
+                      checked={universities.includes(university.title)}
+                    />
+                    {university.title}
                   </label>
                 ))}
               </div>
