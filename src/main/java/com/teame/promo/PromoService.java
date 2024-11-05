@@ -6,28 +6,26 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 
 @Log4j2
 @Service
 public class PromoService {
+  @Lazy
   private WebDriver driver;
   private String url = "https://everytime.kr/418760";
 
-  public void initializeDriver() {
-    log.info("initial1");
-    System.setProperty("webdriver.chrome.driver", "./chromedriver-win64/chromedriver.exe");
-    log.info("initial2");
-    driver = new ChromeDriver();
-    log.info(driver);
-  }
-
   public void runSeleniumTask() {try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/output.txt", true))) {
-    log.info("start seleniumTask");
+    driver = new ChromeDriver();
     try {
       driver.get("https://everytime.kr");
 
@@ -39,39 +37,34 @@ public class PromoService {
 
       loadCookies(driver, cookieFile);
       driver.get("https://everytime.kr/418760");
-      Thread.sleep(1000);
 
       // 쿠키가 없는 경우 로그인 페이지로 이동
       if (!driver.getCurrentUrl().equals("https://everytime.kr/418760")) {
-        // 로그인 페이지인 경우 로그인 처리
-        System.out.println("On the login page. Logging in...");
-
         // 로그인 폼 자동화
-        WebElement idField = driver.findElement(By.name("id")); // 아이디 입력 필드 찾기
-        WebElement passwordField = driver.findElement(By.name("password")); // 비밀번호 입력 필드 찾기
+//        WebElement idField = driver.findElement(By.name("id")); // 아이디 입력 필드 찾기
+//        WebElement passwordField = driver.findElement(By.name("password")); // 비밀번호 입력 필드 찾기
 //        idField.sendKeys(""); // 사용자 아이디 입력
 //        passwordField.sendKeys(""); // 사용자 비밀번호 입력
-
-        // 로그인 폼 제출
 //        WebElement submitButton = driver.findElement(By.cssSelector("input[type='submit']")); // 제출 버튼 찾기
 //        submitButton.click(); // 제출 버튼 클릭
 
-        // 로그인 완료 후 쿠키 저장
-        Thread.sleep(10000);
-        driver.get("https://everytime.kr/418760");
+        // 쿠키 없을 시 최초 1회 수동 로그인(30초 이내에 진행)
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofSeconds(1));
+
+        wait.until(ExpectedConditions.urlToBe("https://everytime.kr/418760"));
+
         saveCookies(driver, cookieFile);
-        log.info(driver);
       }
 
-      System.out.println("Successfully opened the webpage.");
-      Thread.sleep(1000);
+      log.info("Successfully opened the webpage.");
+
       List<WebElement> articleLinks = driver.findElements(By.cssSelector("a.article"));
 
-      // int cnt=10;
+
       for (WebElement articleLink : articleLinks) {
-        // if(cnt--==0) break;
         String linkHref = articleLink.getAttribute("href");
-        System.out.println("Found article link: " + linkHref);
         if (!linkHref.startsWith(url)) {
           continue;
         }
@@ -79,8 +72,6 @@ public class PromoService {
         try {
           String articleUrl = articleLink.getAttribute("href");
           driver.get(articleUrl);
-          System.out.println("Navigated to article URL: " + articleUrl);
-          Thread.sleep(5000);
 
           List<WebElement> paragraphTitle = driver.findElements(By.cssSelector("h2.large"));
           List<WebElement> paragraphBody = driver.findElements(By.cssSelector("p.large"));
@@ -99,10 +90,9 @@ public class PromoService {
           writer.write("--------------------------------------------------\n");
 
           driver.navigate().back();
-          Thread.sleep(3000);
 
         } catch (Exception innerEx) {
-          System.out.println("Error while processing article: " + innerEx.getMessage());
+          log.info("Error while processing article: " + innerEx.getMessage());
         }
       }
 
