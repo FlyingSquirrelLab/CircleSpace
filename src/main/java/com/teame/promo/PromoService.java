@@ -1,5 +1,6 @@
-package com.teame.config;
+package com.teame.promo;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -11,23 +12,31 @@ import java.io.*;
 import java.util.List;
 import java.util.Set;
 
-//@Service
-public class SeleniumService {
+@Log4j2
+@Service
+public class PromoService {
   private WebDriver driver;
   private String url = "https://everytime.kr/418760";
 
   public void initializeDriver() {
+    log.info("initial1");
     System.setProperty("webdriver.chrome.driver", "./chromedriver-win64/chromedriver.exe");
+    log.info("initial2");
     driver = new ChromeDriver();
+    log.info(driver);
   }
 
   public void runSeleniumTask() {try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/output.txt", true))) {
-
+    log.info("start seleniumTask");
     try {
       driver.get("https://everytime.kr");
 
       // 쿠키가 있는 경우 동아리 페이지로 이동
       File cookieFile = new File("src/main/resources/cookies.data");
+      if (!cookieFile.exists()) {
+        cookieFile.createNewFile();
+      }
+
       loadCookies(driver, cookieFile);
       driver.get("https://everytime.kr/418760");
       Thread.sleep(1000);
@@ -51,6 +60,7 @@ public class SeleniumService {
         Thread.sleep(10000);
         driver.get("https://everytime.kr/418760");
         saveCookies(driver, cookieFile);
+        log.info(driver);
       }
 
       System.out.println("Successfully opened the webpage.");
