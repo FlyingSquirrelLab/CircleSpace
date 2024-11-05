@@ -126,10 +126,6 @@ public class CommentService {
     return ResponseEntity.status(HttpStatus.OK).body(reviewList);
   }
 
-  public ResponseEntity<?> fetchAllQnA() {
-    return ResponseEntity.status(HttpStatus.OK).body(qnaRepository.findAll());
-  }
-
   public ResponseEntity<?> fetchQnAById(Long qnaId) {
     return ResponseEntity.status(HttpStatus.OK).body(qnaRepository.findById(qnaId));
   }

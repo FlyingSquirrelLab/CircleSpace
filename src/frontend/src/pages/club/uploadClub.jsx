@@ -13,6 +13,9 @@ const UploadClub = () => {
   const [categories, setCategories] = useState([]);
   const [availableCategories, setAvailableCategories] = useState([]);
 
+  const [universities, setUniversities] = useState([]);
+  const [availableUniversities, setAvailableUniversities] = useState([]);
+
   const nav = useNavigate();
 
   useEffect(() => {
@@ -26,6 +29,16 @@ const UploadClub = () => {
       })
       .catch(error => {
         console.error('Error fetching categories', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get('/api/university/getAll')
+      .then(response => {
+        setAvailableUniversities(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching universities', error);
       });
   }, []);
 
@@ -46,6 +59,13 @@ const UploadClub = () => {
   const handleCategoryChange = (e) => {
     const value = e.target.value;
     setCategories(prev =>
+      prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
+    );
+  };
+
+  const handleUniversityChange = (e) => {
+    const value = e.target.value;
+    setUniversities(prev =>
       prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
     );
   };
@@ -89,7 +109,8 @@ const UploadClub = () => {
           description,
           imagePath: path,
           detailImagePaths: detailImagePaths.filter(path => path !== null),
-          categoryNames: categories
+          categoryNames: categories,
+          universityTitles: universities
         };
 
         await axiosInstance.post('/club/upload', clubData);
@@ -105,11 +126,11 @@ const UploadClub = () => {
     <div className='editor-body'>
 
       <form className='editor-form' onSubmit={handleSubmit}>
-        <h4>추가하실 상품 정보를 입력하세요</h4>
+        <h2>동아리 등록</h2>
         <div className='editor-container'>
           <div className='edit-inputs'>
             <div className='head'>
-              <p>동아리 이름</p>
+              <h4>동아리 이름</h4>
               <input
                 className='editor-title'
                 type="text"
@@ -120,7 +141,7 @@ const UploadClub = () => {
               />
             </div>
             <div className='head'>
-              <p>동아리 설명</p>
+              <h4>동아리 설명</h4>
               <textarea
                 className='editor-description'
                 placeholder="Description"
@@ -129,7 +150,7 @@ const UploadClub = () => {
               />
             </div>
             <div className='head'>
-              <p>카테고리 선택</p>
+              <h4>카테고리 선택</h4>
               <div className='editor-categories'>
                 {availableCategories.map(category => (
                   <label key={category.id}>
@@ -145,7 +166,23 @@ const UploadClub = () => {
               </div>
             </div>
             <div className='head'>
-              <p>대표 이미지</p>
+              <h4>소속 대학교 선택</h4>
+              <div className='editor-categories'>
+                {availableUniversities.map(university => (
+                  <label key={university.id}>
+                    <input
+                      type="checkbox"
+                      value={university.title}
+                      onChange={handleUniversityChange}
+                      checked={universities.includes(university.title)}
+                    />
+                    {university.title}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className='head'>
+              <h4>대표 이미지</h4>
               <div className='editor-imgbox'>
                 <input
                   className='editor-file'
@@ -156,7 +193,7 @@ const UploadClub = () => {
               </div>
             </div>
             <div className='head'>
-              <p>상세 이미지</p>
+              <h4>상세 이미지</h4>
               {detailImageList.map((_, index) => (
                 <div key={index} className='editor-imgbox'>
                   <input
