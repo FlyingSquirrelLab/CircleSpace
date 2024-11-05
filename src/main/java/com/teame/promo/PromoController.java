@@ -20,10 +20,8 @@ public class PromoController {
     @GetMapping("/api/parse")
     public ResponseEntity<?> fetchParseData()
     {
-        log.info("111");
         try {
             log.info("start parse");
-            promoService.initializeDriver();
             promoService.runSeleniumTask();
             return ResponseEntity.ok("");
         } catch (Exception e) {
