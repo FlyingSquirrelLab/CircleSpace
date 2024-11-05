@@ -11,9 +11,10 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
 import java.io.*;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
@@ -58,7 +59,7 @@ public class PromoService {
         saveCookies(driver, cookieFile);
       }
 
-      log.info("Successfully opened the webpage.");
+
 
       List<WebElement> articleLinks = driver.findElements(By.cssSelector("a.article"));
 
@@ -89,12 +90,15 @@ public class PromoService {
           writer.write("Body:\n" + body + "\n");
           writer.write("--------------------------------------------------\n");
 
+
           driver.navigate().back();
 
         } catch (Exception innerEx) {
           log.info("Error while processing article: " + innerEx.getMessage());
         }
       }
+      log.info("Successfully parsed data at " +
+              LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
     } catch (Exception e) {
       e.printStackTrace();
