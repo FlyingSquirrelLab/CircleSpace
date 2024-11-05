@@ -21,11 +21,9 @@ public class PromoController {
     public ResponseEntity<?> fetchParseData()
     {
         try {
-            log.info("start parse");
             promoService.runSeleniumTask();
             return ResponseEntity.ok("");
         } catch (Exception e) {
-            log.info("fail parse");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
