@@ -38,7 +38,7 @@ public class PromoService {
 
       loadCookies(driver, cookieFile);
       driver.get("https://everytime.kr/418760");
-
+      Thread.sleep(1000);
       // 쿠키가 없는 경우 로그인 페이지로 이동
       if (!driver.getCurrentUrl().equals("https://everytime.kr/418760")) {
         // 로그인 폼 자동화
