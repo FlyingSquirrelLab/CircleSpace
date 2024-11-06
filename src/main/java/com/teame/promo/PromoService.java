@@ -9,13 +9,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Log4j2
@@ -24,91 +27,127 @@ public class PromoService {
   @Lazy
   private WebDriver driver;
   private String url = "https://everytime.kr/418760";
+  private final PromoRepository promoRepository;
 
-  public void runSeleniumTask() {try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/output.txt", true))) {
-    driver = new ChromeDriver();
-    try {
-      driver.get("https://everytime.kr");
+  @Autowired
+  public PromoService(PromoRepository promoRepository) {
+      this.promoRepository = promoRepository;
+  }
 
-      // 쿠키가 있는 경우 동아리 페이지로 이동
-      File cookieFile = new File("src/main/resources/cookies.data");
-      if (!cookieFile.exists()) {
-        cookieFile.createNewFile();
-      }
-
-      loadCookies(driver, cookieFile);
-      driver.get("https://everytime.kr/418760");
-      Thread.sleep(1000);
-      // 쿠키가 없는 경우 로그인 페이지로 이동
-      if (!driver.getCurrentUrl().equals("https://everytime.kr/418760")) {
-        // 로그인 폼 자동화
-//        WebElement idField = driver.findElement(By.name("id")); // 아이디 입력 필드 찾기
-//        WebElement passwordField = driver.findElement(By.name("password")); // 비밀번호 입력 필드 찾기
-//        idField.sendKeys(""); // 사용자 아이디 입력
-//        passwordField.sendKeys(""); // 사용자 비밀번호 입력
-//        WebElement submitButton = driver.findElement(By.cssSelector("input[type='submit']")); // 제출 버튼 찾기
-//        submitButton.click(); // 제출 버튼 클릭
-
-        // 쿠키 없을 시 최초 1회 수동 로그인(30초 이내에 진행)
-        Wait<WebDriver> wait = new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(30))
-                .pollingEvery(Duration.ofSeconds(1));
-
-        wait.until(ExpectedConditions.urlToBe("https://everytime.kr/418760"));
-
-        saveCookies(driver, cookieFile);
-      }
-
-
+  public void runSeleniumTask() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/output.txt", true))) {
+      initializeDriver();
+      navigateToClubPage();
 
       List<WebElement> articleLinks = driver.findElements(By.cssSelector("a.article"));
-
-
       for (WebElement articleLink : articleLinks) {
         String linkHref = articleLink.getAttribute("href");
-        if (!linkHref.startsWith(url)) {
-          continue;
-        }
-
-        try {
-          String articleUrl = articleLink.getAttribute("href");
-          driver.get(articleUrl);
-
-          List<WebElement> paragraphTitle = driver.findElements(By.cssSelector("h2.large"));
-          List<WebElement> paragraphBody = driver.findElements(By.cssSelector("p.large"));
-
-          String title = paragraphTitle.isEmpty() ? "No title found"
-                  : paragraphTitle.get(0).getText().replaceAll("[^\\p{L}\\p{N}\\p{P}\\s]", "");
-
-          StringBuilder body = new StringBuilder();
-          for (WebElement paragraph : paragraphBody) {
-            String filteredText = paragraph.getText().replaceAll("[^\\p{L}\\p{N}\\p{P}\\s]", "");
-            body.append(filteredText).append("\n");
-          }
-
-          writer.write("Title: " + title + "\n");
-          writer.write("Body:\n" + body + "\n");
-          writer.write("--------------------------------------------------\n");
-
-
-          driver.navigate().back();
-
-        } catch (Exception innerEx) {
-          log.info("Error while processing article: " + innerEx.getMessage());
+        if (linkHref != null && linkHref.startsWith(url)) {
+          parseArticle(linkHref, writer);
         }
       }
       log.info("Successfully parsed data at " +
               LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (IOException e) {
+      log.info("Error initializing writer: " + e.getMessage());
     } finally {
-      driver.quit();
+      if (driver != null) {
+        driver.quit();
+      }
     }
-  } catch (IOException e) {
-    e.printStackTrace();
   }
+
+  private void initializeDriver() {
+    driver = new ChromeDriver();
+    driver.get("https://everytime.kr");
+
+    File cookieFile = new File("src/main/resources/cookies.data");
+    try {
+      if (!cookieFile.exists()) {
+        cookieFile.createNewFile();
+      }
+      loadCookies(driver, cookieFile);
+    } catch (IOException e) {
+      log.info("Error loading cookies: " + e.getMessage());
+    }
   }
+
+  private void navigateToClubPage() {
+    driver.get(url);
+    try {
+      Thread.sleep(1000);
+      if (!driver.getCurrentUrl().equals(url)) {
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofSeconds(1));
+        wait.until(ExpectedConditions.urlToBe(url));
+        saveCookies(driver, new File("src/main/resources/cookies.data"));
+      }
+    } catch (Exception e) {
+      log.info("Error navigating to club page: " + e.getMessage());
+    }
+  }
+
+  private void parseArticle(String articleUrl, BufferedWriter writer) {
+    try {
+      driver.get(articleUrl);
+
+      Wait<WebDriver> wait = new FluentWait<>(driver)
+              .withTimeout(Duration.ofSeconds(10))
+              .pollingEvery(Duration.ofMillis(500))
+              .ignoring(NoSuchElementException.class);
+
+      List<WebElement> paragraphBody = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("p.large")));
+      List<WebElement> paragraphTitle = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("h2.large")));
+      List<WebElement> paragraphTime = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div.profile time.large")));
+
+      if (!paragraphTitle.isEmpty() && !paragraphTime.isEmpty() && !paragraphBody.isEmpty()) {
+        String title = paragraphTitle.get(0).getText().replaceAll("[^\\p{L}\\p{N}\\p{P}\\s]", "");
+        String dateTime = paragraphTime.get(0).getText();
+        int year = LocalDate.now().getYear();
+        LocalDateTime postedTime = LocalDateTime.of(
+                year,
+                Integer.parseInt(dateTime.substring(0, 2)),  // 월
+                Integer.parseInt(dateTime.substring(3, 5)),  // 일
+                Integer.parseInt(dateTime.substring(6, 8)),  // 시
+                Integer.parseInt(dateTime.substring(9, 11))  // 분
+        );
+
+        StringBuilder body = new StringBuilder();
+        for (WebElement paragraph : paragraphBody) {
+          String filteredText = paragraph.getText().replaceAll("[^\\p{L}\\p{N}\\p{P}\\s]", "");
+          body.append(filteredText).append("\n");
+        }
+//        writeArticleDataToTextFile(writer, title, postedTime, body.toString());
+        writeArticleDataToDB(writer, title, postedTime, body.toString());
+
+      }
+
+      driver.navigate().back();
+    } catch (Exception e) {
+      log.info("Error while processing article: " + e.getMessage());
+    }
+  }
+
+  private void writeArticleDataToTextFile(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
+    try {
+      writer.write("Title: " + title + "\n");
+      writer.write("Posted Time: " + postedTime + "\n");
+      writer.write("Body:\n" + body + "\n");
+      writer.write("--------------------------------------------------\n");
+    } catch (IOException e) {
+      log.info("Error writing article data: " + e.getMessage());
+    }
+  }
+  private void writeArticleDataToDB(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
+    Promo newPromo = new Promo();
+    newPromo.setTitle(title);
+    newPromo.setPostedAt(postedTime);
+    newPromo.setBody(body);
+
+    promoRepository.save(newPromo);
+  }
+
 
   // 쿠키 저장 메서드
   private static void saveCookies(WebDriver driver, File file) throws IOException {

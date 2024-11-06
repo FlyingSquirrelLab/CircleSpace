@@ -23,10 +23,14 @@ public class Promo {
     @Column(name="promo_title")
     private String title;
 
-    @Column(name="promo_body")
+    @Column(name="promo_body", columnDefinition = "TEXT")
     private String body;
 
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    // everytime에 포스트된 시각
+    @Column(name="posted_at")
+    private LocalDateTime postedAt;
 }
