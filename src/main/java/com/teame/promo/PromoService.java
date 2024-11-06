@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.Duration;
@@ -34,6 +35,17 @@ public class PromoService {
       this.promoRepository = promoRepository;
   }
 
+  /*
+        ┌───────────── 초 (0 - 59)
+        │ ┌───────────── 분 (0 - 59)
+        │ │ ┌───────────── 시간 (0 - 23)
+        │ │ │ ┌───────────── 일 (1 - 31)
+        │ │ │ │ ┌───────────── 월 (1 - 12)
+        │ │ │ │ │ ┌───────────── 요일 (0 - 7) (일요일=0 또는 7)
+        │ │ │ │ │ │
+        * * * * * *
+     */
+//  @Scheduled(cron = "0 56 * * * ?", zone = "Asia/Seoul")
   public void runSeleniumTask() {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/output.txt", true))) {
       initializeDriver();
@@ -75,7 +87,7 @@ public class PromoService {
   private void navigateToClubPage() {
     driver.get(url);
     try {
-      Thread.sleep(1000);
+      Thread.sleep(2000);
       if (!driver.getCurrentUrl().equals(url)) {
         Wait<WebDriver> wait = new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(30))
@@ -105,13 +117,35 @@ public class PromoService {
         String title = paragraphTitle.get(0).getText().replaceAll("[^\\p{L}\\p{N}\\p{P}\\s]", "");
         String dateTime = paragraphTime.get(0).getText();
         int year = LocalDate.now().getYear();
-        LocalDateTime postedTime = LocalDateTime.of(
-                year,
-                Integer.parseInt(dateTime.substring(0, 2)),  // 월
-                Integer.parseInt(dateTime.substring(3, 5)),  // 일
-                Integer.parseInt(dateTime.substring(6, 8)),  // 시
-                Integer.parseInt(dateTime.substring(9, 11))  // 분
-        );
+        LocalDateTime postedTime;
+
+        try {
+          if (dateTime.contains("/")) {
+            // 날짜와 시간이 함께 있는 형식 (예: "11/06 08:44")
+            postedTime = LocalDateTime.of(
+                    year,
+                    Integer.parseInt(dateTime.substring(0, 2)),  // 월
+                    Integer.parseInt(dateTime.substring(3, 5)),  // 일
+                    Integer.parseInt(dateTime.substring(6, 8)),  // 시
+                    Integer.parseInt(dateTime.substring(9, 11))  // 분
+            );
+          } else if (dateTime.contains("분 전")) {
+            // "XX분 전" 형식 처리
+            int minutesAgo = Integer.parseInt(dateTime.replace("분 전", "").trim());
+            postedTime = LocalDateTime.now().minusMinutes(minutesAgo);
+          } else if (dateTime.contains("방금")) {
+            // "방금"인 경우 현재 시간으로 설정
+            postedTime = LocalDateTime.now();
+          } else {
+            // 예상하지 못한 형식인 경우 로그를 남기고 현재 시간으로 처리
+            log.info("Unknown date format: " + dateTime);
+            postedTime = LocalDateTime.now();
+          }
+        } catch (Exception e) {
+          log.info("Error parsing dateTime: " + dateTime + ", " + e.getMessage());
+          postedTime = LocalDateTime.now(); // 오류 발생 시 현재 시간으로 처리
+        }
+
 
         StringBuilder body = new StringBuilder();
         for (WebElement paragraph : paragraphBody) {
