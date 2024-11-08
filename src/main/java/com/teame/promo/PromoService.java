@@ -1,6 +1,7 @@
 package com.teame.promo;
 
 import lombok.extern.log4j.Log4j2;
+import net.bytebuddy.asm.Advice;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +12,6 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.Duration;
@@ -49,18 +49,28 @@ public class PromoService {
   public void runSeleniumTask() {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/output.txt", true))) {
       initializeDriver();
-      navigateToClubPage();
 
-      List<WebElement> articleLinks = driver.findElements(By.cssSelector("a.article"));
-      for (WebElement articleLink : articleLinks) {
-        String linkHref = articleLink.getAttribute("href");
-        if (linkHref != null && linkHref.startsWith(url)) {
-          if(!parseArticle(linkHref, writer)) {
-            break;
+      int maxPage = 10;
+      int cnt=0;
+      outerLoop:
+      for(int page=1; page<=maxPage; page++){
+        navigateToClubPage(url+"/p/"+page);
+
+        List<WebElement> articleLinks = driver.findElements(By.cssSelector("a.article"));
+        for (WebElement articleLink : articleLinks) {
+          String linkHref = articleLink.getAttribute("href");
+          if (linkHref != null && linkHref.startsWith(url)) {
+            if(!parseArticle(linkHref, writer)){
+              log.info("Reached the most recent data in the database.");
+              break outerLoop;
+            }
+            cnt++;
           }
         }
       }
-      log.info("Successfully parsed data at " +
+
+
+      log.info("Successfully " +cnt +" parsed data at " +
               LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     } catch (IOException e) {
       log.info("Error initializing writer: " + e.getMessage());
@@ -86,15 +96,15 @@ public class PromoService {
     }
   }
 
-  private void navigateToClubPage() {
-    driver.get(url);
+  private void navigateToClubPage(String pageUrl) {
+    driver.get(pageUrl);
     try {
       Thread.sleep(2000);
-      if (!driver.getCurrentUrl().equals(url)) {
+      if (!driver.getCurrentUrl().equals(pageUrl)) {
         Wait<WebDriver> wait = new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofSeconds(1));
-        wait.until(ExpectedConditions.urlToBe(url));
+        wait.until(ExpectedConditions.urlToBe(pageUrl));
         saveCookies(driver, new File("src/main/resources/cookies.data"));
       }
     } catch (Exception e) {
@@ -154,11 +164,12 @@ public class PromoService {
           String filteredText = paragraph.getText().replaceAll("[^\\p{L}\\p{N}\\p{P}\\s]", "");
           body.append(filteredText).append("\n");
         }
-//        writeArticleDataToTextFile(writer, title, postedTime, body.toString());
-        if(!checkInDB(title, postedTime)) {
-          writeArticleDataToDB(writer, title, postedTime, body.toString());
-        }else{
+        if (checkInDB(title, postedTime)) {
           return false;
+        }
+//        writeArticleDataToTextFile(writer, title, postedTime, body.toString());
+        if(!checkDuplicate(title, body.toString())) {
+          writeArticleDataToDB(writer, title, postedTime, body.toString());
         }
       }
 
@@ -169,38 +180,40 @@ public class PromoService {
     return true;
   }
 
-  private void writeArticleDataToTextFile(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
-    try {
-      writer.write("Title: " + title + "\n");
-      writer.write("Posted Time: " + postedTime + "\n");
-      writer.write("Body:\n" + body + "\n");
-      writer.write("--------------------------------------------------\n");
-    } catch (IOException e) {
-      log.info("Error writing article data: " + e.getMessage());
-    }
-  }
-  private void writeArticleDataToDB(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
-    Promo newPromo = new Promo();
-    newPromo.setPromoTitle(title);
-    newPromo.setPostedAt(postedTime);
-    newPromo.setPromoBody(body);
-
-    promoRepository.save(newPromo);
-  }
-
+  //기존 text file로 저장하던 메서드.
+//  private void writeArticleDataToTextFile(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
+//    try {
+//      writer.write("Title: " + title + "\n");
+//      writer.write("Posted Time: " + postedTime + "\n");
+//      writer.write("Body:\n" + body + "\n");
+//      writer.write("--------------------------------------------------\n");
+//    } catch (IOException e) {
+//      log.info("Error writing article data: " + e.getMessage());
+//    }
+//  }
 
 
   // DB 중복 데이터 여부 확인
+  private boolean checkDuplicate(String title, String body){
+    return promoRepository.existsByTitleANDBody(title, body);
+  }
+
 
   private boolean checkInDB(String title, LocalDateTime postedTime){
     int year = postedTime.getYear();
     int month = postedTime.getMonthValue();
     int day = postedTime.getDayOfMonth();
-
-    return promoRepository.existsByDateAndTitle(year, month, day, title);
+    return promoRepository.existsByTitleAndDate(title, year, month, day);
   }
 
+  private void writeArticleDataToDB(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
+    Promo newPromo = new Promo();
+    newPromo.setTitle(title);
+    newPromo.setPostedAt(postedTime);
+    newPromo.setBody(body);
 
+    promoRepository.save(newPromo);
+  }
 
   // 쿠키 저장 메서드
   private static void saveCookies(WebDriver driver, File file) throws IOException {
@@ -231,5 +244,17 @@ public class PromoService {
       driver.manage().addCookie(cookie);
     }
     bufferedReader.close();
+  }
+
+
+
+  public PromoDTO setPromoDTO(Promo promo) {
+    PromoDTO dto = new PromoDTO();
+    dto.setId(promo.getId());
+    dto.setTitle(promo.getTitle());
+    dto.setBody(promo.getBody());
+    dto.setCreatedAt(promo.getCreatedAt());
+    dto.setCreatedAt(promo.getCreatedAt());
+    return dto;
   }
 }
