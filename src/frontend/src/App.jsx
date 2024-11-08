@@ -19,6 +19,7 @@ import EditUserInfo from "./pages/member/editUserInfo.jsx";
 import ManageCategory from "./pages/admin/manageCategory.jsx";
 import ManageUniversity from "./pages/admin/manageUniversity.jsx";
 import SeleniumTester from "./pages/admin/seleniumTester.jsx";
+import Application from "./pages/member/application.jsx";
 
 function App() {
 
@@ -60,6 +61,7 @@ function App() {
           <Route path='/register' element={<Register/>} />
           <Route path='/uploadClub' element={<UploadClub/>} />
           <Route path='/test' element={<SeleniumTester/>}/>
+          <Route path='/application/:id' element={<Application/>} />
           <Route path='/ifRebase'/>
         </Routes>
       </div>

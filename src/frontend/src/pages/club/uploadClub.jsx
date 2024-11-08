@@ -126,7 +126,9 @@ const UploadClub = () => {
     <div className='editor-body'>
 
       <form className='editor-form' onSubmit={handleSubmit}>
-        <h2>동아리 등록</h2>
+        <div style={{background:"rgb(244,213,108)", paddingRight: "25px",paddingLeft: "25px", borderRadius: "10px"}}>
+          <h2>동아리 등록하기</h2>
+        </div>
         <div className='editor-container'>
           <div className='edit-inputs'>
             <div className='head'>

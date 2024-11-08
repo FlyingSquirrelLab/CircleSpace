@@ -136,6 +136,11 @@ const Detail=()=>{
                 )}
               </div>
             </div>
+            <div>
+              <button onClick={()=>{
+                nav(`/application/${id}`);
+              }}>지원하기</button>
+            </div>
             <div className='wishlist'>
               <p>관심동아리 등록</p>
               <img
