@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -113,7 +114,7 @@ public class MemberService {
   }
 
   public ResponseEntity<?> application(Map<String, Object> request, String username) {
-    Long clubId = (Long) request.get("clubId");
+    Long clubId = Long.parseLong((String) request.get("clubId"));
     String intro = (String) request.get("intro");
 
     Membership membership = new Membership();
@@ -125,6 +126,25 @@ public class MemberService {
 
     membershipRepository.save(membership);
     return ResponseEntity.status(HttpStatus.OK).body("동아리 지원 완료");
+  }
+
+  public ResponseEntity<?> getMemberships(String username) {
+    try {
+      Member member = memberRepository.findByUsername(username);
+      List<Membership> memberships = membershipRepository.findByMemberAndApproved(member, Boolean.TRUE);
+      return ResponseEntity.status(HttpStatus.OK).body(memberships);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("가입된 동아리 찾는 중 오류 발생");
+    }
+  }
+
+  public ResponseEntity<?> getMyClubs(String username) {
+    try {
+      Member member = memberRepository.findByUsername(username);
+      return ResponseEntity.status(HttpStatus.OK).body(clubRepository.findByManagerId(member.getId()));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Club Not Found");
+    }
   }
 
 }

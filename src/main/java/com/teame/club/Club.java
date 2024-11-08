@@ -34,6 +34,8 @@ public class Club {
 
   private Long managerId;
 
+  private Long views;
+
   private String description;
 
   private String imageUrl;

@@ -20,7 +20,6 @@ const EditClub = () => {
   const [universities, setUniversities] = useState([]);
   const [availableUniversities, setAvailableUniversities] = useState([]);
 
-
   useEffect(() => {
     axios.get(`/api/club/getById/${id}`)
       .then((response) => {
@@ -59,7 +58,6 @@ const EditClub = () => {
       });
   }, []);
 
-
   const handleCategoryChange = (e) => {
     const value = e.target.value;
     setCategories(prev =>
@@ -73,7 +71,6 @@ const EditClub = () => {
       prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
     );
   };
-
 
   const handleDelete = () => {
     if (window.confirm("동아리를 삭제하시겠습니까?")) {

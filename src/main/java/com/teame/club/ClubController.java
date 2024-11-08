@@ -8,6 +8,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import retrofit2.http.Path;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,12 +43,13 @@ public class ClubController {
         .collect(Collectors.toList());
   }
 
-  @GetMapping("/api/club/getByCategory/{category}/{page}/{size}")
+  @GetMapping("/api/club/getByCategory/{category}/{order}/{page}/{size}")
   public ResponseEntity<?> getItemsByCategoryAPI(@PathVariable String category,
+                                                 @PathVariable String order,
                                                  @PathVariable int page,
                                                  @PathVariable int size,
                                                  PagedResourcesAssembler<Club> assembler) {
-    return categoryService.getClubsByCategory(category, page, size, assembler);
+    return categoryService.getClubsByCategory(category, order, page, size, assembler);
   }
 
   @GetMapping("/api/club/getById/{id}")
@@ -73,6 +75,26 @@ public class ClubController {
   @GetMapping("/api/club/getFeatured")
   public ResponseEntity<?> getFeaturedClubsAPI() {
     return clubService.getFeaturedClubs();
+  }
+
+  @GetMapping("/api/club/getApplications/{id}")
+  public ResponseEntity<?> getApplicationsAPI(@PathVariable Long id) {
+    return clubService.getApplications(id);
+  }
+
+  @GetMapping("/api/club/getClubMembers/{id}")
+  public ResponseEntity<?> getClubMembersAPI(@PathVariable Long id) {
+    return clubService.getClubMembers(id);
+  }
+
+  @PutMapping("/api/club/approve")
+  public ResponseEntity<?> approveMemberAPI(@RequestBody Map<String, Object> request) {
+    return clubService.approveMember(request);
+  }
+
+  @DeleteMapping("/api/club/deny")
+  public ResponseEntity<?> denyMemberAPI(@RequestBody Map<String, Object> request) {
+    return clubService.denyMember(request);
   }
 
 }

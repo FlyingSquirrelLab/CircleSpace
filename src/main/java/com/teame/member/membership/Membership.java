@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -33,6 +34,7 @@ public class Membership {
 
   private boolean approved = FALSE;
 
+  @CreationTimestamp
   private LocalDateTime requestDate;
 
   private LocalDateTime approvalDate;

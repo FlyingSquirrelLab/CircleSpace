@@ -12,11 +12,12 @@ const ClubList=()=>{
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [categoryClubs, setCategoryClubs] = useState([]);
+  const [order, setOrder] = useState('createdAt');
 
   useEffect(() => {
     const fetchCategoryClubs = async () => {
       try {
-        const response = await axios.get(`/api/club/getByCategory/${category}/${page}/${size}`);
+        const response = await axios.get(`/api/club/getByCategory/${category}/${order}/${page}/${size}`);
         console.log(response.status);
         setCategoryClubs(response.data._embedded.clubList);
         setTotalPages(response.data.page.totalPages);
@@ -26,10 +27,22 @@ const ClubList=()=>{
     };
     fetchCategoryClubs();
     window.scrollTo(0, 0);
-  }, [category, page]);
+  }, [category, order, page]);
+
+  const handleOrder = (order) => {
+    setOrder(order);
+  }
 
   return(
     <div className="club-body">
+      <button onClick={() => {
+        handleOrder('createdAt')
+      }}>최신순
+      </button>
+      <button onClick={() => {
+        handleOrder('views')
+      }}>조회 많은 순
+      </button>
       <div className='clublist-row'>
         {Array.isArray(categoryClubs) && categoryClubs.length > 0 ? (
           categoryClubs.map((categoryClub) => (
@@ -40,7 +53,7 @@ const ClubList=()=>{
         )}
       </div>
 
-    <PageController page={page} setPage={setPage} totalPages={totalPages}/>
+      <PageController page={page} setPage={setPage} totalPages={totalPages}/>
     </div>
   )
 }

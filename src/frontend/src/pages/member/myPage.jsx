@@ -4,11 +4,13 @@ import {useAuth} from "../../authContext.jsx";
 import LogoutButton from "../../components/logoutButton.jsx";
 import Login from "./login.jsx";
 import './myPage.css';
+import axiosInstance from "../../axiosInstance.jsx";
 
 const MyPage = ()=>{
   const nav = useNavigate();
   const {displayName, role} = useAuth();
   const [displayRole, setDisplayRole] = useState("");
+  const [myClubs, setMyClubs] = useState([]);
 
   useEffect(() => {
     if (role === "ROLE_ADMIN") {
@@ -18,24 +20,44 @@ const MyPage = ()=>{
     }
   }, [role]);
 
-  // 특정 회원이 관리자로 있는 동아리를 보여줌
-  // 그 동아리들에 대해서 수정, 삭제 할 수 있음
+  useEffect(() => {
+    const fetchMyClubs = async () => {
+      try {
+        const response = await axiosInstance.get('/member/getMyClubs');
+        console.log(response.status);
+        setMyClubs(response.data);
+      } catch (error) {
+        console.error("Error fetching clubs", error);
+      }
+    }
+    fetchMyClubs();
+  }, [displayName]);
 
   return(
     <div className='mypage-body'>
       <div className='mypage-user'>
         <div>
-          {displayName ? <h3>{displayRole} {displayName} 님</h3> : <p></p>}
-          {displayName ?
-            <div className='mypage-list'>
-              <br/>
-              <div onClick={() => nav('/editUserInfo')}>회원정보수정</div>
-              <br/>
-              <div onClick={() => nav('/editPassword')}>비밀번호수정</div>
-              <br/>
-              <div onClick={() => nav('/uploadClub')}>동아리등록하기</div>
-            </div>
-            : <p></p>}
+          <h3>{displayRole} {displayName} 님</h3>
+          <div>
+            <p>나의 동아리 수정</p>
+            {Array.isArray(myClubs) && myClubs.length > 0 ? (
+              myClubs.map((myClub) => (
+                <div key={myClub.id} onClick={() => {nav(`/editClub/${myClub.id}`)}}>
+                  <img src={myClub.imageUrl} width='200px' alt='이미지'/>
+                  <p>{myClub.title}</p>
+                </div>
+              ))) :
+              <p>나의 동아리가 없습니다.</p>
+            }
+          </div>
+          <div className='mypage-list'>
+            <br/>
+            <div onClick={() => nav('/editUserInfo')}>회원정보수정</div>
+            <br/>
+            <div onClick={() => nav('/editPassword')}>비밀번호수정</div>
+            <br/>
+            <div onClick={() => nav('/uploadClub')}>동아리등록하기</div>
+          </div>
           <div className='mypage-logout'>
             {displayName ? <LogoutButton/> : <p></p>}
           </div>

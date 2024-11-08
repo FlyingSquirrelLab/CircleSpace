@@ -12,4 +12,6 @@ public interface ClubRepository extends JpaRepository<Club, Long>, JpaSpecificat
 
   List<Club> findByFeatured(Boolean featured);
 
+  List<Club> findByManagerId(Long id);
+
 }
