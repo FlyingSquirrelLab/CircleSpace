@@ -96,15 +96,6 @@ const Detail=()=>{
               <button className='edit-button'
                       onClick={() => nav(`/editClub/${club.id}`)}
               >동아리 수정하기</button>
-              <div className='feature-bn'>
-                <img
-                  src={featured ? filledStar : blankStar}
-                  width='20px'
-                  height='20px'
-                  onClick={handleFeatureClick}
-                  alt="Feature Button"
-                />
-              </div>
             </div> : <p></p>
         }
         <div className="detail-container">
@@ -116,7 +107,7 @@ const Detail=()=>{
             </div>
             <div>
               <div>
-                <p>소속 카데고리</p>
+                <p>소속 카테고리</p>
               {Array.isArray(categories) && categories.length > 0 ? (
                 categories.map((category) => (
                   <p key={category.id}>{category.name}</p>

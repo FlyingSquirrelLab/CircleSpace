@@ -10,12 +10,17 @@ const Home =()=>{
   const [clubs, setClubs] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/club/getFeatured').then((data)=>{
-      setClubs(data.data)
-    }).catch(()=>{
-        console.log('fail')
-      })
-  }, [clubs]);
+    const fetchHomeClubs = async () => {
+      try {
+        const response = await axios.get('/api/club/getByCategory/ALL/views/0/16');
+        console.log(response.status);
+        setClubs(response.data._embedded.clubList);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchHomeClubs();
+  }, []);
 
   return(
     <div className="home">

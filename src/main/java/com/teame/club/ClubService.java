@@ -4,6 +4,10 @@ import com.teame.club.category.Category;
 import com.teame.club.category.CategoryRepository;
 import com.teame.club.university.University;
 import com.teame.club.university.UniversityRepository;
+import com.teame.member.Member;
+import com.teame.member.MemberRepository;
+import com.teame.member.membership.Membership;
+import com.teame.member.membership.MembershipRepository;
 import com.teame.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -11,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -28,12 +33,15 @@ public class ClubService {
   private final S3Service s3Service;
   private final CategoryRepository categoryRepository;
   private final UniversityRepository universityRepository;
+  private final MembershipRepository membershipRepository;
+  private final MemberRepository memberRepository;
 
   public ResponseEntity<?> getById(Long id) {
     try {
       Club club = clubRepository.findById(id).
           orElseThrow(() -> new IllegalArgumentException("동아리를 찾을 수 없습니다." + id));
-
+      club.setViews(club.getViews() + 1);
+      clubRepository.save(club);
       return ResponseEntity.status(HttpStatus.OK).body(setClubDTO(club));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("동아리 불러오기 실패" + e.getMessage());
@@ -53,6 +61,7 @@ public class ClubService {
       club.setTitle(title);
       club.setImageUrl(imageUrl);
       club.setDescription(description);
+      club.setViews(0L);
 
       List<String> detailImagePaths = (List<String>) request.get("detailImagePaths");
       List<DetailImage> detailImages = detailImagePaths.stream()
@@ -164,6 +173,65 @@ public class ClubService {
           .map(this::setClubDTO)
           .collect(Collectors.toList());
       return ResponseEntity.status(HttpStatus.OK).body(featuredDTOList);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+  }
+
+  public ResponseEntity<?> getApplications(Long clubId) {
+    Optional<Club> club = clubRepository.findById(clubId);
+    if (club.isPresent()) {
+      List<Membership> unapprovedMemberships = membershipRepository.findByClubAndApproved(club.get(), Boolean.FALSE);
+      return ResponseEntity.status(HttpStatus.OK).body(unapprovedMemberships);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 동아리는 존재하지 않습니다.");
+    }
+  }
+
+  public ResponseEntity<?> getClubMembers(Long clubId) {
+    Optional<Club> club = clubRepository.findById(clubId);
+    if (club.isPresent()) {
+      List<Membership> approvedMemberships = membershipRepository.findByClubAndApproved(club.get(), Boolean.TRUE);
+      return ResponseEntity.status(HttpStatus.OK).body(approvedMemberships);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 동아리는 존재하지 않습니다.");
+    }
+  }
+
+  public ResponseEntity<?> approveMember(@RequestBody Map<String, Object> request) {
+    try {
+      Long clubId = Long.parseLong((String) request.get("clubId"));
+      Long memberId = Long.parseLong((String) request.get("memberId"));
+
+      Club club = clubRepository.findById(clubId).
+          orElseThrow(() -> new IllegalArgumentException("동아리를 찾을 수 없습니다." + clubId));
+
+      Member member = memberRepository.findById(memberId).
+          orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다." + memberId));
+
+      Membership membership = membershipRepository.findByClubAndMember(club, member);
+      membership.setApproved(Boolean.TRUE);
+      membershipRepository.save(membership);
+      return ResponseEntity.status(HttpStatus.OK).body("지원 승인 완료");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+  }
+
+  public ResponseEntity<?> denyMember(@RequestBody Map<String, Object> request) {
+    try {
+      Long clubId = Long.parseLong((String) request.get("clubId"));
+      Long memberId = Long.parseLong((String) request.get("memberId"));
+
+      Club club = clubRepository.findById(clubId).
+          orElseThrow(() -> new IllegalArgumentException("동아리를 찾을 수 없습니다." + clubId));
+
+      Member member = memberRepository.findById(memberId).
+          orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다." + memberId));
+
+      Membership membership = membershipRepository.findByClubAndMember(club, member);
+      membershipRepository.delete(membership);
+      return ResponseEntity.status(HttpStatus.OK).body("지원 거절 완료");
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }

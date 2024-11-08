@@ -26,11 +26,12 @@ public class CategoryService {
   private final ClubRepository clubRepository;
 
   public ResponseEntity<?> getClubsByCategory(String category,
+                                              String order,
                                               int page,
                                               int size,
                                               PagedResourcesAssembler<Club> assembler) {
     try {
-      Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+      Pageable pageable = PageRequest.of(page, size, Sort.by(order).descending());
 
       Category cat = categoryRepository.findByName(category)
           .orElseThrow(() -> new IllegalArgumentException("카테고리를 찾을 수 없습니다: " + category));
