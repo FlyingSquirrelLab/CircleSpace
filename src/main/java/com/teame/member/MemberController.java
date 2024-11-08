@@ -53,4 +53,11 @@ public class MemberController {
     return memberService.editPassword(request, username);
   }
 
+  @PostMapping("/api/member/application")
+  public ResponseEntity<?> applicationAPI(@RequestBody Map<String, Object> request,
+                                          Authentication auth) {
+    String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
+    return memberService.application(request, username);
+  }
+
 }

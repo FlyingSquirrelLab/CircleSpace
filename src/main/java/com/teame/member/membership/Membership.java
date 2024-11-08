@@ -9,6 +9,8 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+import static java.lang.Boolean.FALSE;
+
 @Entity
 @ToString
 @Getter
@@ -27,7 +29,9 @@ public class Membership {
   @JoinColumn(name = "club_id")
   private Club club;
 
-  private boolean approved;
+  private String intro;
+
+  private boolean approved = FALSE;
 
   private LocalDateTime requestDate;
 

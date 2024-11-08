@@ -1,6 +1,9 @@
 package com.teame.member;
 
+import com.teame.club.ClubRepository;
 import com.teame.member.customUser.CustomUserDetails;
+import com.teame.member.membership.Membership;
+import com.teame.member.membership.MembershipRepository;
 import com.teame.member.register.TokenBlacklistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,8 @@ public class MemberService {
   private final MemberRepository memberRepository;
   private final TokenBlacklistService tokenBlacklistService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final ClubRepository clubRepository;
+  private final MembershipRepository membershipRepository;
 
   public ResponseEntity<?> fetchUserInfo(String username) {
     try {
@@ -105,6 +110,21 @@ public class MemberService {
       return ResponseEntity.status(HttpStatus.OK).body("로그아웃 완료.");
     }
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("토큰 정보가 없습니다.");
+  }
+
+  public ResponseEntity<?> application(Map<String, Object> request, String username) {
+    Long clubId = (Long) request.get("clubId");
+    String intro = (String) request.get("intro");
+
+    Membership membership = new Membership();
+
+    membership.setMember(memberRepository.findByUsername(username));
+    membership.setClub(clubRepository.findById(clubId).
+        orElseThrow(() -> new IllegalArgumentException("동아리를 찾을 수 없습니다." + clubId)));
+    membership.setIntro(intro);
+
+    membershipRepository.save(membership);
+    return ResponseEntity.status(HttpStatus.OK).body("동아리 지원 완료");
   }
 
 }
