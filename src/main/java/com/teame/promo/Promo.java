@@ -21,10 +21,10 @@ public class Promo {
     private Long id;
 
     @Column(name="promo_title")
-    private String title;
+    private String promoTitle;
 
     @Column(name="promo_body", columnDefinition = "TEXT")
-    private String body;
+    private String promoBody;
 
     @CreationTimestamp
     @Column(updatable = false)
