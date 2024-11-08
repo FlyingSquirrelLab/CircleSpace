@@ -60,6 +60,7 @@ function App() {
           <Route path='/register' element={<Register/>} />
           <Route path='/uploadClub' element={<UploadClub/>} />
           <Route path='/test' element={<SeleniumTester/>}/>
+          <Route path='/ifRebase'/>
         </Routes>
       </div>
     </AuthProvider>
