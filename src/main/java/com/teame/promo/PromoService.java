@@ -55,7 +55,9 @@ public class PromoService {
       for (WebElement articleLink : articleLinks) {
         String linkHref = articleLink.getAttribute("href");
         if (linkHref != null && linkHref.startsWith(url)) {
-          parseArticle(linkHref, writer);
+          if(!parseArticle(linkHref, writer)) {
+            break;
+          }
         }
       }
       log.info("Successfully parsed data at " +
@@ -100,7 +102,7 @@ public class PromoService {
     }
   }
 
-  private void parseArticle(String articleUrl, BufferedWriter writer) {
+  private boolean parseArticle(String articleUrl, BufferedWriter writer) {
     try {
       driver.get(articleUrl);
 
@@ -153,14 +155,18 @@ public class PromoService {
           body.append(filteredText).append("\n");
         }
 //        writeArticleDataToTextFile(writer, title, postedTime, body.toString());
-        writeArticleDataToDB(writer, title, postedTime, body.toString());
-
+        if(!checkInDB(title, postedTime)) {
+          writeArticleDataToDB(writer, title, postedTime, body.toString());
+        }else{
+          return false;
+        }
       }
 
       driver.navigate().back();
     } catch (Exception e) {
       log.info("Error while processing article: " + e.getMessage());
     }
+    return true;
   }
 
   private void writeArticleDataToTextFile(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
@@ -175,12 +181,25 @@ public class PromoService {
   }
   private void writeArticleDataToDB(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
     Promo newPromo = new Promo();
-    newPromo.setTitle(title);
+    newPromo.setPromoTitle(title);
     newPromo.setPostedAt(postedTime);
-    newPromo.setBody(body);
+    newPromo.setPromoBody(body);
 
     promoRepository.save(newPromo);
   }
+
+
+
+  // DB 중복 데이터 여부 확인
+
+  private boolean checkInDB(String title, LocalDateTime postedTime){
+    int year = postedTime.getYear();
+    int month = postedTime.getMonthValue();
+    int day = postedTime.getDayOfMonth();
+
+    return promoRepository.existsByDateAndTitle(year, month, day, title);
+  }
+
 
 
   // 쿠키 저장 메서드
