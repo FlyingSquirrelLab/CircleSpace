@@ -20,6 +20,7 @@ import ManageCategory from "./pages/admin/manageCategory.jsx";
 import ManageUniversity from "./pages/admin/manageUniversity.jsx";
 import SeleniumTester from "./pages/admin/seleniumTester.jsx";
 import Application from "./pages/member/application.jsx";
+import ClubStatus from "./pages/club/clubStatus.jsx";
 
 function App() {
 
@@ -62,6 +63,8 @@ function App() {
           <Route path='/uploadClub' element={<UploadClub/>} />
           <Route path='/test' element={<SeleniumTester/>}/>
           <Route path='/application/:id' element={<Application/>} />
+          <Route path='/clubstatus' element={<ClubStatus/>} />
+
           <Route path='/ifRebase'/>
         </Routes>
       </div>
