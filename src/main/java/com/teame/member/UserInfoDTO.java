@@ -11,6 +11,6 @@ public class UserInfoDTO {
   String displayName;
   String realName;
   String phoneNumber;
-  String schoolCode;
+  Long universityId;
 
 }

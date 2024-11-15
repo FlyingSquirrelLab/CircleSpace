@@ -34,9 +34,16 @@ const Header = () => {
       </div>
       <div className='header'>
         <div>
-          <img src={mainLogo} width='200' height='50' onClick={() => {nav('/')}}/>
+          <img src={mainLogo} width='200' height='50' onClick={() => {
+            nav('/')
+          }}/>
         </div>
         <div className='left-nav'>
+          <div
+            className='club-category'
+            onClick={() => nav('/clubList/ALL')}
+          >ALL
+          </div>
           <div
             className='club-category'
             onClick={() => nav('/clubList/ACADEMIC')}
@@ -107,7 +114,6 @@ const Header = () => {
             >동아리 등록</div>
             : <p></p>}
         </div>
-
         <div className='right-nav'>
           {/*{location.pathname !== '/search' && (*/}
           {/*  <img className='search-icon' src={searchIcon_bk} width='21px' onClick={() => nav('/search')} />*/}
@@ -124,7 +130,7 @@ const Header = () => {
         </div>
       </div>
     </div>
-      );
+  );
 }
 
 export default Header;

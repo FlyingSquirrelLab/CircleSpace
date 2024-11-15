@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface UniversityRepository extends JpaRepository<University, Long> {
   Optional<University> findByTitle(String title);
+
+  Optional<University> findByCode(String code);
 }

@@ -1,7 +1,11 @@
 package com.teame.member;
 
 import com.teame.club.Club;
+import com.teame.club.DetailImage;
+import com.teame.club.category.Category;
+import com.teame.club.category.CategoryId;
 import com.teame.club.like.Like;
+import com.teame.club.university.University;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +39,11 @@ public class Member {
 
   private String phoneNumber;
   private String role;
-  private String schoolCode;
+  private Long universityId;
+
+  @ElementCollection
+  @CollectionTable(name = "member_category", joinColumns = @JoinColumn(name = "member_id"))
+  private List<CategoryId> categoryIds = new ArrayList<>();
 
   @CreationTimestamp
   @Column(updatable = false)
@@ -46,5 +54,9 @@ public class Member {
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Like> likes = new ArrayList<>();
+
+  public void addCategoryId(CategoryId categoryId) {
+    this.categoryIds.add(categoryId);
+  }
 
 }

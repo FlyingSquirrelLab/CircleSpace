@@ -2,6 +2,7 @@ package com.teame.club.category;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teame.club.Club;
+import com.teame.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
