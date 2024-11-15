@@ -65,7 +65,7 @@ function App() {
           <Route path='/uploadClub' element={<UploadClub/>} />
           <Route path='/test' element={<SeleniumTester/>}/>
           <Route path='/application/:id' element={<Application/>} />
-          <Route path='/clubstatus' element={<ClubStatus/>} />
+          <Route path='/clubstatus/:id' element={<ClubStatus/>} />
           <Route path='/daily-up/page' element={<DailyUpPage formatDate={formatDate}/>} />
           <Route path='/daily-up/detail/:id' element={<DailyUpDetail formatDate={formatDate}/>} />
 

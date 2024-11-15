@@ -4,8 +4,6 @@ import {useAuth} from "../../authContext.jsx";
 import axios from 'axios'
 import blankLike from '../../assets/blank_like.png'
 import filledLike from '../../assets/filled_like.png'
-import blankStar from '../../assets/blankStar.png'
-import filledStar from '../../assets/filledStar.png'
 import axiosInstance from "../../axiosInstance.jsx";
 import Review from "../../components/review.jsx";
 import './detail.css';
@@ -47,12 +45,6 @@ const Detail=()=>{
       });
     }
   }, [username, id]);
-
-  useEffect(() => {
-    axios.get(`/api/club/checkFeatured/${id}`).then((response) => {
-      setFeatured(response.data.featured)
-    });
-  }, [id]);
 
   const handleLikeClick = async () => {
     if (username === '') {
