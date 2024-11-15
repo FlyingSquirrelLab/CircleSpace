@@ -21,15 +21,27 @@ const ClubList=()=>{
     const fetchCategoryClubs = async () => {
       try {
         if (affiliation === false) {
-        const response = await axios.get(`/api/club/getByCategory/${category}/${order}/${page}/${size}`);
-        console.log(response.status);
-        setCategoryClubs(response.data._embedded.clubList);
-        setTotalPages(response.data.page.totalPages);
+          const response = await axios.get(`/api/club/getByCategory/${category}/${order}/${page}/${size}`);
+          console.log(response.status);
+          if (!response.data._embedded) {
+            console.log('데이터가 없습니다.');
+            setCategoryClubs([]);
+            setTotalPages(1);
+          } else {
+          setCategoryClubs(response.data._embedded.clubList);
+          setTotalPages(response.data.page.totalPages);
+          }
         } else {
           const response = await axios.get(`/api/club/getByCategoryAndUsername/${category}/${username}/${order}/${page}/${size}`);
           console.log(response.status);
-          setCategoryClubs(response.data._embedded.clubList);
-          setTotalPages(response.data.page.totalPages);
+          if (!response.data._embedded) {
+            console.log('데이터가 없습니다.');
+            setCategoryClubs([]);
+            setTotalPages(1);
+          } else {
+            setCategoryClubs(response.data._embedded.clubList);
+            setTotalPages(response.data.page.totalPages);
+          }
         }
       } catch (error) {
         console.error("Error fetching clubs", error);

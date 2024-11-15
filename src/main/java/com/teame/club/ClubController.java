@@ -1,6 +1,7 @@
 package com.teame.club;
 
 import com.teame.club.category.CategoryService;
+import com.teame.member.Member;
 import com.teame.member.customUser.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,16 +53,25 @@ public class ClubController {
     return categoryService.getClubsByCategory(category, order, page, size, assembler);
   }
 
-  @GetMapping("/api/club/getByCategoryAndUsername/{category}/{username}/{order}/{page}/{size}")
-  public ResponseEntity<?> getClubsByCategoryAndUsernameAPI(@PathVariable String category,
-                                                              @PathVariable String username,
-                                                              @PathVariable String order,
-                                                              @PathVariable int page,
-                                                              @PathVariable int size,
-                                                              PagedResourcesAssembler<Club> assembler) {
-    return categoryService.getClubsByCategoryAndUsername(category, username, order, page, size, assembler);
+  @GetMapping("/api/club/getByCategories/{order}/{page}/{size}")
+  public ResponseEntity<?> getClubsByCategoriesAPI(@PathVariable String order,
+                                                   @PathVariable int page,
+                                                   @PathVariable int size,
+                                                   PagedResourcesAssembler<Club> assembler,
+                                                   Authentication auth) {
+    String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
+    return categoryService.getClubsByCategories(order, page, size, assembler, username);
   }
 
+  @GetMapping("/api/club/getByCategoriesAndUniversity/{order}/{page}/{size}")
+  public ResponseEntity<?> getClubsByCategoriesAndUniversityAPI(@PathVariable String order,
+                                                                @PathVariable int page,
+                                                                @PathVariable int size,
+                                                                PagedResourcesAssembler<Club> assembler,
+                                                                Authentication auth) {
+    String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
+    return categoryService.getClubsByCategoriesAndUniversity(order, page, size, assembler, username);
+  }
 
   @GetMapping("/api/club/getById/{id}")
   public ResponseEntity<?> getByIdAPI(@PathVariable Long id) {
