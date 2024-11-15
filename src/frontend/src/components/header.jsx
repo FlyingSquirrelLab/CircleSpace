@@ -91,8 +91,8 @@ const Header = () => {
           </div>
           <div
             className='club-category'
-            onClick={() => nav('/qna/page')}
-          >Q&A
+            onClick={() => nav('/community/page')}
+          >COMMUNITY
           </div>
           <div
             className='club-category'

@@ -38,8 +38,8 @@ public class PromoController {
 
     @GetMapping("/api/daily-up/fetchAll/{page}/{size}")
     public ResponseEntity<?> fetchAllPromos(@PathVariable int page,
-                                         @PathVariable int size,
-                                         PagedResourcesAssembler<Promo> assembler) {
+                                            @PathVariable int size,
+                                            PagedResourcesAssembler<Promo> assembler) {
         try {
             Pageable pageable = PageRequest.of(page, size, Sort.by("postedAt").descending());
             Page<Promo> promoPage = promoRepository.findAll(pageable);
