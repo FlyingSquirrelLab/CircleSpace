@@ -19,7 +19,6 @@ const Detail=()=>{
 
   const [title, setTitle] = useState('');
   const [liked, setLiked] = useState(false);
-  const [featured, setFeatured] = useState(false);
   const [detailImageList, setDetailImageList] = useState([]);
 
   const [categories, setCategories] = useState([]);
@@ -73,19 +72,13 @@ const Detail=()=>{
     }
   };
 
-  const handleFeatureClick = async () => {
-    try {
-      if (featured) {
-        await axios.put(`/api/admin/unfeatureClubById/${id}`);
-        setFeatured(false);
-      } else {
-        await axios.put(`/api/admin/featureClubById/${id}`);
-        setFeatured(true);
-      }
-    } catch (error) {
-      console.error("Error toggling feature", error);
+  const formatUnited = (united) => {
+    if (united === false) {
+      return 'X';
+    } else {
+      return 'O';
     }
-  };
+  }
 
   return(
     club && (
@@ -104,23 +97,28 @@ const Detail=()=>{
             <div className='detail-box'>
               <h4 className='club-title'>{club.title}</h4>
               <p className='club-description'>{club.description}</p>
-            </div>
-            <div>
+              <p className='club-description'>모집 일정 : {club.period}</p>
+              <p className='club-description'>회비 안내 : {club.fee}</p>
+              <p className='club-description'>모집 대상 : {club.target}</p>
+              <p className='club-description'>유의사항 : {club.note}</p>
+              <p className='club-description'>주요 활동 : {club.activity}</p>
+              <p className='club-description'>연락처 : {club.contact}</p>
+              <p className='club-description'>연합동아리 여부 : {formatUnited(club.united)}</p>
               <div>
-                <p>소속 카테고리</p>
-              {Array.isArray(categories) && categories.length > 0 ? (
-                categories.map((category) => (
-                  <p key={category.id}>{category.name}</p>
-                ))
-              ) : (
-                <p></p>
-              )}
+                <p className='club-description'>소속 카테고리 : </p>
+                {Array.isArray(categories) && categories.length > 0 ? (
+                  categories.map((category) => (
+                    <span className='club-description' key={category.id}>{category.name} </span>
+                  ))
+                ) : (
+                  <p></p>
+                )}
               </div>
               <div>
-                <p>소속 대학교</p>
+                <p className='club-description'>소속 대학교 : </p>
                 {Array.isArray(universities) && universities.length > 0 ? (
                   universities.map((university) => (
-                    <p key={university.id}>{university.title}</p>
+                    <span className='club-description' key={university.id}>{university.title} </span>
                   ))
                 ) : (
                   <p></p>
@@ -128,9 +126,12 @@ const Detail=()=>{
               </div>
             </div>
             <div>
-              <button onClick={()=>{
+            </div>
+            <div>
+              <button onClick={() => {
                 nav(`/application/${id}`);
-              }}>지원하기</button>
+              }}>지원하기
+              </button>
             </div>
             <div className='wishlist'>
               <p>관심동아리 등록</p>

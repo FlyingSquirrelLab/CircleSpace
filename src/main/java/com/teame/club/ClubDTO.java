@@ -26,6 +26,13 @@ public class ClubDTO {
   private Set<University> universities;
   private Set<Member> members;
 
+  private Boolean united;
+  private String period;
+  private String fee;
+  private String target;
+  private String note;
+  private String activity;
+  private String contact;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 

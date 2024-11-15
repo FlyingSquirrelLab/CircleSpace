@@ -34,7 +34,7 @@ public class MemberService {
       userInfoDTO.setDisplayName(member.getDisplayName());
       userInfoDTO.setRealName(member.getRealName());
       userInfoDTO.setPhoneNumber(member.getPhoneNumber());
-      userInfoDTO.setSchoolCode(member.getSchoolCode());
+      userInfoDTO.setUniversityId(member.getUniversityId());
       return ResponseEntity.status(HttpStatus.OK).body(userInfoDTO);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fetch User Info Failure" + e.getMessage());
@@ -46,13 +46,11 @@ public class MemberService {
     try {
       String displayName = (String) request.get("displayName");
       String realName = (String) request.get("realName");
-      String schoolCode = (String) request.get("schoolCode");
 
       Member member = memberRepository.findByUsername(username);
 
       member.setDisplayName(displayName);
       member.setRealName(realName);
-      member.setSchoolCode(schoolCode);
 
       memberRepository.save(member);
       return ResponseEntity.status(HttpStatus.OK).body("User Info Edit Success");

@@ -1,14 +1,17 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import List from "../../components/list.jsx";
 import './clubList.css';
 import PageController from "../../components/pageController.jsx";
+import {useAuth} from "../../authContext.jsx";
 
 const ClubList=()=>{
 
+  const {username} = useAuth();
   const {category} = useParams();
   const size = 8;
+  const [affiliation, setAffiliation] = useState(false);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [categoryClubs, setCategoryClubs] = useState([]);
@@ -17,17 +20,24 @@ const ClubList=()=>{
   useEffect(() => {
     const fetchCategoryClubs = async () => {
       try {
+        if (affiliation === false) {
         const response = await axios.get(`/api/club/getByCategory/${category}/${order}/${page}/${size}`);
         console.log(response.status);
         setCategoryClubs(response.data._embedded.clubList);
         setTotalPages(response.data.page.totalPages);
+        } else {
+          const response = await axios.get(`/api/club/getByCategoryAndUsername/${category}/${username}/${order}/${page}/${size}`);
+          console.log(response.status);
+          setCategoryClubs(response.data._embedded.clubList);
+          setTotalPages(response.data.page.totalPages);
+        }
       } catch (error) {
         console.error("Error fetching clubs", error);
       }
     };
     fetchCategoryClubs();
     window.scrollTo(0, 0);
-  }, [category, order, page]);
+  }, [affiliation, username, category, order, page]);
 
   const handleOrder = (order) => {
     setOrder(order);
@@ -35,6 +45,13 @@ const ClubList=()=>{
 
   return(
     <div className="club-body">
+      {username === '' ? <></> :
+        <div>
+          <input type="checkbox"
+                 checked={affiliation}
+                 onChange={(e) => setAffiliation(e.target.checked)}/><label>소속 대학교만 보기</label>
+        </div>
+      }
       <button onClick={() => {
         handleOrder('createdAt')
       }}>최신순

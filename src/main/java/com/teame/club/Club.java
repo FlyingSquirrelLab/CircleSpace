@@ -40,6 +40,14 @@ public class Club {
 
   private String imageUrl;
 
+  private Boolean united = false;
+  private String period;
+  private String fee;
+  private String target;
+  private String note;
+  private String activity;
+  private String contact;
+
   private Boolean featured = false;
 
   @ElementCollection
@@ -60,7 +68,6 @@ public class Club {
       inverseJoinColumns = @JoinColumn(name = "university_id")
   )
   private Set<University> universities = new HashSet<>();
-
 
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(

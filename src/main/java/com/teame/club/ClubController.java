@@ -44,13 +44,24 @@ public class ClubController {
   }
 
   @GetMapping("/api/club/getByCategory/{category}/{order}/{page}/{size}")
-  public ResponseEntity<?> getItemsByCategoryAPI(@PathVariable String category,
+  public ResponseEntity<?> getClubsByCategoryAPI(@PathVariable String category,
                                                  @PathVariable String order,
                                                  @PathVariable int page,
                                                  @PathVariable int size,
                                                  PagedResourcesAssembler<Club> assembler) {
     return categoryService.getClubsByCategory(category, order, page, size, assembler);
   }
+
+  @GetMapping("/api/club/getByCategoryAndUsername/{category}/{username}/{order}/{page}/{size}")
+  public ResponseEntity<?> getClubsByCategoryAndUsernameAPI(@PathVariable String category,
+                                                              @PathVariable String username,
+                                                              @PathVariable String order,
+                                                              @PathVariable int page,
+                                                              @PathVariable int size,
+                                                              PagedResourcesAssembler<Club> assembler) {
+    return categoryService.getClubsByCategoryAndUsername(category, username, order, page, size, assembler);
+  }
+
 
   @GetMapping("/api/club/getById/{id}")
   public ResponseEntity<?> getByIdAPI(@PathVariable Long id) {
