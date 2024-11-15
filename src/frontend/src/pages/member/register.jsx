@@ -39,6 +39,8 @@ const Register = () => {
     const getCategories = async () => {
       const response = await axios.get('/api/category/getAll');
       console.log(response.status);
+      const filteredCategories = response.data.filter(category => category.name !== 'ALL');
+      setAvailableCategories(filteredCategories);
       setAvailableCategories(response.data);
     }
     getCategories();
@@ -181,6 +183,11 @@ const Register = () => {
       return;
     }
 
+    if (universityId === 0) {
+      alert("소속 대학교를 선택하세요.");
+      return;
+    }
+
     try {
       const response = await axios.post('/api/register/registerProc', {
         username,
@@ -189,7 +196,7 @@ const Register = () => {
         realName,
         phoneNumber,
         categoryNames: categories,
-        universityId: universityId // 정수로 직접 전송
+        universityId: universityId
       });
       console.log(response.status);
       nav('/');
@@ -325,7 +332,7 @@ const Register = () => {
                 </label>
               ))}
             </div>
-          </div>;
+          </div>
 
         </div>
         <div className='register-buttons'>

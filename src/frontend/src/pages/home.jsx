@@ -5,6 +5,7 @@ import axios from "axios";
 import List from "../components/list.jsx";
 import './home.css';
 import {useAuth} from "../authContext.jsx";
+import axiosInstance from "../axiosInstance.jsx";
 
 const Home =()=>{
 
@@ -15,14 +16,35 @@ const Home =()=>{
   useEffect(() => {
     const fetchHomeClubs = async () => {
       try {
-        if (affiliation === false) {
+        if (username === '') {
           const response = await axios.get('/api/club/getByCategory/ALL/views/0/16');
           console.log(response.status);
-          setClubs(response.data._embedded.clubList);
+          if (!response.data._embedded) {
+            console.log('데이터가 없습니다.');
+            setClubs([]);
+          } else {
+            setClubs(response.data._embedded.clubList);
+          }
         } else {
-          const response = await axios.get(`/api/club/getByCategoryAndUsername/ALL/${username}/views/0/16`);
-          console.log(response.status);
-          setClubs(response.data._embedded.clubList);
+          if (affiliation === false) {
+            const response = await axiosInstance.get('/club/getByCategories/views/0/16');
+            console.log(response.status);
+            if (!response.data._embedded) {
+              console.log('데이터가 없습니다.');
+              setClubs([]);
+            } else {
+              setClubs(response.data._embedded.clubList);
+            }
+          } else {
+            const response = await axiosInstance.get(`/club/getByCategoriesAndUniversity/views/0/16`);
+            console.log(response.status);
+            if (!response.data._embedded) {
+              console.log('데이터가 없습니다.');
+              setClubs([]);
+            } else {
+              setClubs(response.data._embedded.clubList);
+            }
+          }
         }
       } catch (error) {
         console.log(error);

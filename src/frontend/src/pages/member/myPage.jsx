@@ -39,6 +39,7 @@ const MyPage = ()=>{
         <div>
           <h3>{displayRole} {displayName} 님</h3>
           <div>
+            {/*내가 매니저로 있는 */}
             <p>나의 동아리 수정</p>
             {Array.isArray(myClubs) && myClubs.length > 0 ? (
               myClubs.map((myClub) => (
