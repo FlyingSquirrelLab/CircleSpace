@@ -27,6 +27,9 @@ const AdminPage = () => {
         <div className='upload-bn' onClick={() => nav('/uploadClub')}
         >동아리 등록</div>
         <br/>
+        <div className='upload-bn' onClick={() => nav('/dataParser')}
+        >데이터 파싱</div>
+        <br/>
         <div
           className='mypage-admin'
           onClick={() => {
