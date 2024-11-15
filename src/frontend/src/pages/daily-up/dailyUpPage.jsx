@@ -15,15 +15,16 @@ const DailyUpPage = ({formatDate}) => {
   useEffect(() => {
     const fetchDailyUpdates = async () => {
       try {
-        const response = await axios.get(`/api/daily-up/fetchAll/${page}/${size}`);
+        const response = await axios.get(`/api/daily-up/fetchAll`);
         console.log(response.status);
-        setDailyUpList(response.data._embedded.dailyUpList);
-        setTotalPages(response.data.page.totalPages);
+        setDailyUpList(response.data);
+        // setTotalPages(response.data.page.totalPages);
       } catch (error) {
         console.error("Error fetching Daily Updates", error);
       }
     };
     fetchDailyUpdates();
+    console.log(dailyUpList);
     window.scrollTo(0, 0);
   }, [page]);
 
@@ -35,10 +36,9 @@ const DailyUpPage = ({formatDate}) => {
           dailyUpList.map((dailyUp) => (
             <div key={dailyUp.id} className='daily-up-page-contents'>
               <div className='daily-up-list' onClick={() => nav(`/daily-up/detail/${dailyUp.id}`)}>
-                <h4 >{dailyUp.dailyUpTitle}</h4 >
+                <h4 className='daily-up-title'>{dailyUp.title}</h4 >
                 <div className='daily-up-info'>
-                  <p className='reply-displayname'>{dailyUp.displayName}</p>
-                  <p className='createdate'>{formatDate(dailyUp.createdAt)}</p>
+                  <p className='createdate'>{formatDate(dailyUp.postedAt)}</p>
                 </div>
               </div>
             </div>
@@ -47,7 +47,7 @@ const DailyUpPage = ({formatDate}) => {
           <p>Daily Updates 가 없습니다.</p>
         )}
       </div>
-      <PageController page={page} setPage={setPage} totalPages={totalPages}/>
+      {/* <PageController page={page} setPage={setPage} totalPages={totalPages}/> */}
       <button className='upload-daily-up' onClick={() => nav('/daily-up/upload')}>Daily Updates 작성하기</button>
     </div>
   );
