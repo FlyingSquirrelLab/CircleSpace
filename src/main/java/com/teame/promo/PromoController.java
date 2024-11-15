@@ -36,18 +36,6 @@ public class PromoController {
         this.promoDataParser = promoDataParser;
     }
 
-//    @GetMapping("/api/daily-up/fetchAll")
-//    public List<PromoDTO> fetchAllPromos() {
-//        List<Promo> promos = promoRepository.findAll();
-//        return promos.stream()
-//                .map(promoService::setPromoDTO)
-//                .collect(Collectors.toList());
-//    }
-    @GetMapping("/api/daily-up/fetchById/{promoId}")
-    public ResponseEntity<?> fetchPromoByIdAPI(@PathVariable Long promoId) {
-        return promoService.fetchPromoById(promoId);
-    }
-
     @GetMapping("/api/daily-up/fetchAll/{page}/{size}")
     public ResponseEntity<?> fetchAllPromos(@PathVariable int page,
                                          @PathVariable int size,
@@ -61,8 +49,11 @@ public class PromoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Promo 불러오기 실패: " + e.getMessage());
         }
     }
-
-
+    
+    @GetMapping("/api/daily-up/fetchById/{promoId}")
+    public ResponseEntity<?> fetchPromoByIdAPI(@PathVariable Long promoId) {
+        return promoService.fetchPromoById(promoId);
+    }
 
     // Manual로 데이터 파싱 수행
     @GetMapping("/api/parse")
