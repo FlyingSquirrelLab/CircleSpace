@@ -58,9 +58,9 @@ function App() {
           <Route path='/likeList' element={<LikeList/>} />
           <Route path='/login' element={<Login/>} />
           <Route path='/myPage' element={<MyPage/>} />
-          <Route path='/qna/detail/:id' element={<QnADetail formatDate={formatDate}/>} />
-          <Route path='/qna/page' element={<QnAPage formatDate={formatDate}/>} />
-          <Route path='/qna/upload' element={<QnAUpload/>} />
+          <Route path='/community/detail/:id' element={<QnADetail formatDate={formatDate}/>} />
+          <Route path='/community/page' element={<QnAPage formatDate={formatDate}/>} />
+          <Route path='/community/upload' element={<QnAUpload/>} />
           <Route path='/register' element={<Register/>} />
           <Route path='/uploadClub' element={<UploadClub/>} />
           <Route path='/test' element={<SeleniumTester/>}/>

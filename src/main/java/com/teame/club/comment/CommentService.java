@@ -1,5 +1,7 @@
 package com.teame.club.comment;
 
+import com.teame.member.Member;
+import com.teame.member.MemberRepository;
 import com.teame.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +23,7 @@ public class CommentService {
   private final QnARepository qnaRepository;
   private final ReplyRepository replyRepository;
   private final S3Service s3Service;
+  private final MemberRepository memberRepository;
 
   public ResponseEntity<String> addReview(Map<String, Object> request, String username, String displayName) {
 
@@ -75,13 +78,15 @@ public class CommentService {
   }
 
   public ResponseEntity<String> deleteQnA(Long qnaId, String username) {
+    Member member = memberRepository.findByUsername(username);
+
     Optional<QnA> qnaOptional = qnaRepository.findById(qnaId);
     if (qnaOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("QnA가 존재하지 않습니다");
     }
     QnA qna = qnaOptional.get();
 
-    if (!Objects.equals(qna.getUsername(), username)) {
+    if (!Objects.equals(qna.getUsername(), username) && !(Objects.equals(member.getRole(), "ROLE_ADMIN"))) {
       return ResponseEntity.status(HttpStatus.CONFLICT).body("작성자가 불일치합니다.");
     }
 
