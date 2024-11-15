@@ -17,21 +17,25 @@ const DailyUpDetail = ({formatDate}) => {
         const response = await axios.get(`/api/daily-up/fetchById/${id}`);
         setDailyUp(response.data);
       } catch (error) {
-        console.error("Error Fetching QnA");
+        console.error("Error Fetching Daily Update");
       }
     };
     fetchDailyUpById();
   }, [id]);
 
+  const convertNewlinesToHTML = (text) => {
+    return text?.replace(/\n/g, "<br />");
+  };
   return (
     <div className='daily-up-detail-body'>
       <div key={dailyUp.id} className='daily-up-detail-list'>
         <div className='daily-up-detail-container'>
           <h2 >{dailyUp.title}</h2>
             <p className='createdate'>{formatDate(dailyUp.postedAt)}</p>
-          <div className='daily-up-detail-info'>
-            <p>{dailyUp.body}</p>
-          </div>
+            <div 
+            className='daily-up-detail-info' 
+            dangerouslySetInnerHTML={{__html: convertNewlinesToHTML(dailyUp.body)}} // HTML 렌더링
+          />
           <p>{dailyUp.content}</p>
           <img src={dailyUp.imageUrl} width='200px'/>
         </div>

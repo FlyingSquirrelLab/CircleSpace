@@ -125,7 +125,7 @@ public class PromoDataParser {
             List<WebElement> paragraphTime = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div.profile time.large")));
 
             if (!paragraphTitle.isEmpty() && !paragraphTime.isEmpty() && !paragraphBody.isEmpty()) {
-                String title = paragraphTitle.get(0).getText().replaceAll("[^\\p{L}\\p{N}\\p{P}\\s]", "");
+                String title = paragraphTitle.get(0).getText();
                 String dateTime = paragraphTime.get(0).getText();
                 int year = LocalDate.now().getYear();
                 LocalDateTime postedTime;
@@ -160,13 +160,13 @@ public class PromoDataParser {
 
                 StringBuilder body = new StringBuilder();
                 for (WebElement paragraph : paragraphBody) {
-                    String filteredText = paragraph.getText().replaceAll("[^\\p{L}\\p{N}\\p{P}\\s]", "");
+                    String filteredText = paragraph.getText();
                     body.append(filteredText).append("\n");
                 }
                 if (checkInDB(title, postedTime)) {
                     return false;
                 }
-//        writeArticleDataToTextFile(writer, title, postedTime, body.toString());
+//                writeArticleDataToTextFile(writer, title, postedTime, body.toString());
                 if(!checkDuplicate(title, body.toString())) {
                     writeArticleDataToDB(writer, title, postedTime, body.toString());
                 }
@@ -179,17 +179,17 @@ public class PromoDataParser {
         return true;
     }
 
-    //기존 text file로 저장하던 메서드.
-//  private void writeArticleDataToTextFile(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
-//    try {
-//      writer.write("Title: " + title + "\n");
-//      writer.write("Posted Time: " + postedTime + "\n");
-//      writer.write("Body:\n" + body + "\n");
-//      writer.write("--------------------------------------------------\n");
-//    } catch (IOException e) {
-//      log.info("Error writing article data: " + e.getMessage());
-//    }
-//  }
+    // text file로 저장. DB에 넣기 전, 디버깅으로 사용
+  private void writeArticleDataToTextFile(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
+    try {
+      writer.write("Title: " + title + "\n");
+      writer.write("Posted Time: " + postedTime + "\n");
+      writer.write("Body:\n" + body + "\n");
+      writer.write("--------------------------------------------------\n");
+    } catch (IOException e) {
+      log.info("Error writing article data: " + e.getMessage());
+    }
+  }
 
 
     // DB 중복 데이터 여부 확인
@@ -244,20 +244,4 @@ public class PromoDataParser {
         }
         bufferedReader.close();
     }
-
-
-
-//  public PromoDTO setPromoDTO(Promo promo) {
-//    PromoDTO dto = new PromoDTO();
-//    dto.setId(promo.getId());
-//    dto.setTitle(promo.getTitle());
-//    dto.setBody(promo.getBody());
-//    dto.setCreatedAt(promo.getCreatedAt());
-//    dto.setPostedAt(promo.getPostedAt());
-//    return dto;
-//  }
-//
-//  public ResponseEntity<?> fetchPromoById(Long promoId) {
-//    return ResponseEntity.status(HttpStatus.OK).body(promoRepository.findById(promoId));
-//  }
 }
