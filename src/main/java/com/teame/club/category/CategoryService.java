@@ -63,31 +63,33 @@ public class CategoryService {
                                                            int size,
                                                            PagedResourcesAssembler<Club> assembler,
                                                            String username) {
-      try {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(order).descending());
-        Member member = memberRepository.findByUsername(username);
+    try {
+      Pageable pageable = PageRequest.of(page, size, Sort.by(order).descending());
+      Member member = memberRepository.findByUsername(username);
 
-        Long universityId = member.getUniversityId();
+      Long universityId = member.getUniversityId();
 
-        if (universityId == null) {
-          throw new IllegalArgumentException("멤버의 소속 대학교 정보가 없습니다.");
-        }
-
-        Specification<Club> categorySpec = (root, query, criteriaBuilder) ->
-            criteriaBuilder.isMember(cat, root.get("categories"));
-
-        Specification<Club> universitySpec = (root, query, criteriaBuilder) ->
-            root.join("universities").get("id").in(universityId);
-
-        Specification<Club> combinedSpec = Specification.where(categorySpec).and(universitySpec);
-        Page<Club> clubPage = clubRepository.findAll(combinedSpec, pageable);
-
-        PagedModel<EntityModel<Club>> pagedModel = assembler.toModel(clubPage);
-
-        return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
-      } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("동아리 불러오기 실패: " + e.getMessage());
+      if (universityId == null) {
+        throw new IllegalArgumentException("멤버의 소속 대학교 정보가 없습니다.");
       }
+
+      Category cat = categoryRepository.findByName(category)
+          .orElseThrow(() -> new IllegalArgumentException("카테고리를 찾을 수 없습니다: " + category));
+
+      Specification<Club> categorySpec = (root, query, criteriaBuilder) ->
+          criteriaBuilder.isMember(cat, root.get("categories"));
+
+      Specification<Club> universitySpec = (root, query, criteriaBuilder) ->
+          root.join("universities").get("id").in(universityId);
+
+      Specification<Club> combinedSpec = Specification.where(categorySpec).and(universitySpec);
+      Page<Club> clubPage = clubRepository.findAll(combinedSpec, pageable);
+
+      PagedModel<EntityModel<Club>> pagedModel = assembler.toModel(clubPage);
+
+      return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("동아리 불러오기 실패: " + e.getMessage());
     }
   }
 
