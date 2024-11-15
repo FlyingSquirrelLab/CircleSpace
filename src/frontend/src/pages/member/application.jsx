@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import axiosInstance from "../../axiosInstance.jsx";
 
@@ -8,6 +8,7 @@ const Application = () =>{
   const {id} = useParams();
   const [club, setClub] = useState({});
   const [intro , setIntro] = useState("");
+  const nav = useNavigate();
 
   useEffect(() => {
     try {
@@ -27,7 +28,9 @@ const Application = () =>{
       });
       console.log(response.status);
       console.log(response.data);
+      if (response.status === 200){
       nav('/');
+      }
     } catch (error) {
       console.log(error.response);
     }
