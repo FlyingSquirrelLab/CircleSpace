@@ -21,6 +21,8 @@ import ManageUniversity from "./pages/admin/manageUniversity.jsx";
 import SeleniumTester from "./pages/admin/seleniumTester.jsx";
 import Application from "./pages/member/application.jsx";
 import ClubStatus from "./pages/club/clubStatus.jsx";
+import DailyUpPage from './pages/daily-up/dailyUpPage.jsx';
+import DailyUpDetail from './pages/daily-up/dailyUpDetail.jsx';
 
 function App() {
 
@@ -64,6 +66,8 @@ function App() {
           <Route path='/test' element={<SeleniumTester/>}/>
           <Route path='/application/:id' element={<Application/>} />
           <Route path='/clubstatus' element={<ClubStatus/>} />
+          <Route path='/daily-up/page' element={<DailyUpPage formatDate={formatDate}/>} />
+          <Route path='/daily-up/detail/:id' element={<DailyUpDetail formatDate={formatDate}/>} />
 
           <Route path='/ifRebase'/>
         </Routes>
