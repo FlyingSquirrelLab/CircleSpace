@@ -89,6 +89,11 @@ const Header = () => {
           </div>
           <div
             className='club-category'
+            onClick={() => nav('/daily-up/page')}
+          >Daily Updates
+          </div>
+          <div
+            className='club-category'
             onClick={() => {
               if (username === '') {
                 nav('/login')
