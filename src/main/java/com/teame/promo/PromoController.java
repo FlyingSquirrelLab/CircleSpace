@@ -56,7 +56,7 @@ public class PromoController {
     }
 
     // Manual로 데이터 파싱 수행
-    @GetMapping("/api/parse")
+    @GetMapping("/api/admin/parse")
     public ResponseEntity<?> fetchParseData()
     {
         try {

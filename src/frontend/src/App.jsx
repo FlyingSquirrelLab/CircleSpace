@@ -18,7 +18,7 @@ import EditPassword from "./pages/member/editPassword.jsx";
 import EditUserInfo from "./pages/member/editUserInfo.jsx";
 import ManageCategory from "./pages/admin/manageCategory.jsx";
 import ManageUniversity from "./pages/admin/manageUniversity.jsx";
-import SeleniumTester from "./pages/admin/seleniumTester.jsx";
+import DataParser from "./pages/admin/dataParser.jsx";
 import Application from "./pages/member/application.jsx";
 import ClubStatus from "./pages/club/clubStatus.jsx";
 import DailyUpPage from './pages/daily-up/dailyUpPage.jsx';
@@ -63,7 +63,7 @@ function App() {
           <Route path='/community/upload' element={<QnAUpload/>} />
           <Route path='/register' element={<Register/>} />
           <Route path='/uploadClub' element={<UploadClub/>} />
-          <Route path='/test' element={<SeleniumTester/>}/>
+          <Route path='/dataParser' element={<DataParser/>}/>
           <Route path='/application/:id' element={<Application/>} />
           <Route path='/clubstatus/:id' element={<ClubStatus/>} />
           <Route path='/daily-up/page' element={<DailyUpPage formatDate={formatDate}/>} />
