@@ -5,6 +5,7 @@ import List from "../../components/list.jsx";
 import './clubList.css';
 import PageController from "../../components/pageController.jsx";
 import {useAuth} from "../../authContext.jsx";
+import axiosInstance from "../../axiosInstance.jsx";
 
 const ClubList=()=>{
 
@@ -20,7 +21,7 @@ const ClubList=()=>{
   useEffect(() => {
     const fetchCategoryClubs = async () => {
       try {
-        if (affiliation === false) {
+        if (username === '' || affiliation === false) {
           const response = await axios.get(`/api/club/getByCategory/${category}/${order}/${page}/${size}`);
           console.log(response.status);
           if (!response.data._embedded) {
@@ -32,7 +33,7 @@ const ClubList=()=>{
           setTotalPages(response.data.page.totalPages);
           }
         } else {
-          const response = await axios.get(`/api/club/getByCategoryAndUsername/${category}/${username}/${order}/${page}/${size}`);
+          const response = await axiosInstance.get(`/club/getByCategoryAndUniversity/${category}/${order}/${page}/${size}`);
           console.log(response.status);
           if (!response.data._embedded) {
             console.log('데이터가 없습니다.');

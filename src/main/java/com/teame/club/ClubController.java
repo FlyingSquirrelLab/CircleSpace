@@ -53,6 +53,17 @@ public class ClubController {
     return categoryService.getClubsByCategory(category, order, page, size, assembler);
   }
 
+  @GetMapping("/api/club/getByCategoryAndUniversity/{category}/{order}/{page}/{size}")
+  public ResponseEntity<?> getClubsByCategoryAndUniversityAPI(@PathVariable String category,
+                                                              @PathVariable String order,
+                                                              @PathVariable int page,
+                                                              @PathVariable int size,
+                                                              PagedResourcesAssembler<Club> assembler,
+                                                              Authentication auth) {
+    String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
+    return categoryService.getClubsByCategoryAndUniversity(category, order, page, size, assembler, username);
+  }
+
   @GetMapping("/api/club/getByCategories/{order}/{page}/{size}")
   public ResponseEntity<?> getClubsByCategoriesAPI(@PathVariable String order,
                                                    @PathVariable int page,
