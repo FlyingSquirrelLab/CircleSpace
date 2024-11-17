@@ -32,7 +32,7 @@ public class Membership {
 
   private String intro;
 
-  private boolean approved = FALSE;
+  private boolean approved = false;
 
   @CreationTimestamp
   private LocalDateTime requestDate;

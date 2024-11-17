@@ -19,7 +19,8 @@ import EditUserInfo from "./pages/member/editUserInfo.jsx";
 import ManageCategory from "./pages/admin/manageCategory.jsx";
 import ManageUniversity from "./pages/admin/manageUniversity.jsx";
 import DataParser from "./pages/admin/dataParser.jsx";
-import Application from "./pages/member/application.jsx";
+import SeleniumTester from "./pages/admin/seleniumTester.jsx";
+import Application from "./pages/club/application.jsx";
 import ClubStatus from "./pages/club/clubStatus.jsx";
 import DailyUpPage from './pages/daily-up/dailyUpPage.jsx';
 import DailyUpDetail from './pages/daily-up/dailyUpDetail.jsx';
@@ -57,7 +58,7 @@ function App() {
           <Route path='/' element={<Home/>}/>
           <Route path='/likeList' element={<LikeList/>} />
           <Route path='/login' element={<Login/>} />
-          <Route path='/myPage' element={<MyPage/>} />
+          <Route path='/myPage' element={<MyPage formatDate={formatDate}/>} />
           <Route path='/community/detail/:id' element={<QnADetail formatDate={formatDate}/>} />
           <Route path='/community/page' element={<QnAPage formatDate={formatDate}/>} />
           <Route path='/community/upload' element={<QnAUpload/>} />
@@ -66,9 +67,11 @@ function App() {
           <Route path='/dataParser' element={<DataParser/>}/>
           <Route path='/application/:id' element={<Application/>} />
           <Route path='/clubstatus/:id' element={<ClubStatus/>} />
+          <Route path='/test' element={<SeleniumTester/>}/>
           <Route path='/daily-up/page' element={<DailyUpPage formatDate={formatDate}/>} />
           <Route path='/daily-up/detail/:id' element={<DailyUpDetail formatDate={formatDate}/>} />
-
+          <Route path='/application/:id' element={<Application/>} />
+          <Route path='/clubstatus/:id' element={<ClubStatus formatDate={formatDate}/>} />
           <Route path='/ifRebase'/>
         </Routes>
       </div>

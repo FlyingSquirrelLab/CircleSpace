@@ -1,16 +1,15 @@
-import BannerMain from'../assets/banner.png'
-import BannerMobile from '../assets/Banner750x760.jpg'
-import React, {useEffect, useState} from "react";
+import BannerMain from '../assets/banner.png';
+import BannerMobile from '../assets/Banner750x760.jpg';
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import List from "../components/list.jsx";
 import './home.css';
-import {useAuth} from "../authContext.jsx";
+import { useAuth } from "../authContext.jsx";
 import axiosInstance from "../axiosInstance.jsx";
 
-const Home =()=>{
-
+const Home = () => {
   const [clubs, setClubs] = useState([]);
-  const {username} = useAuth();
+  const { username } = useAuth();
   const [affiliation, setAffiliation] = useState(false);
 
   useEffect(() => {
@@ -18,7 +17,6 @@ const Home =()=>{
       try {
         if (username === '') {
           const response = await axios.get('/api/club/getByCategory/ALL/views/0/16');
-          console.log(response.status);
           if (!response.data._embedded) {
             console.log('데이터가 없습니다.');
             setClubs([]);
@@ -28,7 +26,6 @@ const Home =()=>{
         } else {
           if (affiliation === false) {
             const response = await axiosInstance.get('/club/getByCategories/views/0/16');
-            console.log(response.status);
             if (!response.data._embedded) {
               console.log('데이터가 없습니다.');
               setClubs([]);
@@ -37,7 +34,6 @@ const Home =()=>{
             }
           } else {
             const response = await axiosInstance.get(`/club/getByCategoriesAndUniversity/views/0/16`);
-            console.log(response.status);
             if (!response.data._embedded) {
               console.log('데이터가 없습니다.');
               setClubs([]);
@@ -49,33 +45,33 @@ const Home =()=>{
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchHomeClubs();
   }, [affiliation, username]);
 
-  return(
-    <div className="home">
-      <div className='mainPoster'>
+  return (
+    <div className="club-home">
+      <div className='club-mainPoster'>
         <img
-          className="deskTopSize"
+          className="club-deskTopSize"
           src={BannerMain} />
         {/*<img*/}
-        {/*  className="mobileSize"*/}
+        {/*  className="club-mobileSize"*/}
         {/*  src={BannerMobile} />*/}
       </div>
-      <div className='home-list'>
-        <div className='home-featuredfont'>추천 동아리</div>
+      <div className='club-home-list'>
+        <div className='club-home-featuredfont'>추천 동아리</div>
         {username === '' ? <></> :
           <div>
             <input type="checkbox"
                    checked={affiliation}
-                   onChange={(e) => setAffiliation(e.target.checked)}/><label>소속 대학교만 보기</label>
+                   onChange={(e) => setAffiliation(e.target.checked)} /><label>소속 대학교만 보기</label>
           </div>
         }
-        <div className='clublist-row'>
+        <div className='club-clublist-row'>
           {Array.isArray(clubs) && clubs.length > 0 ? (
             clubs.map((club, index) => (
-              <List key={index} club={club}/>
+              <List key={index} club={club} />
             ))
           ) : (
             <p>동아리 정보 준비중입니다.</p>
@@ -84,6 +80,6 @@ const Home =()=>{
       </div>
     </div>
   );
-}
+};
 
 export default Home;
