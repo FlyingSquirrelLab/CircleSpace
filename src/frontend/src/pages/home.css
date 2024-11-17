@@ -1,14 +1,14 @@
-.home{
-    margin: 0 auto;
+.club-home {
+    margin: 100px auto;
 }
 
-.deskTopSize, .mobileSize{
+.club-deskTopSize, .club-mobileSize {
     display: none;
     width: 100%;
     height: auto;
 }
 
-.home-featuredfont{
+.club-home-featuredfont {
     display: flex;
     margin-top: 15px;
     padding: 10px;
@@ -16,31 +16,26 @@
     justify-content: center;
 }
 
-@media screen and (min-width: 811px){
-    .deskTopSize{
+@media screen and (min-width: 811px) {
+    .club-deskTopSize {
         display: block;
     }
-
-    .clublist-row{
+    .club-clublist-row {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
     }
-
-    .home-list{
+    .club-home-list {
         max-width: 1100px;
         margin: 0 auto;
     }
-
 }
 
-@media screen and (max-width: 810px){
-
-    .mobileSize{
+@media screen and (max-width: 810px) {
+    .club-mobileSize {
         display: flex;
         margin: 0 auto;
     }
-
-    .clublist-row{
+    .club-clublist-row {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
@@ -48,5 +43,4 @@
         margin: 0 auto;
         flex-wrap: wrap;
     }
-
 }

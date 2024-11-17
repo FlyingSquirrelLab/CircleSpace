@@ -7,29 +7,31 @@ const Application = () =>{
 
   const {id} = useParams();
   const [club, setClub] = useState({});
-  const [intro , setIntro] = useState("");
+  const [intro , setIntro] = useState('');
   const nav = useNavigate();
 
   useEffect(() => {
-    try {
-      axios.get(`/api/club/getById/${id}`).then((response) => {
+    const getClub = async () => {
+      try {
+        const response = await axios.get(`/api/club/getById/${id}`);
         setClub(response.data);
-      })
-    } catch (error) {
-      console.error('Error fetching data:', error);
+      } catch (error) {
+        console.error(error);
+      }
     }
+    getClub();
   }, [id]);
 
   const SubmitHandler = async() => {
     try {
-      const response = await axiosInstance.post('/member/application', {
+      const response = await axiosInstance.post('/membership/application', {
         clubId: id,
         intro: intro
       });
       console.log(response.status);
       console.log(response.data);
       if (response.status === 200){
-      nav('/');
+        nav('/');
       }
     } catch (error) {
       console.log(error.response);
