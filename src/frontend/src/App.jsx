@@ -19,7 +19,6 @@ import EditUserInfo from "./pages/member/editUserInfo.jsx";
 import ManageCategory from "./pages/admin/manageCategory.jsx";
 import ManageUniversity from "./pages/admin/manageUniversity.jsx";
 import DataParser from "./pages/admin/dataParser.jsx";
-import SeleniumTester from "./pages/admin/seleniumTester.jsx";
 import Application from "./pages/club/application.jsx";
 import ClubStatus from "./pages/club/clubStatus.jsx";
 import DailyUpPage from './pages/daily-up/dailyUpPage.jsx';
@@ -67,7 +66,6 @@ function App() {
           <Route path='/dataParser' element={<DataParser/>}/>
           <Route path='/application/:id' element={<Application/>} />
           <Route path='/clubstatus/:id' element={<ClubStatus/>} />
-          <Route path='/test' element={<SeleniumTester/>}/>
           <Route path='/daily-up/page' element={<DailyUpPage formatDate={formatDate}/>} />
           <Route path='/daily-up/detail/:id' element={<DailyUpDetail formatDate={formatDate}/>} />
           <Route path='/application/:id' element={<Application/>} />
