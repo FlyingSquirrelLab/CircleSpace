@@ -31,13 +31,12 @@ public class PromoDataParser {
         this.promoRepository = promoRepository;
     }
 
-    @Scheduled(cron = "0 0 3 * * ?", zone = "Asia/Seoul")
-    public void runSeleniumTask() {
+    public int runSeleniumTask() {
+        int cnt=0;
         try  {
             initializeDriver();
 
             int maxPage = 10;
-            int cnt=0;
             outerLoop:
             for(int page=1; page<=maxPage; page++){
                 navigateToClubPage(url+"/p/"+page);
@@ -67,6 +66,7 @@ public class PromoDataParser {
                 driver.quit();
             }
         }
+        return cnt;
     }
 
     private void initializeDriver() {
