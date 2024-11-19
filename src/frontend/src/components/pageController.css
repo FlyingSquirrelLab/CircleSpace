@@ -1,0 +1,24 @@
+.pagecontroller{
+    padding-bottom: 35px;
+    font-size: 0.8rem;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.page-bt{
+    font-size: 0.7rem;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: black;
+    padding: 0;
+}
+.page-span{
+    margin: 5px;
+
+}
+.page-bt:hover{
+    border-bottom: 1px solid black;
+    cursor: pointer;
+}
