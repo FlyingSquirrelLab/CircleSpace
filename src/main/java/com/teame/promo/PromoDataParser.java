@@ -198,7 +198,6 @@ public class PromoDataParser {
                 if (checkInDB(title, postedTime)) {
                     return false;
                 }
-//                writeArticleDataToTextFile(writer, title, postedTime, body.toString());
                 if(!checkDuplicate(title, body.toString())){
                     writeArticleDataToDB(title, postedTime, body.toString());
                 }
@@ -210,19 +209,6 @@ public class PromoDataParser {
         }
         return true;
     }
-
-    // text file로 저장. DB에 넣기 전, 디버깅으로 사용
-    private void writeArticleDataToTextFile(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
-        try {
-            writer.write("Title: " + title + "\n");
-            writer.write("Posted Time: " + postedTime + "\n");
-            writer.write("Body:\n" + body + "\n");
-            writer.write("--------------------------------------------------\n");
-        } catch (IOException e) {
-            log.info("Error writing article data: " + e.getMessage());
-        }
-    }
-
 
     // DB 중복 데이터 여부 확인
     private boolean checkDuplicate(String title, String body){
@@ -259,24 +245,6 @@ public class PromoDataParser {
         bufferedWriter.close();
     }
 
-    // 쿠키 로드 메서드
-    private static void loadCookies(WebDriver driver, File file) throws IOException {
-        FileReader fileReader = new FileReader(file);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            String[] cookieDetails = line.split(";");
-            Cookie cookie = new Cookie.Builder(cookieDetails[0], cookieDetails[1])
-                    .domain(cookieDetails[2])
-                    .path(cookieDetails[3])
-                    .expiresOn(null) // 만료 날짜를 처리할 필요가 있음
-                    .isSecure(Boolean.parseBoolean(cookieDetails[5]))
-                    .build();
-            driver.manage().addCookie(cookie);
-        }
-        bufferedReader.close();
-    }
-
     private static void loadCookiesFromStream(WebDriver driver, InputStream inputStream) throws IOException {
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
@@ -286,10 +254,6 @@ public class PromoDataParser {
                         .domain(cookieDetails[2])
                         .path(cookieDetails[3])
                         .isSecure(Boolean.parseBoolean(cookieDetails[5]));
-
-//                if (!"null".equals(cookieDetails[4]) && !cookieDetails[4].isEmpty()) {
-//                    cookieBuilder.expiresOn(new Date(Long.parseLong(cookieDetails[4])));
-//                }
                 driver.manage().addCookie(cookieBuilder.build());
             }
         }
