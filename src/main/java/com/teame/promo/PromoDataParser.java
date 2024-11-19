@@ -6,6 +6,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -54,7 +55,6 @@ public class PromoDataParser {
             outerLoop:
             for(int page=1; page<=maxPage; page++){
                 navigateToClubPage(url+"/p/"+page);
-
                 List<WebElement> articleLinks = driver.findElements(By.cssSelector("a.article"));
                 for (WebElement articleLink : articleLinks) {
                     String linkHref = articleLink.getAttribute("href");
@@ -93,19 +93,31 @@ public class PromoDataParser {
         } catch (IOException e) {
             log.info("Error loading cookies: " + e.getMessage());
         }
-    }
 
-    private void navigateToClubPage(String pageUrl) {
-        driver.get(pageUrl);
+        driver.get(url);
         try {
             Thread.sleep(2000);
-            if (!driver.getCurrentUrl().equals(pageUrl)) {
+            if (!driver.getCurrentUrl().equals(url)) {
                 Wait<WebDriver> wait = new FluentWait<>(driver)
                         .withTimeout(Duration.ofSeconds(30))
                         .pollingEvery(Duration.ofSeconds(1));
-                wait.until(ExpectedConditions.urlToBe(pageUrl));
+                wait.until(ExpectedConditions.urlToBe(url));
                 saveCookies(driver, new File("src/main/resources/cookies.data"));
             }
+        } catch (Exception e) {
+            log.info("Error saving cookies: " + e.getMessage());
+        }
+    }
+
+    private void navigateToClubPage(String pageUrl) {
+        try {
+            driver.get(pageUrl);
+            Wait<WebDriver> wait = new FluentWait<>(driver)
+                    .withTimeout(Duration.ofSeconds(30))
+                    .pollingEvery(Duration.ofSeconds(1))
+                    .ignoring(NoSuchElementException.class);
+
+            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("a.article")));
         } catch (Exception e) {
             log.info("Error navigating to club page: " + e.getMessage());
         }
