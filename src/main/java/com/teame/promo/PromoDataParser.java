@@ -95,13 +95,14 @@ public class PromoDataParser {
 
         driver.get("https://everytime.kr");
 
-        File cookieFile = new File("src/main/resources/cookies.data");
-        try {
-            if (!cookieFile.exists()) {
-                cookieFile.createNewFile();
+        String resourcePath = "cookies.data";
+        try (InputStream resourceStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (resourceStream == null) {
+                log.info("Resource not found in classpath: " + resourcePath);
+            } else {
+                loadCookiesFromStream(driver, resourceStream);
             }
-            loadCookies(driver, cookieFile);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.info("Error loading cookies: " + e.getMessage());
         }
 
@@ -266,5 +267,23 @@ public class PromoDataParser {
             driver.manage().addCookie(cookie);
         }
         bufferedReader.close();
+    }
+
+    private static void loadCookiesFromStream(WebDriver driver, InputStream inputStream) throws IOException {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] cookieDetails = line.split(";");
+                Cookie.Builder cookieBuilder = new Cookie.Builder(cookieDetails[0], cookieDetails[1])
+                        .domain(cookieDetails[2])
+                        .path(cookieDetails[3])
+                        .isSecure(Boolean.parseBoolean(cookieDetails[5]));
+
+//                if (!"null".equals(cookieDetails[4]) && !cookieDetails[4].isEmpty()) {
+//                    cookieBuilder.expiresOn(new Date(Long.parseLong(cookieDetails[4])));
+//                }
+                driver.manage().addCookie(cookieBuilder.build());
+            }
+        }
     }
 }
