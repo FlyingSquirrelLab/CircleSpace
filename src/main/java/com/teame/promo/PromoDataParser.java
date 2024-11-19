@@ -81,7 +81,18 @@ public class PromoDataParser {
     }
 
     private void initializeDriver() {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-blink-features=AutomationControlled");
+        options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.132 Safari/537.36");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("Accept-Language=en-US,en;q=0.9");
+        options.addArguments("Referer=https://everytime.kr");
+        driver = new ChromeDriver(options);
+
         driver.get("https://everytime.kr");
 
         File cookieFile = new File("src/main/resources/cookies.data");
@@ -192,16 +203,16 @@ public class PromoDataParser {
     }
 
     // text file로 저장. DB에 넣기 전, 디버깅으로 사용
-  private void writeArticleDataToTextFile(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
-    try {
-      writer.write("Title: " + title + "\n");
-      writer.write("Posted Time: " + postedTime + "\n");
-      writer.write("Body:\n" + body + "\n");
-      writer.write("--------------------------------------------------\n");
-    } catch (IOException e) {
-      log.info("Error writing article data: " + e.getMessage());
+    private void writeArticleDataToTextFile(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
+        try {
+            writer.write("Title: " + title + "\n");
+            writer.write("Posted Time: " + postedTime + "\n");
+            writer.write("Body:\n" + body + "\n");
+            writer.write("--------------------------------------------------\n");
+        } catch (IOException e) {
+            log.info("Error writing article data: " + e.getMessage());
+        }
     }
-  }
 
 
     // DB 중복 데이터 여부 확인
