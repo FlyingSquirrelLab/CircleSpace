@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 150px auto;
     padding: 20px;
 }
 .categorymanage-title {
@@ -31,13 +31,14 @@
     padding: 8px 12px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #ec5628;
+    background-color: #ffa733;
     border: none;
     color: white;
     border-radius: 3px;
 }
 .add-category-bt:hover{
-    filter: brightness(95%)
+    color: #ffa733;
+    background-color: white;
 }
 .category-edit-bt:hover, .category-name-edit:hover{
     color: blue;

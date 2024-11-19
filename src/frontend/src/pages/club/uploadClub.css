@@ -1,7 +1,7 @@
 .editor-body{
     display: flex;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 135px auto;
     padding: 20px;
 }
 
@@ -37,6 +37,7 @@
     width: 100%;
     flex-direction: column;
     margin: 0 auto;
+    gap: 20px;
 }
 
 .editor-imgbox{
@@ -62,10 +63,12 @@
 
 .editor-title, .editor-price, .editor-file, .editor-description{
     display: flex;
-    width: 300px;
-    padding: 10px;
+    width: 500px;
+    padding: 20px;
+    background-color: #e8e8e8;
+    border-radius: 5px;
     align-items: center;
-    border: 1px solid lightgray;
+    border: none;
 }
 
 .editor-img{
@@ -77,19 +80,21 @@
 
 .editor-summitbutton{
     display: flex;
-    background-color: #ff6133;
+    background-color: #ffa733;
     color: white;
     justify-content: center;
 }
 
 .editor-summitbutton:hover{
-    background-color: #ec5628;
+    background-color: #ffffff;
+    color: #ffa733;
 }
 
 .edit-buttons{
     display: flex;
     width: 100%;
     justify-content: space-between;
+    margin-top: 25px;
 }
 
 .delete-bt{
@@ -97,6 +102,10 @@
     background-color: rgba(0, 0, 0, 0.71);
     color: white;
     justify-content: center;
+}
+.delete-bt:hover{
+    background-color: white;
+    color: red;
 }
 
 .delete-bt, .editor-summitbutton{
@@ -106,4 +115,11 @@
     padding: 10px 15px ;
     width: 100px;
     border-radius: 3px;
+}
+
+.editor-categories {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px; /* 각 체크박스 간격을 조정 */
 }

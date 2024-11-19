@@ -43,7 +43,7 @@ const LikeList = () => {
               <div className='likelist-row'>
                   {Array.isArray(likeList) && likeList.length > 0 ? (
                     likeList.map((likedClub) => (
-                      <div className='likelist'>
+                      <div className='likelist' key={likedClub.id}>
                         <img className='likelist-img' src={likedClub.imageUrl} alt="동아리사진" width='80px'
                              onClick={() => nav(`/detail/${likedClub.id}`)}/>
                         <div className='like-inf-handle'>

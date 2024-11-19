@@ -20,9 +20,9 @@ const Header = () => {
   }, [role]);
 
   return (
-    <div className='header-body'>
-      <div className='top-nav'>
-        {displayName ? <p className='topnav-hello'>안녕하세요, {displayRole} {displayName} 님!</p> : <p></p>}
+    <div className='club-header-body'>
+      <div className='club-top-nav'>
+        {displayName ? <p className='club-topnav-hello'>안녕하세요, {displayRole} {displayName} 님!</p> : <p></p>}
         {displayName ? <LogoutButton/> : <p></p>}
         {displayName ? <p></p> :
           <div>
@@ -32,35 +32,72 @@ const Header = () => {
           </div>
         }
       </div>
-      <div className='header'>
+      <div className='club-header'>
         <div>
-          <img src={mainLogo} width='200' onClick={() => {nav('/')}}/>
+          <img src={mainLogo} width='200' height='50' onClick={() => {
+            nav('/')
+          }}/>
         </div>
-        <div className='left-nav'>
+        <div className='club-left-nav'>
           <div
             className='club-category'
-            onClick={() => nav('/clubList/SPORTS/1')}
-          >스포츠
+            onClick={() => nav('/clubList/ALL')}
+          >ALL
           </div>
           <div
             className='club-category'
-            onClick={() => nav('/clubList/ACADEMIC/1')}
-          >학술
+            onClick={() => nav('/clubList/ACADEMIC')}
+          >ACADEMIC
           </div>
           <div
             className='club-category'
-            onClick={() => nav('/clubList/CULTURAL/1')}
-          >문화예술
+            onClick={() => nav('/clubList/FOOD')}
+          >FOOD
           </div>
           <div
             className='club-category'
-            onClick={() => nav('/clubList/SCIENCE/1')}
-          >과학기술
+            onClick={() => nav('/clubList/GAME')}
+          >GAME
           </div>
           <div
             className='club-category'
-            onClick={() => nav('/qna/page')}
-          >Q&A
+            onClick={() => nav('/clubList/MUSIC')}
+          >MUSIC
+          </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/clubList/PERFORMANCE')}
+          >PERFORMANCE
+          </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/clubList/RELIGION')}
+          >RELIGION
+          </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/clubList/SCIENCE')}
+          >SCIENCE
+          </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/clubList/SPORTS')}
+          >SPORTS
+          </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/clubList/TRAVEL')}
+          >TRAVEL
+          </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/community/page')}
+          >COMMUNITY
+          </div>
+          <div
+            className='club-category'
+            onClick={() => nav('/daily-up/page')}
+          >Daily Updates
           </div>
           <div
             className='club-category'
@@ -73,22 +110,20 @@ const Header = () => {
             }}
           >마이페이지
           </div>
-          <div>
-            {role === "ROLE_ADMIN" ?
-              <div className='club-category' onClick={() => nav('/adminPage')}
-              >관리</div>
-              : <p></p>}
-          </div>
+          {role === "ROLE_ADMIN" ?
+            <div className='club-category' onClick={() => nav('/adminPage')}
+            >관리</div>
+            : <p></p>}
+          {role === "ROLE_USER" ?
+            <div className='club-category' onClick={() => nav('/uploadClub')}
+            >동아리 등록</div>
+            : <p></p>}
         </div>
-
-        <div className='right-nav'>
-          {/*{location.pathname !== '/search' && (*/}
-          {/*  <img className='search-icon' src={searchIcon_bk} width='21px' onClick={() => nav('/search')} />*/}
-          {/*)}*/}
+        <div className='club-right-nav'>
           {username ?
-            <div className='header-icons'>
+            <div className='club-header-icons'>
               <div
-                className='wishlisticon'
+                className='club-wishlisticon'
                 onClick={() => nav('/likeList')}>
                 <img src={likeIcon} width='20px' height='19px' alt='관심동아리'/>
               </div>
@@ -97,7 +132,7 @@ const Header = () => {
         </div>
       </div>
     </div>
-      );
+  );
 }
 
 export default Header;

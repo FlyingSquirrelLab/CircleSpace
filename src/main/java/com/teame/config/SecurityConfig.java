@@ -71,12 +71,8 @@ public class SecurityConfig {
 
     http
         .authorizeHttpRequests((auth) -> auth
-            // 특정 경로에 대한 접근 제한을 먼저 선언
             .requestMatchers("/api/admin").hasRole("ADMIN")
-            .requestMatchers("/api/myPage/**", "/api/userInfo", "/api/cart/**").hasAnyRole("ADMIN", "MANAGER", "USER")
-            // 그 외의 경로는 인증 없이 접근 가능
-            .requestMatchers("/api/**").permitAll()
-            // 모든 다른 요청은 인증 필요
+            .requestMatchers("/**").permitAll()
             .anyRequest().authenticated()
         );
 

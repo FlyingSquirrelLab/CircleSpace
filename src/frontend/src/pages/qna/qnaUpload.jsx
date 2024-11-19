@@ -8,7 +8,7 @@ const QnAUpload = () => {
   const nav = useNavigate();
   const [content, setContent] = useState("");
   const [qnaTitle, setQnATitle] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState('');
 
   const qnaUploadHandler = async (e) => {
     e.preventDefault();

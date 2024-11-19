@@ -13,6 +13,17 @@ const UploadClub = () => {
   const [categories, setCategories] = useState([]);
   const [availableCategories, setAvailableCategories] = useState([]);
 
+  const [period, setPeriod] = useState('');
+  const [fee, setFee] = useState('');
+  const [target, setTarget] = useState('');
+  const [note, setNote] = useState('');
+  const [activity, setActivity] = useState('');
+  const [contact, setContact] = useState('');
+  const [united, setUnited] = useState(false);
+
+  const [universities, setUniversities] = useState([]);
+  const [availableUniversities, setAvailableUniversities] = useState([]);
+
   const nav = useNavigate();
 
   useEffect(() => {
@@ -26,6 +37,16 @@ const UploadClub = () => {
       })
       .catch(error => {
         console.error('Error fetching categories', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get('/api/university/getAll')
+      .then(response => {
+        setAvailableUniversities(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching universities', error);
       });
   }, []);
 
@@ -46,6 +67,13 @@ const UploadClub = () => {
   const handleCategoryChange = (e) => {
     const value = e.target.value;
     setCategories(prev =>
+      prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
+    );
+  };
+
+  const handleUniversityChange = (e) => {
+    const value = e.target.value;
+    setUniversities(prev =>
       prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
     );
   };
@@ -89,7 +117,15 @@ const UploadClub = () => {
           description,
           imagePath: path,
           detailImagePaths: detailImagePaths.filter(path => path !== null),
-          categoryNames: categories
+          categoryNames: categories,
+          universityTitles: universities,
+          united,
+          period,
+          fee,
+          target,
+          note,
+          activity,
+          contact
         };
 
         await axiosInstance.post('/club/upload', clubData);
@@ -105,11 +141,13 @@ const UploadClub = () => {
     <div className='editor-body'>
 
       <form className='editor-form' onSubmit={handleSubmit}>
-        <h4>추가하실 상품 정보를 입력하세요</h4>
+        <div style={{background:"rgb(244,213,108)", paddingRight: "25px",paddingLeft: "25px", borderRadius: "10px"}}>
+          <h2>동아리 등록하기</h2>
+        </div>
         <div className='editor-container'>
           <div className='edit-inputs'>
             <div className='head'>
-              <p>동아리 이름</p>
+              <h4>동아리 이름</h4>
               <input
                 className='editor-title'
                 type="text"
@@ -120,7 +158,7 @@ const UploadClub = () => {
               />
             </div>
             <div className='head'>
-              <p>동아리 설명</p>
+              <h4>동아리 설명</h4>
               <textarea
                 className='editor-description'
                 placeholder="Description"
@@ -129,11 +167,80 @@ const UploadClub = () => {
               />
             </div>
             <div className='head'>
-              <p>카테고리 선택</p>
+              <h4>모집 기간</h4>
+              <input
+                className='editor-title'
+                type="text"
+                placeholder="모집 기간"
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
+              />
+            </div>
+            <div className='head'>
+              <h4>회비 안내</h4>
+              <input
+                className='editor-title'
+                type="text"
+                placeholder="회비 안내"
+                value={fee}
+                onChange={(e) => setFee(e.target.value)}
+              />
+            </div>
+            <div className='head'>
+              <h4>모집 대상</h4>
+              <input
+                className='editor-title'
+                type="text"
+                placeholder="모집 대상"
+                value={target}
+                onChange={(e) => setTarget(e.target.value)}
+              />
+            </div>
+            <div className='head'>
+              <h4>유의 사항</h4>
+              <input
+                className='editor-title'
+                type="text"
+                placeholder="유의 사항"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
+            </div>
+            <div className='head'>
+              <h4>주요 활동</h4>
+              <input
+                className='editor-title'
+                type="text"
+                placeholder="주요 활동"
+                value={activity}
+                onChange={(e) => setActivity(e.target.value)}
+              />
+            </div>
+            <div className='head'>
+              <h4>문의처</h4>
+              <input
+                className='editor-title'
+                type="text"
+                placeholder="문의처"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+              />
+            </div>
+            <div className='head'>
+              <h4>연합동아리 여부</h4>
+              <input
+                type="checkbox"
+                checked={united}
+                onChange={(e) => setUnited(e.target.checked)}
+              />
+              <label>연합동아리</label>
+            </div>
+            <div className='head'>
+              <h4>카테고리 선택</h4>
               <div className='editor-categories'>
                 {availableCategories.map(category => (
                   <label key={category.id}>
-                    <input
+                  <input
                       type="checkbox"
                       value={category.name}
                       onChange={handleCategoryChange}
@@ -145,7 +252,23 @@ const UploadClub = () => {
               </div>
             </div>
             <div className='head'>
-              <p>대표 이미지</p>
+              <h4>소속 대학교 선택</h4>
+              <div className='editor-categories'>
+                {availableUniversities.map(university => (
+                  <label key={university.id}>
+                    <input
+                      type="checkbox"
+                      value={university.title}
+                      onChange={handleUniversityChange}
+                      checked={universities.includes(university.title)}
+                    />
+                    {university.title}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className='head'>
+              <h4>대표 이미지</h4>
               <div className='editor-imgbox'>
                 <input
                   className='editor-file'
@@ -156,7 +279,7 @@ const UploadClub = () => {
               </div>
             </div>
             <div className='head'>
-              <p>상세 이미지</p>
+              <h4>상세 이미지</h4>
               {detailImageList.map((_, index) => (
                 <div key={index} className='editor-imgbox'>
                   <input

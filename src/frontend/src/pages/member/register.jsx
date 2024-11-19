@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import './register.css';
@@ -18,6 +18,12 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
+  const [categories, setCategories] = useState([]);
+  const [availableCategories, setAvailableCategories] = useState([]);
+
+  const [universityId, setUniversityId] = useState(0);
+  const [availableUniversities, setAvailableUniversities] = useState([]);
+
   const [realName, setRealName] = useState('');
 
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -28,6 +34,26 @@ const Register = () => {
   const [verificationMessage, setVerificationMessage] = useState('');
 
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const response = await axios.get('/api/category/getAll');
+      console.log(response.status);
+      const filteredCategories = response.data.filter(category => category.name !== 'ALL');
+      setAvailableCategories(filteredCategories);
+      setAvailableCategories(response.data);
+    }
+    getCategories();
+  }, []);
+
+  useEffect(() => {
+    const getUniversities = async () => {
+      const response = await axios.get('/api/university/getAll');
+      console.log(response.status);
+      setAvailableUniversities(response.data);
+    }
+    getUniversities();
+  }, []);
 
   const onChangeUsernameHandler = async () => {
     try {
@@ -113,6 +139,24 @@ const Register = () => {
     }
   };
 
+  const handleUniversityChange = (e) => {
+    const selectedUniversityId = parseInt(e.target.value, 10);
+    if (universityId === selectedUniversityId) {
+      setUniversityId(0); // 선택 해제
+    } else {
+      setUniversityId(selectedUniversityId); // 선택된 대학교 ID 설정
+    }
+  };
+
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    setCategories(prev =>
+      prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
+    );
+  };
+
+
+
   const signupHandler = async () => {
 
     if (passwordError !== '') {
@@ -139,13 +183,20 @@ const Register = () => {
       return;
     }
 
+    if (universityId === 0) {
+      alert("소속 대학교를 선택하세요.");
+      return;
+    }
+
     try {
       const response = await axios.post('/api/register/registerProc', {
         username,
         password,
         displayName,
         realName,
-        phoneNumber
+        phoneNumber,
+        categoryNames: categories,
+        universityId: universityId
       });
       console.log(response.status);
       nav('/');
@@ -247,6 +298,42 @@ const Register = () => {
               onChange={(e) => setRealName(e.target.value)}
             />
           </div>
+
+          <div className='head'>
+            <h4>카테고리 선택</h4>
+            <div className='editor-categories'>
+              {availableCategories.map(category => (
+                <label key={category.id}>
+                  <input
+                    type="checkbox"
+                    value={category.name}
+                    onChange={handleCategoryChange}
+                    checked={categories.includes(category.name)}
+                  />
+                  {category.name}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className='head'>
+            <h4>소속 대학교 선택</h4>
+            <div className='editor-categories'>
+              {availableUniversities.map(university => (
+                <label key={university.id}>
+                  <input
+                    type="radio"
+                    name="university"
+                    value={university.id}
+                    onChange={handleUniversityChange}
+                    checked={universityId === university.id}
+                  />
+                  {university.title}
+                </label>
+              ))}
+            </div>
+          </div>
+
         </div>
         <div className='register-buttons'>
           <button className='join-button' onClick={signupHandler}>회원가입</button>
