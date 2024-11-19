@@ -1,8 +1,34 @@
 .club-body {
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 80px auto;
     padding-top: 80px;
 }
+.club-list-control{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.club-list-control-bt{
+    display: flex;
+    gap: 15px;
+}
+.latest{
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: white;
+    color: gray;
+    border-bottom: 1px solid gray;
+}
+.latest:hover{
+    color: black;
+    border-bottom: 1px solid black;
+}
+.latest:focus{
+    color: black;
+    border-bottom: 1px solid black;
+}
+
 
 .club-upload-bt {
     display: flex;
