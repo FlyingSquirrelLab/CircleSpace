@@ -2,6 +2,8 @@ package com.teame.club;
 
 import com.teame.club.category.Category;
 import com.teame.club.category.CategoryRepository;
+import com.teame.club.like.Like;
+import com.teame.club.like.LikeRepository;
 import com.teame.club.university.University;
 import com.teame.club.university.UniversityRepository;
 import com.teame.member.Member;
@@ -35,6 +37,7 @@ public class ClubService {
   private final UniversityRepository universityRepository;
   private final MembershipRepository membershipRepository;
   private final MemberRepository memberRepository;
+  private final LikeRepository likeRepository;
 
   public ResponseEntity<?> getById(Long id) {
     try {
@@ -196,6 +199,10 @@ public class ClubService {
         category.getClubs().remove(club.get());
         categoryRepository.save(category);
       }
+
+      List<Like> likes = likeRepository.findByClub(club.get());
+      likeRepository.deleteAll(likes);
+
       clubRepository.delete(club.get());
       return ResponseEntity.status(HttpStatus.OK).body("동아리 삭제 완료");
     } else {

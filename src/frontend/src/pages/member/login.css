@@ -28,13 +28,16 @@
 }
 
 .loginButton{
-    background-color: #2e9c54;
+    background-color: #ffa733;
     border: none;
     font-weight: bold;
     font-size: large;
     color: white;
     border-radius: 3px;
-
+}
+.loginButton:hover{
+    background-color: black;
+    color: #ffa733;
 }
 
 .findButton{
@@ -49,4 +52,8 @@
     font-size: large;
     font-weight: bold;
     border-radius: 3px;
+}
+.joinButton:hover{
+    background-color: white;
+    color: black;
 }

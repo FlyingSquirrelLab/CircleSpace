@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {useAuth} from "../authContext.jsx";
+import {useAuth} from "../AuthContext.jsx";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import axiosInstance from "../axiosInstance.jsx";
+import './review.css'
 
 const Review = ({id}) => {
 
@@ -59,51 +60,62 @@ const Review = ({id}) => {
   };
 
   return (
-    <>
-      <div>
+    <div className='review-body'>
+      <p className='review-title'>REVIEW</p>
+      <div className='review-contents'>
         {Array.isArray(reviews) && reviews.length > 0 ? (
           reviews.map((review) => (
-            <div key={review.id} className=''>
-              <div className=''>
-                <p>{review.displayName}</p>
-                <p>{review.content}</p>
-                <p>{review.createdAt}</p>
+            <div key={review.id} className='review-1'>
+              <div className='reiview-container'>
+                <div className='review-head'>
+                  <div className='reviewer'><p className='review-displayname'>{review.displayName}</p>님의 리뷰</div>
+                  <p className='createdate'>{review.createdAt}</p>
+                </div>
+                <div className='review-tail'>
+                  <div className='review-content'>
+                    <p>{review.content}</p>
+                    <img className='review-img' src={review.imageUrl}/>
+                  </div>
+                  {username === review.username || role === 'ROLE_ADMIN' ? (
+                    <p className='review-delete' onClick={() => {
+                      deleteReviewHandler(review.id)
+                    }}>후기삭제</p>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+
               </div>
-              {username === review.username || role === 'ROLE_ADMIN' ? (
-                <p onClick={() => {
-                  deleteReviewHandler(review.id)
-                }}>후기삭제</p>
-              ) : (
-                <></>
-              )}
+
             </div>
           ))
         ) : (
           <p>후기가 없습니다.</p>
         )}
       </div>
-      <form className='' onSubmit={reviewUploadHandler}>
-        <div className=''>
-          <p>내용</p>
-          <input
+      <form className='upload-review-body' onSubmit={reviewUploadHandler}>
+        <p className='upload-review-title'>리뷰 작성</p>
+        <div className='upload-review-container'>
+          <textarea
+            className='upload-review-input'
             type='text'
             onChange={(e) => setReviewContent(e.target.value)}
+            placeholder='내용을 입력해주세요'
           />
         </div>
-        <div className=''>
-          <p>이미지</p>
-          <div className=''>
-            <input
-              type="file"
-              onChange={handleReviewImageChange}
-            />
-          </div>
+        <div className='upload-review-img'>
+          <p>사진 업로드</p>
+          <input
+            className='upload-review-file'
+            type="file"
+            onChange={handleReviewImageChange}
+          />
         </div>
-        <div className=''>
-          <button className='' type="submit">업로드</button>
+        <div className='submit-review'>
+          <button className='submit-review-bt' type="submit">작성완료</button>
         </div>
       </form>
-    </>
+    </div>
   );
 
 }

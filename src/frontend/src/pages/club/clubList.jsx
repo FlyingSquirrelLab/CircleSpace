@@ -53,15 +53,20 @@ const ClubList = () => {
 
   return (
     <div className="club-body">
-      {username === '' ? <></> :
-        <div>
-          <input type="checkbox"
-                 checked={affiliation}
-                 onChange={(e) => setAffiliation(e.target.checked)} /><label>소속 대학교만 보기</label>
+      <div className='club-list-control'>
+        {username === '' ? <></> :
+          <div>
+            <input type="checkbox"
+                   checked={affiliation}
+                   onChange={(e) => setAffiliation(e.target.checked)} /><label>소속 대학교만 보기</label>
+          </div>
+        }
+        <div className='club-list-control-bt'>
+          <button className='latest' onClick={() => handleOrder('createdAt')}>최신순</button>
+          <button className='latest' onClick={() => handleOrder('views')}>조회 많은 순</button>
         </div>
-      }
-      <button onClick={() => handleOrder('createdAt')}>최신순</button>
-      <button onClick={() => handleOrder('views')}>조회 많은 순</button>
+      </div>
+
       <div className="clublist-row">
         {Array.isArray(categoryClubs) && categoryClubs.length > 0 ? (
           categoryClubs.map((categoryClub) => (

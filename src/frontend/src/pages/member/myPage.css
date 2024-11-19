@@ -1,10 +1,35 @@
 .mypage-body{
     max-width: 900px;
-    margin: 0 auto;
+    margin: 135px auto;
     padding: 20px 100px;
 }
+
 .mypage-list{
     gap: 20px;
+}
+.iminclub{
+    margin-top: 30px;
+}
+.myclub-menu{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0px;
+    padding: 20px 0px;
+    align-items: center;
+    border-bottom: 1px solid lightgray;
+}
+.mc-control{
+    width: 150px;
+    text-align: center;
+
+}
+.mc-control:hover{
+    color: #ffa733;
+    cursor: pointer;
+}
+.myclub-menu p{
+    padding: 5px;
+
 }
 .myorder-table{
     width: 100%;
@@ -18,6 +43,18 @@
     font-size: 12px;
     text-align: center;
     padding-top: 10px;
+}
+.mypage-menu-list{
+    display: flex;
+    flex-direction: column;
+}
+.mypage-menu:hover{
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+}
+.myclub-empty{
+    font-size: 0.8rem;
+    color: gray;
 }
 @media screen and (min-width: 811px){
     .mypage-logout{
