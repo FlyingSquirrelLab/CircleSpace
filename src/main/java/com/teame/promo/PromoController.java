@@ -60,8 +60,8 @@ public class PromoController {
     public ResponseEntity<?> fetchParseData()
     {
         try {
-            promoDataParser.runSeleniumTask();
-            return ResponseEntity.ok("");
+            int cnt = promoDataParser.runSeleniumTask();
+            return ResponseEntity.ok("Data parsing completed successfully. Parsed articles: "+cnt);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
