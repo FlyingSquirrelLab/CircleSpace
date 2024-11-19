@@ -1,17 +1,13 @@
 package com.teame.promo;
 
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.Duration;
@@ -19,35 +15,25 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Log4j2
 @Service
 public class PromoDataParser {
-    @Lazy
     private WebDriver driver;
     private String url = "https://everytime.kr/418760";
     private final PromoRepository promoRepository;
+    private FluentWait<WebDriver> wait;
+    private FluentWait<WebDriver> shortWait;
 
     @Autowired
     public PromoDataParser(PromoRepository promoRepository) {
         this.promoRepository = promoRepository;
     }
 
-    /*
-          ┌───────────── 초 (0 - 59)
-          │ ┌───────────── 분 (0 - 59)
-          │ │ ┌───────────── 시간 (0 - 23)
-          │ │ │ ┌───────────── 일 (1 - 31)
-          │ │ │ │ ┌───────────── 월 (1 - 12)
-          │ │ │ │ │ ┌───────────── 요일 (0 - 7) (일요일=0 또는 7)
-          │ │ │ │ │ │
-          * * * * * *
-       */
-//  @Scheduled(cron = "0 0 3 * * ?", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 3 * * ?", zone = "Asia/Seoul")
     public void runSeleniumTask() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/output.txt", true))) {
+        try  {
             initializeDriver();
 
             int maxPage = 10;
@@ -55,11 +41,13 @@ public class PromoDataParser {
             outerLoop:
             for(int page=1; page<=maxPage; page++){
                 navigateToClubPage(url+"/p/"+page);
+                wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("a.article"), 20));
+
                 List<WebElement> articleLinks = driver.findElements(By.cssSelector("a.article"));
                 for (WebElement articleLink : articleLinks) {
                     String linkHref = articleLink.getAttribute("href");
                     if (linkHref != null && linkHref.startsWith(url)) {
-                        if(!parseArticle(linkHref, writer)){
+                        if(!parseArticle(linkHref)){
                             log.info("Reached the most recent data in the database.");
                             break outerLoop;
                         }
@@ -71,9 +59,10 @@ public class PromoDataParser {
 
             log.info("Successfully " +cnt +" parsed data at " +
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.info("Error initializing writer: " + e.getMessage());
-        } finally {
+        }
+        finally {
             if (driver != null) {
                 driver.quit();
             }
@@ -93,6 +82,16 @@ public class PromoDataParser {
         options.addArguments("Referer=https://everytime.kr");
         driver = new ChromeDriver(options);
 
+        wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofMillis(500))
+                .ignoring(NoSuchElementException.class);
+        shortWait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(2))
+                .pollingEvery(Duration.ofMillis(500))
+                .ignoring(NoSuchElementException.class);
+
+
         driver.get("https://everytime.kr");
 
         String resourcePath = "cookies.data";
@@ -108,42 +107,51 @@ public class PromoDataParser {
 
         driver.get(url);
         try {
-            Thread.sleep(2000);
-            if (!driver.getCurrentUrl().equals(url)) {
-                Wait<WebDriver> wait = new FluentWait<>(driver)
-                        .withTimeout(Duration.ofSeconds(30))
-                        .pollingEvery(Duration.ofSeconds(1));
-                wait.until(ExpectedConditions.urlToBe(url));
-                saveCookies(driver, new File("src/main/resources/cookies.data"));
+            shortWait.until(webDriver -> webDriver.getCurrentUrl().equals(url));
+        } catch (TimeoutException te ) {
+            log.info("You need to log in again to refresh the cookies.");
+            WebElement idField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("id")));
+            WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
+            WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']")));
+
+            boolean loginSuccess = false;
+            int attemptCount = 0;
+
+            while (!loginSuccess && attemptCount < 2) { // 최대 2번 시도
+                try {
+                    attemptCount++;
+                    idField.clear();
+                    idField.sendKeys("");           // 배포 전에 everytime id 입력
+                    passwordField.clear();
+                    passwordField.sendKeys("");     // 배포 전에 everytime password 입력
+                    submitButton.click();
+
+                    shortWait.until(ExpectedConditions.urlToBe(url));
+                    loginSuccess = true;
+
+                } catch (Exception ignored) {
+                }
             }
-        } catch (Exception e) {
-            log.info("Error saving cookies: " + e.getMessage());
+            try {
+                saveCookies(driver, new File("src/main/resources/cookies.data"));
+            }catch(Exception e){
+                log.info("Error saving cookies");
+            }
         }
     }
 
     private void navigateToClubPage(String pageUrl) {
         try {
             driver.get(pageUrl);
-            Wait<WebDriver> wait = new FluentWait<>(driver)
-                    .withTimeout(Duration.ofSeconds(30))
-                    .pollingEvery(Duration.ofSeconds(1))
-                    .ignoring(NoSuchElementException.class);
-
             wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("a.article")));
         } catch (Exception e) {
             log.info("Error navigating to club page: " + e.getMessage());
         }
     }
 
-    private boolean parseArticle(String articleUrl, BufferedWriter writer) {
+    private boolean parseArticle(String articleUrl) {
         try {
             driver.get(articleUrl);
-
-            Wait<WebDriver> wait = new FluentWait<>(driver)
-                    .withTimeout(Duration.ofSeconds(10))
-                    .pollingEvery(Duration.ofMillis(500))
-                    .ignoring(NoSuchElementException.class);
-
             List<WebElement> paragraphBody = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("p.large")));
             List<WebElement> paragraphTitle = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("h2.large")));
             List<WebElement> paragraphTime = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div.profile time.large")));
@@ -191,8 +199,8 @@ public class PromoDataParser {
                     return false;
                 }
 //                writeArticleDataToTextFile(writer, title, postedTime, body.toString());
-                if(!checkDuplicate(title, body.toString())) {
-                    writeArticleDataToDB(writer, title, postedTime, body.toString());
+                if(!checkDuplicate(title, body.toString())){
+                    writeArticleDataToDB(title, postedTime, body.toString());
                 }
             }
 
@@ -229,7 +237,7 @@ public class PromoDataParser {
         return promoRepository.existsByTitleAndDate(title, year, month, day);
     }
 
-    private void writeArticleDataToDB(BufferedWriter writer, String title, LocalDateTime postedTime, String body) {
+    private void writeArticleDataToDB(String title, LocalDateTime postedTime, String body) {
         Promo newPromo = new Promo();
         newPromo.setTitle(title);
         newPromo.setPostedAt(postedTime);
