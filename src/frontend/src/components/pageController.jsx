@@ -1,4 +1,5 @@
 import React from 'react';
+import './PageController.css'
 
 const PageController = ({ page, setPage, totalPages }) => {
 
@@ -13,13 +14,13 @@ const PageController = ({ page, setPage, totalPages }) => {
   return (
     <div className='pagecontroller' style={{ marginTop: "100px" }}>
       <button className='page-bt' onClick={handlePreviousPage} disabled={page === 0}>
-        Previous
+        PREV
       </button>
-      <span className='page-span' style={{ margin: "0 10px" }}>
-        Page {page + 1} of {totalPages} Pages
+      <span className='page-span' >
+      〈 {page + 1} of {totalPages} 〉
       </span>
       <button className='page-bt' onClick={handleNextPage} disabled={page === totalPages - 1}>
-        Next
+        NEXT
       </button>
     </div>
   );

@@ -51,47 +51,59 @@ const MyPage = ({formatDate}) => {
     <div className='mypage-body'>
       <div className='mypage-user'>
         <div>
-          <h3>{displayRole} {displayName} 님</h3>
+          <h2>{displayRole} {displayName} 님</h2>
           <div>
-            <p>내가 매니저로 있는 동아리들</p>
+            <p className='iminclub'>내가 매니저로 있는 동아리들</p>
             {Array.isArray(myClubs) && myClubs.length > 0 ? (
                 myClubs.map((myClub) => (
-                  <div key={myClub.id}>
-                    <img src={myClub.imageUrl}
-                         width='200px'
-                         alt='이미지'
-                         onClick={() => nav(`/detail/${myClub.id}`)}/>
-                    <p onClick={() => nav(`/detail/${myClub.id}`)}>{myClub.title}</p>
-                    <p onClick={() => nav(`/clubStatus/${myClub.id}`)}>회원 관리</p>
-                    <p onClick={() => {nav(`/editClub/${myClub.id}`)}}>동아리 정보 수정</p>
+                  <div className='myclub-list' key={myClub.id}>
+                    <div className='myclub-menu'>
+                      <img src={myClub.imageUrl}
+                           width='100px'
+                           alt='이미지'
+                           onClick={() => nav(`/detail/${myClub.id}`)}/>
+
+                      <div className='mc-control' onClick={() => nav(`/detail/${myClub.id}`)}>{myClub.title}</div>
+                      <div className='mc-control' onClick={() => nav(`/clubStatus/${myClub.id}`)}>회원 관리</div>
+                      <div className='mc-control' onClick={() => {
+                        nav(`/editClub/${myClub.id}`)
+                      }}>동아리 정보 수정</div>
+                    </div>
                   </div>
                 ))) :
-              <p>나의 동아리가 없습니다.</p>
+              <p className='myclub-empty'>나의 동아리가 없습니다.</p>
             }
           </div>
           <div>
+            <br/>
             <p>내가 가입한 동아리들</p>
             {Array.isArray(myMemberships) && myMemberships.length > 0 ? (
               myMemberships.map((myMembershipDTO) => (
                 <div key={myMembershipDTO.id}
                      onClick={() => nav(`/detail/${myMembershipDTO.clubId}`)}>
                   <img src={myMembershipDTO.imageUrl}
-                       width='200px'
+                       width='100px'
                        alt='이미지'/>
                   <p>{myMembershipDTO.title}</p>
                   <p>{formatDate(myMembershipDTO.approvalDate)}</p>
                 </div>
-              ))) : <p>내가 가입한 동아리가 없습니다.</p>
+              ))) : <p className='myclub-empty'>내가 가입한 동아리가 없습니다.</p>
             }
           </div>
-              <div className='mypage-list'>
-              <br/>
-              <div onClick={() => nav('/editUserInfo')}>회원정보수정
-          </div>
-          <br/>
-            <div onClick={() => nav('/editPassword')}>비밀번호수정</div>
+          <div className='mypage-menu-list'>
             <br/>
-            <div onClick={() => nav('/uploadClub')}>동아리등록하기</div>
+            <br/>
+            <div className='mypage-menu' onClick={() => nav('/editUserInfo')}>
+              <p>회원정보수정</p>
+            </div>
+            <br/>
+            <br/>
+            <div className='mypage-menu' onClick={() => nav('/editPassword')}>
+              <p>비밀번호수정</p> </div>
+            <br/>
+            <br/>
+            <div className='mypage-menu' onClick={() => nav('/uploadClub')}>
+              <p>동아리등록하기</p> </div>
           </div>
           <div className='mypage-logout'>
             {displayName ? <LogoutButton/> : <p></p>}

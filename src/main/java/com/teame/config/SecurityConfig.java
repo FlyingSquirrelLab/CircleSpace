@@ -104,8 +104,8 @@ public class SecurityConfig {
     configuration.setAllowedOrigins(Arrays.asList(
         "http://localhost:8080",
         "http://localhost:5173",
-        "https://www.circlespace.kr",
-        "https://circlespace.kr"
+        "https://www.circlespace.site",
+        "https://circlespace.site"
     ));
     configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE"));
     configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));

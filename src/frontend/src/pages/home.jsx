@@ -62,8 +62,9 @@ const Home = () => {
       <div className='club-home-list'>
         <div className='club-home-featuredfont'>추천 동아리</div>
         {username === '' ? <></> :
-          <div>
+          <div className='my-uni'>
             <input type="checkbox"
+                   className='my-uni-check'
                    checked={affiliation}
                    onChange={(e) => setAffiliation(e.target.checked)} /><label>소속 대학교만 보기</label>
           </div>

@@ -16,8 +16,8 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
             .allowedOrigins("http://localhost:8080",
                 "http://localhost:5173",
-                "https://www.circlespace.kr",
-                "https://circlespace.kr")
+                "https://www.circlespace.site",
+                "https://circlespace.site")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
             .allowCredentials(true);

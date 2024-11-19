@@ -120,7 +120,7 @@ const Detail=()=>{
             <div>
             </div>
             <div>
-              <button onClick={() => {
+              <button className='applyButton' onClick={() => {
                 nav(`/application/${id}`);
               }}>지원하기
               </button>

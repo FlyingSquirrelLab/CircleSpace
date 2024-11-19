@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import likeIcon from '../assets/blank_like.png'
-import mainLogo from '../assets/logo.png';
+import mainLogo from '../assets/teamelogo.png';
 import LogoutButton from "./logoutButton.jsx";
 import { useAuth } from "../authContext.jsx";
 import { useEffect, useState } from "react";
@@ -33,72 +33,14 @@ const Header = () => {
         }
       </div>
       <div className='club-header'>
-        <div>
-          <img src={mainLogo} width='200' height='50' onClick={() => {
+        <div className='club-category-icon'>
+        </div>
+        <div className='circlelogo'>
+          <img src={mainLogo} width='250' onClick={() => {
             nav('/')
           }}/>
         </div>
         <div className='club-left-nav'>
-          <div
-            className='club-category'
-            onClick={() => nav('/clubList/ALL')}
-          >ALL
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/clubList/ACADEMIC')}
-          >ACADEMIC
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/clubList/FOOD')}
-          >FOOD
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/clubList/GAME')}
-          >GAME
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/clubList/MUSIC')}
-          >MUSIC
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/clubList/PERFORMANCE')}
-          >PERFORMANCE
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/clubList/RELIGION')}
-          >RELIGION
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/clubList/SCIENCE')}
-          >SCIENCE
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/clubList/SPORTS')}
-          >SPORTS
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/clubList/TRAVEL')}
-          >TRAVEL
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/community/page')}
-          >COMMUNITY
-          </div>
-          <div
-            className='club-category'
-            onClick={() => nav('/daily-up/page')}
-          >Daily Updates
-          </div>
           <div
             className='club-category'
             onClick={() => {
@@ -108,11 +50,11 @@ const Header = () => {
                 nav('/myPage')
               }
             }}
-          >마이페이지
+          >MYPAGE
           </div>
           {role === "ROLE_ADMIN" ?
             <div className='club-category' onClick={() => nav('/adminPage')}
-            >관리</div>
+            >ADMIN</div>
             : <p></p>}
           {role === "ROLE_USER" ?
             <div className='club-category' onClick={() => nav('/uploadClub')}
@@ -129,6 +71,68 @@ const Header = () => {
               </div>
             </div>
             : <p></p>}
+        </div>
+      </div>
+      <div className='last-category-bar'>
+        <div
+          className='club-category'
+          onClick={() => nav('/clubList/ALL')}
+        >ALL
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/clubList/ACADEMIC')}
+        >ACADEMIC
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/clubList/FOOD')}
+        >FOOD
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/clubList/GAME')}
+        >GAME
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/clubList/MUSIC')}
+        >MUSIC
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/clubList/PERFORMANCE')}
+        >PERFORMANCE
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/clubList/RELIGION')}
+        >RELIGION
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/clubList/SCIENCE')}
+        >SCIENCE
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/clubList/SPORTS')}
+        >SPORTS
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/clubList/TRAVEL')}
+        >TRAVEL
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/community/page')}
+        >COMMUNITY
+        </div>
+        <div
+          className='club-category'
+          onClick={() => nav('/daily-up/page')}
+        >Daily Updates
         </div>
       </div>
     </div>

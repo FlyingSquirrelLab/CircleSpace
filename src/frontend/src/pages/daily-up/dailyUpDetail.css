@@ -1,6 +1,6 @@
 .daily-up-detail-body{
     max-width: 900px;
-    margin: 0 auto;
+    margin: 135px auto;
     padding: 15px;
 }
 
@@ -71,6 +71,7 @@
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    margin: 25px;
 }
 
 .qnareply-add-inputbox{

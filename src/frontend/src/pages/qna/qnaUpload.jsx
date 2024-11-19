@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import axiosInstance from "../../axiosInstance.jsx";
+import './qnaUpload.css'
+import '../club/uploadClub.css'
 
 const QnAUpload = () => {
 
@@ -42,36 +44,41 @@ const QnAUpload = () => {
   };
 
   return (
-    <>
-    <form className='' onSubmit={qnaUploadHandler}>
-    <div className=''>
-      <p>제목</p>
-      <input
-        type='text'
-        onChange={(e) => setQnATitle(e.target.value)}
-      />
+    <div className='editor-body'>
+      <form className='editor-form' onSubmit={qnaUploadHandler}>
+        <h2>게시글 작성하기</h2>
+        <div className='editor-container'>
+
+          <p>제목</p>
+          <input
+            className='editor-title'
+            type='text'
+            onChange={(e) => setQnATitle(e.target.value)}
+          />
+        </div>
+        <div className=''>
+          <p>내용</p>
+          <input
+            className='editor-description'
+            type='text'
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </div>
+        <div className=''>
+          <p>이미지</p>
+          <div className=''>
+            <input
+              className='editor-file'
+              type="file"
+              onChange={handleImageChange}
+            />
+          </div>
+        </div>
+        <div className='editor-button'>
+          <button className='editor-summitbutton' type="submit">업로드</button>
+        </div>
+      </form>
     </div>
-    <div className=''>
-      <p>내용</p>
-      <input
-        type='text'
-        onChange={(e) => setContent(e.target.value)}
-      />
-    </div>
-    <div className=''>
-      <p>이미지</p>
-      <div className=''>
-        <input
-          type="file"
-          onChange={handleImageChange}
-        />
-      </div>
-    </div>
-      <div className=''>
-        <button className='' type="submit">업로드</button>
-      </div>
-    </form>
-    </>
   );
 };
 
