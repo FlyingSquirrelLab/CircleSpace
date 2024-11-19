@@ -53,4 +53,23 @@ public class MemberController {
     return memberService.editPassword(request, username);
   }
 
+  @PostMapping("/api/member/application")
+  public ResponseEntity<?> applicationAPI(@RequestBody Map<String, Object> request,
+                                          Authentication auth) {
+    String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
+    return memberService.application(request, username);
+  }
+
+  @PostMapping("/api/member/getMemberships")
+  public ResponseEntity<?> getMembershipsAPI(Authentication auth) {
+    String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
+    return memberService.getMemberships(username);
+  }
+
+  @GetMapping("/api/member/getMyClubs")
+  public ResponseEntity<?> getMyClubsAPI(Authentication auth) {
+    String username = ((CustomUserDetails) auth.getPrincipal()).getUsername();
+    return memberService.getMyClubs(username);
+  }
+
 }

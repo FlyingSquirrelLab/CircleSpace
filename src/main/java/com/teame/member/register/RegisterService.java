@@ -3,6 +3,9 @@ package com.teame.member.register;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.teame.club.category.Category;
+import com.teame.club.category.CategoryId;
+import com.teame.club.category.CategoryRepository;
 import com.teame.member.Member;
 import com.teame.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @Service
@@ -21,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 public class RegisterService {
 
   private final MemberRepository memberRepository;
+  private final CategoryRepository categoryRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   public ResponseEntity<String> phoneNumberCheck(String request) {
@@ -82,21 +88,38 @@ public class RegisterService {
     }
   }
 
-  public ResponseEntity<String> registerProc(RegisterDTO registerDTO) {
+  public ResponseEntity<String> registerProc(Map<String, Object> request) {
     try {
+      String username = (String) request.get("username");
+      String password = (String) request.get("password");
+      String displayName = (String) request.get("displayName");
+      String realName = (String) request.get("realName");
+      String phoneNumber = (String) request.get("phoneNumber");
+      Long universityId = ((Number) request.get("universityId")).longValue();
+
+      List<String> categoryNames = (List<String>) request.get("categoryNames");
+
       Member member = new Member();
-      member.setUsername(registerDTO.getUsername());
-      member.setPassword(bCryptPasswordEncoder.encode(registerDTO.getPassword()));
-      member.setDisplayName(registerDTO.getDisplayName());
-      member.setRealName(registerDTO.getRealName());
-      member.setPhoneNumber(registerDTO.getPhoneNumber());
-      member.setSchoolCode(registerDTO.getSchoolCode());
+      member.setUsername(username);
+      member.setPassword(bCryptPasswordEncoder.encode(password));
+      member.setDisplayName(displayName);
+      member.setRealName(realName);
+      member.setPhoneNumber(phoneNumber);
       member.setRole("ROLE_USER");
+      member.setUniversityId(universityId);
+
+      for (String categoryName : categoryNames) {
+        Category category = categoryRepository.findByName(categoryName)
+            .orElseThrow(() -> new IllegalArgumentException("Category not found: " + categoryName));
+        CategoryId categoryId = new CategoryId();
+        categoryId.setId(category.getId());
+        member.addCategoryId(categoryId);
+      }
+
       memberRepository.save(member);
       return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원가입 실패" + e.getMessage());
     }
   }
-
 }

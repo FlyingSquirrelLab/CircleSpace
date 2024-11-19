@@ -4,8 +4,6 @@ import {useAuth} from "../../authContext.jsx";
 import axios from 'axios'
 import blankLike from '../../assets/blank_like.png'
 import filledLike from '../../assets/filled_like.png'
-import blankStar from '../../assets/blankStar.png'
-import filledStar from '../../assets/filledStar.png'
 import axiosInstance from "../../axiosInstance.jsx";
 import Review from "../../components/review.jsx";
 import './detail.css';
@@ -19,15 +17,19 @@ const Detail=()=>{
 
   const [title, setTitle] = useState('');
   const [liked, setLiked] = useState(false);
-  const [featured, setFeatured] = useState(false);
   const [detailImageList, setDetailImageList] = useState([]);
+
+  const [categories, setCategories] = useState([]);
+  const [universities, setUniversities] = useState([]);
 
   useEffect(() => {
     try {
-      axios.get(`/api/club/getById/${id}`).then((data) => {
-        setClub(data.data)
-        setTitle(data.data.title)
-        setDetailImageList(data.data.detailImages)
+      axios.get(`/api/club/getById/${id}`).then((response) => {
+        setClub(response.data);
+        setTitle(response.data.title);
+        setDetailImageList(response.data.detailImages);
+        setCategories(response.data.categories);
+        setUniversities(response.data.universities);
       })
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -43,12 +45,6 @@ const Detail=()=>{
       });
     }
   }, [username, id]);
-
-  useEffect(() => {
-    axios.get(`/api/club/checkFeatured/${id}`).then((response) => {
-      setFeatured(response.data.featured)
-    });
-  }, [id]);
 
   const handleLikeClick = async () => {
     if (username === '') {
@@ -68,19 +64,13 @@ const Detail=()=>{
     }
   };
 
-  const handleFeatureClick = async () => {
-    try {
-      if (featured) {
-        await axios.put(`/api/admin/unfeatureClubById/${id}`);
-        setFeatured(false);
-      } else {
-        await axios.put(`/api/admin/featureClubById/${id}`);
-        setFeatured(true);
-      }
-    } catch (error) {
-      console.error("Error toggling feature", error);
+  const formatUnited = (united) => {
+    if (united === false) {
+      return 'X';
+    } else {
+      return 'O';
     }
-  };
+  }
 
   return(
     club && (
@@ -91,26 +81,52 @@ const Detail=()=>{
               <button className='edit-button'
                       onClick={() => nav(`/editClub/${club.id}`)}
               >동아리 수정하기</button>
-              <div className='feature-bn'>
-                <img
-                  src={featured ? filledStar : blankStar}
-                  width='20px'
-                  height='20px'
-                  onClick={handleFeatureClick}
-                  alt="Feature Button"
-                />
-              </div>
             </div> : <p></p>
         }
         <div className="detail-container">
           <img className='club-img' src={club.imageUrl} alt="동아리 대표이미지"/>
           <div className='detail-contents'>
             <div className='detail-box'>
-              <p className='club-description'>{club.description}</p>
               <h4 className='club-title'>{club.title}</h4>
+              <p className='club-description'>{club.description}</p>
+              <p className='club-description'>모집 일정 : {club.period}</p>
+              <p className='club-description'>회비 안내 : {club.fee}</p>
+              <p className='club-description'>모집 대상 : {club.target}</p>
+              <p className='club-description'>유의사항 : {club.note}</p>
+              <p className='club-description'>주요 활동 : {club.activity}</p>
+              <p className='club-description'>연락처 : {club.contact}</p>
+              <p className='club-description'>연합동아리 여부 : {formatUnited(club.united)}</p>
+              <div>
+                <p className='club-description'>소속 카테고리 : </p>
+                {Array.isArray(categories) && categories.length > 0 ? (
+                  categories.map((category) => (
+                    <span className='club-description' key={category.id}>{category.name} </span>
+                  ))
+                ) : (
+                  <p></p>
+                )}
+              </div>
+              <div>
+                <p className='club-description'>소속 대학교 : </p>
+                {Array.isArray(universities) && universities.length > 0 ? (
+                  universities.map((university) => (
+                    <span className='club-description' key={university.id}>{university.title} </span>
+                  ))
+                ) : (
+                  <p></p>
+                )}
+              </div>
+            </div>
+            <div>
+            </div>
+            <div>
+              <button onClick={() => {
+                nav(`/application/${id}`);
+              }}>지원하기
+              </button>
             </div>
             <div className='wishlist'>
-              <p>위시리스트</p>
+              <p>관심동아리 등록</p>
               <img
                 src={liked ? filledLike : blankLike}
                 width='18px'

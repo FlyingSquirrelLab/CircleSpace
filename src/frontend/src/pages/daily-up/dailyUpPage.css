@@ -1,0 +1,34 @@
+.daily-up-page-body{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 15px;
+}
+.daily-up-page-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.daily-up-page-contents{
+    width: 100%;
+    border-top: 1px solid lightgray;
+    margin: 20px;
+}
+.daily-up-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid lightgray;
+    padding: 10px;
+}
+
+.upload-daily-up{
+    display: flex;
+    border: none;
+    background-color: black;
+    color: white;
+    padding: 15px;
+    border-radius: 3px;
+}
+.daily-up-title{
+    width: 80%;
+}

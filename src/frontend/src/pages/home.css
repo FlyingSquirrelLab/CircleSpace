@@ -8,9 +8,11 @@
     width: 100%;
     height: auto;
 }
+
 .club-home-list{
     gap: 10px;
 }
+
 .club-home-featuredfont {
     display: flex;
     margin-top: 35px;

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -30,8 +32,8 @@ public class RegisterController {
   }
 
   @PostMapping("/api/register/registerProc")
-  public ResponseEntity<String> registerProcAPI(@RequestBody RegisterDTO registerDTO) {
-    return registerService.registerProc(registerDTO);
+  public ResponseEntity<String> registerProcAPI(@RequestBody Map<String, Object> request) {
+    return registerService.registerProc(request);
   }
 
 }
