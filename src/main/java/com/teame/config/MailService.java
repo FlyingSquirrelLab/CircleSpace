@@ -3,12 +3,14 @@ package com.teame.config;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class MailService {
@@ -39,6 +41,7 @@ public class MailService {
     message.setRecipients(MimeMessage.RecipientType.TO, mail);
     message.setSubject("이메일 인증");
     String body = "";
+    body += "<h3>CIRCLESPACE</h3>";
     body += "<h3>요청하신 인증 번호입니다.</h3>";
     body += "<h1>" + number + "</h1>";
     body += "<h3>감사합니다.</h3>";
@@ -47,12 +50,13 @@ public class MailService {
     return message;
   }
 
-  public String sendSimpleMessage(String sendEmail) throws MessagingException {
+  public String sendSimpleMessage(String username) throws MessagingException {
     String number = createNumber();
 
-    MimeMessage message = createMail(sendEmail, number);
+    MimeMessage message = createMail(username, number);
     try {
       javaMailSender.send(message);
+      log.info("Email successfully sent to: {}", username);
     } catch (MailException e) {
       e.printStackTrace();
       throw new IllegalArgumentException("메일 발송 중 오류가 발생했습니다.");

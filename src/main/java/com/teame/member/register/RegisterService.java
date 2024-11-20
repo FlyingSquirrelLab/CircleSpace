@@ -6,6 +6,8 @@ import com.google.gson.JsonParser;
 import com.teame.club.category.Category;
 import com.teame.club.category.CategoryId;
 import com.teame.club.category.CategoryRepository;
+import com.teame.club.university.University;
+import com.teame.club.university.UniversityRepository;
 import com.teame.member.Member;
 import com.teame.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -28,6 +31,7 @@ public class RegisterService {
   private final MemberRepository memberRepository;
   private final CategoryRepository categoryRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final UniversityRepository universityRepository;
 
   public ResponseEntity<String> phoneNumberCheck(String request) {
 
@@ -95,7 +99,6 @@ public class RegisterService {
       String displayName = (String) request.get("displayName");
       String realName = (String) request.get("realName");
       String phoneNumber = (String) request.get("phoneNumber");
-      Long universityId = ((Number) request.get("universityId")).longValue();
 
       List<String> categoryNames = (List<String>) request.get("categoryNames");
 
@@ -106,7 +109,15 @@ public class RegisterService {
       member.setRealName(realName);
       member.setPhoneNumber(phoneNumber);
       member.setRole("ROLE_USER");
-      member.setUniversityId(universityId);
+
+      String domain = username.substring(username.indexOf('@') + 1);
+      Optional<University> universityOpt = universityRepository.findByCode(domain);
+
+      if (universityOpt.isPresent()) {
+        member.setUniversityId(universityOpt.get().getId());
+      } else {
+        member.setUniversityId(9999L);
+      }
 
       for (String categoryName : categoryNames) {
         Category category = categoryRepository.findByName(categoryName)

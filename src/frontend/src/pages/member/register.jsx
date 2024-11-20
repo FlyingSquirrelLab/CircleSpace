@@ -7,9 +7,6 @@ const Register = () => {
 
   const nav = useNavigate();
 
-  const [username, setUsername] = useState('');
-  const [usernameError, setUsernameError] = useState('');
-
   const [displayName, setDisplayName] = useState('');
   const [displayNameError, setDisplayNameError] = useState('');
 
@@ -21,10 +18,14 @@ const Register = () => {
   const [categories, setCategories] = useState([]);
   const [availableCategories, setAvailableCategories] = useState([]);
 
-  const [universityId, setUniversityId] = useState(0);
-  const [availableUniversities, setAvailableUniversities] = useState([]);
-
   const [realName, setRealName] = useState('');
+
+  const [username, setUsername] = useState('');
+  const [isEmailVerified, setIsEmailVerified] = useState(false); // 인증 여부
+  const [emailMessage, setEmailMessage] = useState('');
+  const [emailCode, setEmailCode] = useState('');
+  const [inputEmailCode, setInputEmailCode] = useState('');
+  const [isEmailCodeSent, setIsEmailCodeSent] = useState(false);
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
@@ -46,28 +47,41 @@ const Register = () => {
     getCategories();
   }, []);
 
-  useEffect(() => {
-    const getUniversities = async () => {
-      const response = await axios.get('/api/university/getAll');
-      console.log(response.status);
-      setAvailableUniversities(response.data);
-    }
-    getUniversities();
-  }, []);
-
-  const onChangeUsernameHandler = async () => {
+  const sendEmailCode = async () => {
     try {
-      const res = await axios.post('/api/register/usernameCheck', {
+      const checkResponse = await axios.post('/api/register/usernameCheck', {
         username
       });
-      console.log(res.status);
-      setUsernameError('사용 가능한 이메일입니다.');
+      if (checkResponse.status === 200) {
+        const response = await axios.post(`/api/register/sendEmail/${username}`);
+        setEmailCode(response.data);
+        setIsEmailCodeSent(true);
+        setEmailMessage('이메일 인증번호가 발송되었습니다.');
+      } else if (checkResponse.status === 409) {
+        setEmailMessage('이미 사용중인 이메일입니다.');
+        setIsEmailCodeSent(false);
+      } else {
+        setEmailMessage('올바르지 않은 이메일 형식입니다.');
+      }
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        setUsernameError('이미 사용중인 이메일입니다.');
+        setEmailMessage('이미 존재하는 이메일입니다. 다른 이메일을 입력하세요.');
       } else {
-        setUsernameError('올바르지 않은 이메일 형식입니다.');
+        setEmailMessage('인증번호 발송에 실패했습니다. 다시 시도해주세요.');
       }
+      setIsEmailCodeSent(false);
+    }
+  };
+
+  const verifyEmail = async () => {
+    if (inputEmailCode === String(emailCode)) {
+      const response = await axios.get(`/api/register/universityCheck/${username}`);
+      console.log(response.data);
+      const universityInfo = response.data;
+      setIsEmailVerified(true);
+      setEmailMessage('인증이 완료되었습니다. ' + universityInfo);
+    } else {
+      setEmailMessage('인증번호가 일치하지 않습니다. 다시 시도해주세요.');
     }
   };
 
@@ -139,23 +153,12 @@ const Register = () => {
     }
   };
 
-  const handleUniversityChange = (e) => {
-    const selectedUniversityId = parseInt(e.target.value, 10);
-    if (universityId === selectedUniversityId) {
-      setUniversityId(0); // 선택 해제
-    } else {
-      setUniversityId(selectedUniversityId); // 선택된 대학교 ID 설정
-    }
-  };
-
   const handleCategoryChange = (e) => {
     const value = e.target.value;
     setCategories(prev =>
       prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
     );
   };
-
-
 
   const signupHandler = async () => {
 
@@ -168,8 +171,8 @@ const Register = () => {
       return;
     }
 
-    if (usernameError !== '사용 가능한 이메일입니다.') {
-      alert("이메일이 중복됩니다.");
+    if (!isEmailVerified) {
+      alert("이메일 인증이 완료되지 않았습니다.");
       return;
     }
 
@@ -183,11 +186,6 @@ const Register = () => {
       return;
     }
 
-    if (universityId === 0) {
-      alert("소속 대학교를 선택하세요.");
-      return;
-    }
-
     try {
       const response = await axios.post('/api/register/registerProc', {
         username,
@@ -196,7 +194,6 @@ const Register = () => {
         realName,
         phoneNumber,
         categoryNames: categories,
-        universityId: universityId
       });
       console.log(response.status);
       nav('/');
@@ -219,23 +216,23 @@ const Register = () => {
           <div className='join-heading'>
             <p>* 전화번호</p>
             <input
-              type='tel'
-              className='displayName'
-              placeholder='전화번호를 입력하세요 (숫자만)'
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+                type='tel'
+                className='displayName'
+                placeholder='전화번호를 입력하세요 (숫자만)'
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
             />
             <button onClick={sendVerificationCode}>전화번호 인증</button>
             {isCodeSent && !isPhoneNumberVerified && (
-              <>
-                <input
-                  type="text"
-                  placeholder="인증번호 입력"
-                  value={inputVerificationCode}
-                  onChange={(e) => setInputVerificationCode(e.target.value)}
-                />
-                <button onClick={verifyCode}>인증하기</button>
-              </>
+                <>
+                  <input
+                      type="text"
+                      placeholder="인증번호 입력"
+                      value={inputVerificationCode}
+                      onChange={(e) => setInputVerificationCode(e.target.value)}
+                  />
+                  <button onClick={verifyCode}>인증하기</button>
+                </>
             )}
             {verificationMessage && <p className='verification-message'>{verificationMessage}</p>}
           </div>
@@ -243,24 +240,37 @@ const Register = () => {
           <div className='join-heading'>
             <p>* 이메일</p>
             <input
-              type='email'
-              className='username'
-              placeholder='이메일을 입력하세요'
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+                type='email'
+                className='username'
+                placeholder='이메일을 입력하세요'
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
             />
-            <button onClick={onChangeUsernameHandler}>이메일 중복 확인</button>
-            {usernameError && <p className='error-message'>{usernameError}</p>}
+            <button onClick={sendEmailCode}>이메일 인증</button>
+            {isEmailCodeSent && !isEmailVerified && (
+                <div>
+                  <br/>
+                  <input
+                      type="text"
+                      className='username'
+                      placeholder="이메일 인증번호 입력"
+                      value={inputEmailCode}
+                      onChange={(e) => setInputEmailCode(e.target.value)}
+                  />
+                  <button onClick={verifyEmail}>인증하기</button>
+                </div>
+            )}
+            {emailMessage && <p className='verification-message'>{emailMessage}</p>}
           </div>
 
           <div className='join-heading'>
             <p>* 닉네임</p>
             <input
-              type='text'
-              className='displayName'
-              placeholder='닉네임을 입력하세요'
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
+                type='text'
+                className='displayName'
+                placeholder='닉네임을 입력하세요'
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
             />
             <button onClick={onChangeDisplayNameHandler}>닉네임 중복 확인</button>
             {displayNameError && <p className='error-message'>{displayNameError}</p>}
@@ -269,10 +279,10 @@ const Register = () => {
           <div>
             <p>* 비밀번호</p>
             <input
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-              placeholder="Enter password"
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+                placeholder="Enter password"
             />
             {passwordError && <p className='error-message'>{passwordError}</p>}
           </div>
@@ -280,10 +290,10 @@ const Register = () => {
           <div>
             <p>* 비밀번호 확인</p>
             <input
-              type="password"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-              placeholder="Confirm password"
+                type="password"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                placeholder="Confirm password"
             />
             {confirmPasswordError && <p className='error-message'>{confirmPasswordError}</p>}
           </div>
@@ -291,45 +301,27 @@ const Register = () => {
           <div className='join-heading'>
             <p>* 성함</p>
             <input
-              type='text'
-              className='displayName'
-              placeholder='성함을 입력하세요'
-              value={realName}
-              onChange={(e) => setRealName(e.target.value)}
+                type='text'
+                className='displayName'
+                placeholder='성함을 입력하세요'
+                value={realName}
+                onChange={(e) => setRealName(e.target.value)}
             />
           </div>
 
           <div className='head'>
-            <h4>카테고리 선택</h4>
+            <h4>관심 카테고리 선택</h4>
             <div className='editor-categories'>
               {availableCategories.map(category => (
-                <label key={category.id}>
-                  <input
-                    type="checkbox"
-                    value={category.name}
-                    onChange={handleCategoryChange}
-                    checked={categories.includes(category.name)}
-                  />
-                  {category.name}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className='head'>
-            <h4>소속 대학교 선택</h4>
-            <div className='editor-categories'>
-              {availableUniversities.map(university => (
-                <label key={university.id}>
-                  <input
-                    type="radio"
-                    name="university"
-                    value={university.id}
-                    onChange={handleUniversityChange}
-                    checked={universityId === university.id}
-                  />
-                  {university.title}
-                </label>
+                  <label key={category.id}>
+                    <input
+                        type="checkbox"
+                        value={category.name}
+                        onChange={handleCategoryChange}
+                        checked={categories.includes(category.name)}
+                    />
+                    {category.name}
+                  </label>
               ))}
             </div>
           </div>
