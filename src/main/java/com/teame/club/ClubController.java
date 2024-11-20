@@ -92,8 +92,8 @@ public class ClubController {
   @PostMapping("/api/club/upload")
   public ResponseEntity<String> uploadClubAPI(@RequestBody Map<String, Object> request,
                                               Authentication auth) {
-    Long id = ((CustomUserDetails) auth.getPrincipal()).getMember().getId();
-    return clubService.uploadClub(request, id);
+    String username = ((CustomUserDetails) auth.getPrincipal()).getMember().getUsername();
+    return clubService.uploadClub(request, username);
   }
 
   @GetMapping("/api/club/checkFeatured/{id}")

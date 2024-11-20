@@ -51,7 +51,7 @@ public class ClubService {
     }
   }
 
-  public ResponseEntity<String> uploadClub(Map<String, Object> request, Long id) {
+  public ResponseEntity<String> uploadClub(Map<String, Object> request, String username) {
     try {
       Club club = new Club();
 
@@ -68,7 +68,7 @@ public class ClubService {
       String activity = (String) request.get("activity");
       String contact = (String) request.get("contact");
 
-      club.setManagerId(id);
+      club.setManagerId(memberRepository.findByUsername(username).getId());
       club.setTitle(title);
       club.setImageUrl(imageUrl);
       club.setDescription(description);

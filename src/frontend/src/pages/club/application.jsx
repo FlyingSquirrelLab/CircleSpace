@@ -1,7 +1,8 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import axiosInstance from "../../axiosInstance.jsx";
+import './application.css';
 
 const Application = () =>{
 
@@ -40,22 +41,38 @@ const Application = () =>{
 
   return (
       <>
-        <div>
-          <div>{club.title}</div>
-          <div>{club.description}</div>
-          <img src={club.imageUrl} alt="clubImage"/>
-        </div>
+        <div className='editor-body'>
+          <div className='editor-container'>
+            <div className='head'>
+              <div className='title-img'>
+                <h2>동아리 지원하기 : {club.title}</h2>
+                <img width='150' src={club.imageUrl} alt="clubImage"/>
+              </div>
+              <p className='club-description'>{club.description}</p>
+              <p className='club-description'>모집 일정 : {club.period}</p>
+              <p className='club-description'>회비 안내 : {club.fee}</p>
+              <p className='club-description'>모집 대상 : {club.target}</p>
+              <p className='club-description'>유의사항 : {club.note}</p>
+              <p className='club-description'>주요 활동 : {club.activity}</p>
+            </div>
 
-        <div>
-          <input
-            type = 'text'
-            placeholder = '본인 한 줄 소개'
-            value = {intro}
-            onChange = {(e)=>{setIntro(e.target.value)}}
-          />
-        </div>
+            <div className='edit-inputs'>
+              <div className='head'>
+                <input
+                    className='editor-title'
+                    type='text'
+                    placeholder='본인 한 줄 소개'
+                    value={intro}
+                    onChange={(e) => {
+                      setIntro(e.target.value)
+                    }}
+                />
+              </div>
+              <button className='editor-summitbutton' onClick={SubmitHandler}>제출</button>
+            </div>
 
-        <button onClick={SubmitHandler}>제출</button>
+          </div>
+        </div>
       </>
   );
 

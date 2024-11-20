@@ -1,0 +1,135 @@
+.editor-body{
+    display: flex;
+    max-width: 500px;
+    margin: 174px auto;
+    padding: 20px;
+}
+
+.editor-form{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.editor-container{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.edit-form{
+    width: 100%;
+    margin: auto;
+    align-items: center;
+}
+
+.edit-container{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.edit-inputs{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+.editor-imgbox{
+    margin: 20px 0px;
+}
+
+.editor-button{
+    margin-top: 20px;
+}
+
+.head > p{
+    margin: 10px;
+}
+
+.edit-imgbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 180px;
+    gap: 20px;
+}
+.title-img{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 25px;
+}
+.title-img h2{
+    margin: 0;
+}
+
+.editor-title, .editor-price, .editor-file, .editor-description{
+    display: flex;
+    width: 500px;
+    padding: 20px;
+    background-color: #e8e8e8;
+    border-radius: 5px;
+    align-items: center;
+    border: none;
+}
+
+.editor-img{
+    display: flex;
+    width: 300px;
+    padding: 10px;
+    align-items: center;
+}
+
+.editor-summitbutton{
+    display: flex;
+    background-color: #ffa733;
+    color: white;
+    justify-content: center;
+}
+
+.editor-summitbutton:hover{
+    background-color: #ffffff;
+    color: #ffa733;
+}
+
+.edit-buttons{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.delete-bt{
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.71);
+    color: white;
+    justify-content: center;
+}
+.delete-bt:hover{
+    background-color: white;
+    color: red;
+}
+
+.delete-bt, .editor-summitbutton{
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    padding: 10px 15px ;
+    width: 100px;
+    border-radius: 3px;
+}
+
+.editor-categories {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px; /* 각 체크박스 간격을 조정 */
+}
