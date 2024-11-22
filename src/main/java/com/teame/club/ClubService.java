@@ -195,10 +195,19 @@ public class ClubService {
   public ResponseEntity<String> deleteClub(Long id) {
     Optional<Club> club = clubRepository.findById(id);
     if (club.isPresent()) {
+
       for (Category category : club.get().getCategories()) {
         category.getClubs().remove(club.get());
         categoryRepository.save(category);
       }
+
+      for (University university : club.get().getUniversities()) {
+        university.getClubs().remove(club.get());
+        universityRepository.save(university);
+      }
+
+      List<Membership> memberships = membershipRepository.findByClub(club.get());
+      membershipRepository.deleteAll(memberships);
 
       List<Like> likes = likeRepository.findByClub(club.get());
       likeRepository.deleteAll(likes);

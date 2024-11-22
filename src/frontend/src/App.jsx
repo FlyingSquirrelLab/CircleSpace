@@ -65,7 +65,6 @@ function App() {
           <Route path='/uploadClub' element={<UploadClub/>} />
           <Route path='/dataParser' element={<DataParser/>}/>
           <Route path='/application/:id' element={<Application/>} />
-          <Route path='/clubstatus/:id' element={<ClubStatus/>} />
           <Route path='/daily-up/page' element={<DailyUpPage formatDate={formatDate}/>} />
           <Route path='/daily-up/detail/:id' element={<DailyUpDetail formatDate={formatDate}/>} />
           <Route path='/application/:id' element={<Application/>} />
