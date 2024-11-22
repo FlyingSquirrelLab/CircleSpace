@@ -57,6 +57,14 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+bootJar {
+	archiveFileName = 'circlespace.jar'
+	manifest {
+		attributes(
+				'Start-Class': 'com.teame.TeamEApplication'
+		)
+	}
+}
 
 //def webappDir = "$projectDir/src/frontend"
 //
