@@ -25,6 +25,7 @@ public class PromoDataParser {
     private final PromoRepository promoRepository;
     private FluentWait<WebDriver> wait;
     private FluentWait<WebDriver> shortWait;
+    private int parsed_cnt;
 
     @Autowired
     public PromoDataParser(PromoRepository promoRepository) {
@@ -32,7 +33,7 @@ public class PromoDataParser {
     }
 
     public int runSeleniumTask() {
-        int cnt=0;
+        parsed_cnt=0;
         try  {
             initializeDriver();
 
@@ -50,13 +51,12 @@ public class PromoDataParser {
                             log.info("Reached the most recent data in the database.");
                             break outerLoop;
                         }
-                        cnt++;
                     }
                 }
             }
 
 
-            log.info("Successfully " +cnt +" parsed data at " +
+            log.info("Successfully " + parsed_cnt +" parsed data at " +
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         } catch (Exception e) {
             log.info("Error initializing writer: " + e.getMessage());
@@ -66,7 +66,7 @@ public class PromoDataParser {
                 driver.quit();
             }
         }
-        return cnt;
+        return parsed_cnt;
     }
 
     private void initializeDriver() {
@@ -107,6 +107,7 @@ public class PromoDataParser {
 
         driver.get(url);
         try {
+            Thread.sleep(2000);
             shortWait.until(webDriver -> webDriver.getCurrentUrl().equals(url));
         } catch (TimeoutException te ) {
             log.info("You need to log in again to refresh the cookies.");
@@ -135,8 +136,10 @@ public class PromoDataParser {
             try {
                 saveCookies(driver, new File("src/main/resources/cookies.data"));
             }catch(Exception e){
-                log.info("Error saving cookies");
+                log.info("Error saving cookies " + e.getMessage());
             }
+        }catch (Exception e){
+            log.info("Error trying new login: " +  e.getMessage());
         }
     }
 
@@ -200,6 +203,7 @@ public class PromoDataParser {
                 }
                 if(!checkDuplicate(title, body.toString())){
                     writeArticleDataToDB(title, postedTime, body.toString());
+                    parsed_cnt++;
                 }
             }
 
