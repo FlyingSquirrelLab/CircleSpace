@@ -198,9 +198,9 @@ public class PromoDataParser {
                     String filteredText = paragraph.getText();
                     body.append(filteredText).append("\n");
                 }
-                if (checkInDB(title, postedTime)) {
-                    return false;
-                }
+//                if (checkInDB(title, postedTime)) {
+//                    return false;
+//                }
                 if(!checkDuplicate(title, body.toString())){
                     writeArticleDataToDB(title, postedTime, body.toString());
                     parsed_cnt++;
