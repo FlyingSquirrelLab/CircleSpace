@@ -26,6 +26,7 @@ public class PromoDataParser {
     private FluentWait<WebDriver> wait;
     private FluentWait<WebDriver> shortWait;
     private int parsed_cnt;
+    private static final String fileName = "cookies.data";
 
     @Autowired
     public PromoDataParser(PromoRepository promoRepository) {
@@ -94,13 +95,8 @@ public class PromoDataParser {
 
         driver.get("https://everytime.kr");
 
-        String resourcePath = "cookies.data";
-        try (InputStream resourceStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
-            if (resourceStream == null) {
-                log.info("Resource not found in classpath: " + resourcePath);
-            } else {
-                loadCookiesFromStream(driver, resourceStream);
-            }
+        try{
+            loadCookiesFromStream(driver);
         } catch (Exception e) {
             log.info("Error loading cookies: " + e.getMessage());
         }
@@ -134,7 +130,7 @@ public class PromoDataParser {
                 }
             }
             try {
-                saveCookies(driver, new File("src/main/resources/cookies.data"));
+                saveCookies(driver);
             }catch(Exception e){
                 log.info("Error saving cookies " + e.getMessage());
             }
@@ -198,9 +194,9 @@ public class PromoDataParser {
                     String filteredText = paragraph.getText();
                     body.append(filteredText).append("\n");
                 }
-//                if (checkInDB(title, postedTime)) {
-//                    return false;
-//                }
+                if (checkInDB(title, postedTime)) {
+                    return false;
+                }
                 if(!checkDuplicate(title, body.toString())){
                     writeArticleDataToDB(title, postedTime, body.toString());
                     parsed_cnt++;
@@ -237,20 +233,25 @@ public class PromoDataParser {
     }
 
     // 쿠키 저장 메서드
-    private static void saveCookies(WebDriver driver, File file) throws IOException {
-        FileWriter fileWriter = new FileWriter(file);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        Set<Cookie> cookies = driver.manage().getCookies();
-        for (Cookie cookie : cookies) {
-            bufferedWriter.write(cookie.getName() + ";" + cookie.getValue() + ";" + cookie.getDomain() + ";"
-                    + cookie.getPath() + ";" + cookie.getExpiry() + ";" + cookie.isSecure());
-            bufferedWriter.newLine();
+    private static void saveCookies(WebDriver driver) throws IOException {
+        File file = new File(System.getProperty("user.dir"), fileName);
+
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+            Set<Cookie> cookies = driver.manage().getCookies();
+            for (Cookie cookie : cookies) {
+                bufferedWriter.write(cookie.getName() + ";" + cookie.getValue() + ";" + cookie.getDomain() + ";"
+                        + cookie.getPath() + ";" + cookie.getExpiry() + ";" + cookie.isSecure());
+                bufferedWriter.newLine();
+            }
         }
-        bufferedWriter.close();
     }
 
-    private static void loadCookiesFromStream(WebDriver driver, InputStream inputStream) throws IOException {
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+    private static void loadCookiesFromStream(WebDriver driver) throws IOException {
+        File file = new File(System.getProperty("user.dir"), fileName);
+        if (!file.exists()) {
+            throw new FileNotFoundException("쿠키 파일이 존재하지 않습니다: " + file.getAbsolutePath());
+        }
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] cookieDetails = line.split(";");
