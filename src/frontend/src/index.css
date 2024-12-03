@@ -1,6 +1,6 @@
 @font-face {
-    font-family: "Pyeongtaek";
-    src: url("./assets/fonts/PyeongtaekRegular.ttf") format("truetype");
+    font-family: "ChosunGu";
+    src: url("./assets/fonts/ChosunGu.ttf") format("truetype");
 }
 
 html, body{
@@ -8,5 +8,5 @@ html, body{
 }
 
 body * {
-    font-family: "Pyeongtaek";
+    font-family: "ChosunGu";
 }

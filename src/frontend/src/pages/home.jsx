@@ -1,5 +1,4 @@
 import BannerMain from '../assets/banner.png';
-import BannerMobile from '../assets/Banner750x760.jpg';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import List from "../components/list.jsx";
@@ -55,18 +54,20 @@ const Home = () => {
         <img
           className="club-deskTopSize"
           src={BannerMain} />
-        {/*<img*/}
-        {/*  className="club-mobileSize"*/}
-        {/*  src={BannerMobile} />*/}
       </div>
       <div className='club-home-list'>
         <div className='club-home-featuredfont'>추천 동아리</div>
         {username === '' ? <></> :
-          <div className='my-uni'>
-            <input type="checkbox"
-                   className='my-uni-check'
-                   checked={affiliation}
-                   onChange={(e) => setAffiliation(e.target.checked)} /><label>소속 대학교만 보기</label>
+          <div className='club-list-control-bt'>
+            {affiliation ?
+              <button onClick={() => {
+                setAffiliation(false);
+              }}>전체 대학교 보기</button>
+              :
+              <button onClick={() => {
+                setAffiliation(true);
+              }}>소속 대학교만 보기</button>
+            }
           </div>
         }
         <div className='club-clublist-row'>

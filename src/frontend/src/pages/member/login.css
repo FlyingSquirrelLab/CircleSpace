@@ -57,3 +57,7 @@
     background-color: white;
     color: black;
 }
+
+.to-home {
+    cursor: pointer;
+}

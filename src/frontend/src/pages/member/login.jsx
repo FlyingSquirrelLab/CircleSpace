@@ -84,12 +84,14 @@ function Login() {
         </form>
         {error && <p style={{color: 'red'}}>{error}</p>}
         <div>
-          <button className='findButton'>아이디/비밀번호 찾기</button>
+          <button
+            className='findButton'
+            onClick={() => {nav('/findUserInfo')}}>아이디/비밀번호 찾기</button>
           <h4>아직 회원이 아니신가요?</h4>
           <button className='joinButton' onClick={()=>nav('/register')}>회원가입</button>
         </div>
         <div>
-          <p onClick={() => {
+          <p className='to-home' onClick={() => {
             nav('/');
           }}>홈으로</p>
         </div>

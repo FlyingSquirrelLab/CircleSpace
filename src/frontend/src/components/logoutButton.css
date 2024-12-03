@@ -1,4 +1,5 @@
 .logoutButton{
+    cursor: pointer;
     display: flex;
     border: none;
     padding: 0px;

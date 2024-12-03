@@ -55,15 +55,21 @@ const ClubList = () => {
     <div className="club-body">
       <div className='club-list-control'>
         {username === '' ? <></> :
-          <div>
-            <input type="checkbox"
-                   checked={affiliation}
-                   onChange={(e) => setAffiliation(e.target.checked)} /><label>소속 대학교만 보기</label>
+          <div className='club-list-control-bt'>
+            {affiliation ?
+              <button onClick={() => {
+                setAffiliation(false);
+              }}>전체 대학교 보기</button>
+              :
+              <button onClick={() => {
+                setAffiliation(true);
+              }}>소속 대학교만 보기</button>
+            }
           </div>
         }
         <div className='club-list-control-bt'>
-          <button className='latest' onClick={() => handleOrder('createdAt')}>최신순</button>
-          <button className='latest' onClick={() => handleOrder('views')}>조회 많은 순</button>
+          <button onClick={() => handleOrder('createdAt')}>최신순</button>
+          <button onClick={() => handleOrder('views')}>조회 많은 순</button>
         </div>
       </div>
 

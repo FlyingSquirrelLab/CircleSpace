@@ -22,15 +22,8 @@ const Header = () => {
   return (
     <div className='club-header-body'>
       <div className='club-top-nav'>
-        {displayName ? <p className='club-topnav-hello'>안녕하세요, {displayRole} {displayName} 님!</p> : <p></p>}
+        {displayName ? <p className='club-topnav-hello'>안녕하세요 {displayName} 님!</p> : <p></p>}
         {displayName ? <LogoutButton/> : <p></p>}
-        {displayName ? <p></p> :
-          <div>
-            <span onClick={() => nav('/login')}>로그인</span>
-            &nbsp;&nbsp;
-            <span onClick={() => nav('/register')}>회원가입</span>
-          </div>
-        }
       </div>
       <div className='club-header'>
         <div className='club-category-icon'>
@@ -41,17 +34,25 @@ const Header = () => {
           }}/>
         </div>
         <div className='club-left-nav'>
-          <div
-            className='club-category'
-            onClick={() => {
-              if (username === '') {
-                nav('/login')
-              } else {
-                nav('/myPage')
-              }
-            }}
-          >MYPAGE
-          </div>
+          {displayName ?
+            <div
+              className='club-category'
+              onClick={() => {
+                if (username === '') {
+                  nav('/login')
+                } else {
+                  nav('/myPage')
+                }
+              }}
+            >MYPAGE
+            </div>
+            :
+            <div className='club-category'>
+              <span onClick={() => nav('/login')}>로그인</span>
+              &nbsp;&nbsp;
+              <span onClick={() => nav('/register')}>회원가입</span>
+            </div>
+          }
           {role === "ROLE_ADMIN" ?
             <div className='club-category' onClick={() => nav('/adminPage')}
             >ADMIN</div>
