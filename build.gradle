@@ -66,48 +66,48 @@ bootJar {
 	}
 }
 
-//def webappDir = "$projectDir/src/frontend"
-//
-//def npmPath = System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('mac') ? "/opt/homebrew/bin/npm" : "/usr/bin/npm"
-//
-//sourceSets {
-//	main {
-//		resources {
-//			srcDirs = ["$webappDir/build", "$projectDir/src/main/resources"]
-//		}
-//	}}
-//
-//processResources {
-//	dependsOn "copyWebApp"
-//}
-//
-//task copyWebApp(type: Copy) {
-//	dependsOn "buildReact"
-//	from "$webappDir/dist"
-//	into "$projectDir/src/main/resources/static"
-//}
-//
-//task buildReact(type: Exec) {
-//	dependsOn "installReact"
-//	workingDir "$webappDir"
-//	inputs.dir "$webappDir"
-//	group = BasePlugin.BUILD_GROUP
-//	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-//		commandLine "npm.cmd", "run", "build"
-//	} else {
-//		commandLine npmPath, "run", "build"
-//	}
-//}
-//
-//task installReact(type: Exec) {
-//	workingDir "$webappDir"
-//	inputs.dir "$webappDir"
-//	group = BasePlugin.BUILD_GROUP
-//	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-//		commandLine "npm.cmd", "audit", "fix"
-//		commandLine "npm.cmd", "install"
-//	} else {
-//		commandLine npmPath, "audit", "fix"
-//		commandLine npmPath, "install"
-//	}
-//}
+def webappDir = "$projectDir/src/frontend"
+
+def npmPath = System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('mac') ? "/opt/homebrew/bin/npm" : "/usr/bin/npm"
+
+sourceSets {
+	main {
+		resources {
+			srcDirs = ["$webappDir/build", "$projectDir/src/main/resources"]
+		}
+	}}
+
+processResources {
+	dependsOn "copyWebApp"
+}
+
+task copyWebApp(type: Copy) {
+	dependsOn "buildReact"
+	from "$webappDir/dist"
+	into "$projectDir/src/main/resources/static"
+}
+
+task buildReact(type: Exec) {
+	dependsOn "installReact"
+	workingDir "$webappDir"
+	inputs.dir "$webappDir"
+	group = BasePlugin.BUILD_GROUP
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+		commandLine "npm.cmd", "run", "build"
+	} else {
+		commandLine npmPath, "run", "build"
+	}
+}
+
+task installReact(type: Exec) {
+	workingDir "$webappDir"
+	inputs.dir "$webappDir"
+	group = BasePlugin.BUILD_GROUP
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+		commandLine "npm.cmd", "audit", "fix"
+		commandLine "npm.cmd", "install"
+	} else {
+		commandLine npmPath, "audit", "fix"
+		commandLine npmPath, "install"
+	}
+}
