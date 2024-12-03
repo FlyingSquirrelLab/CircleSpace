@@ -9,7 +9,7 @@ const QnAPage = ({formatDate}) => {
 
   const {username} = useAuth();
   const nav = useNavigate();
-  const size = 2;
+  const size = 5;
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [qnaList, setQnAList] = useState([]);
