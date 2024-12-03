@@ -49,4 +49,5 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           mv circlespace.log /home/ubuntu/logs/circlespace_$(date +'%Y%m%d_%H%M%S').log || echo "No log to move"
-          java -jar circlespace.jar > circlespace.log 2>&1 &
+          java -Duser.timezone=Asia/Seoul -jar circlespace.jar > circlespace.log 2>&1 &
+
