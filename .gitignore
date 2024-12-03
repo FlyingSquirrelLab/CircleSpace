@@ -40,3 +40,6 @@ out/
 ### Selenium ###
 cookies.data
 output.txt
+
+### static ###
+src/main/resources/static
