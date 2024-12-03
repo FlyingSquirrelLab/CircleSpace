@@ -11,8 +11,3 @@
         display: none;
     }
 }
-@media screen and (max-width: 810px){
-    .adminpage-body{
-        padding: 30px;
-    }
-}

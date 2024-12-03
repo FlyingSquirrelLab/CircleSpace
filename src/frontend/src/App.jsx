@@ -23,10 +23,16 @@ import Application from "./pages/club/application.jsx";
 import ClubStatus from "./pages/club/clubStatus.jsx";
 import DailyUpPage from './pages/daily-up/dailyUpPage.jsx';
 import DailyUpDetail from './pages/daily-up/dailyUpDetail.jsx';
+import {useEffect} from "react";
+import FindUserInfo from "./pages/member/findUserInfo.jsx";
 
 function App() {
 
   const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -38,7 +44,6 @@ function App() {
 
     return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
   };
-
 
   return (
     <AuthProvider>
@@ -54,6 +59,7 @@ function App() {
           <Route path='/editClub/:id' element={<EditClub/>} />
           <Route path='/editPassword' element={<EditPassword/>} />
           <Route path='/editUserInfo' element={<EditUserInfo/>} />
+          <Route path='/findUserInfo' element={<FindUserInfo/>} />
           <Route path='/' element={<Home/>}/>
           <Route path='/likeList' element={<LikeList/>} />
           <Route path='/login' element={<Login/>} />

@@ -80,7 +80,8 @@ const Detail=()=>{
             <div className='detail-edit-bn'>
               <button className='edit-button'
                       onClick={() => nav(`/editClub/${club.id}`)}
-              >동아리 수정하기</button>
+              >동아리 수정하기
+              </button>
             </div> : <p></p>
         }
         <div className="detail-container">
@@ -89,28 +90,21 @@ const Detail=()=>{
             <div className='detail-box'>
               <h4 className='club-title'>{club.title}</h4>
               <p className='club-description'>{club.description}</p>
-              <p className='club-description'>모집 일정 : {club.period}</p>
-              <p className='club-description'>회비 안내 : {club.fee}</p>
-              <p className='club-description'>모집 대상 : {club.target}</p>
-              <p className='club-description'>유의사항 : {club.note}</p>
-              <p className='club-description'>주요 활동 : {club.activity}</p>
-              <p className='club-description'>연락처 : {club.contact}</p>
-              <p className='club-description'>연합동아리 여부 : {formatUnited(club.united)}</p>
               <div>
-                <p className='club-description'>소속 카테고리 : </p>
+                <p className='club-affiliation'>소속 카테고리 : </p>
                 {Array.isArray(categories) && categories.length > 0 ? (
                   categories.map((category) => (
-                    <span className='club-description' key={category.id}>{category.name} </span>
+                    <span className='club-affiliation' key={category.id}>{category.name} </span>
                   ))
                 ) : (
                   <p></p>
                 )}
               </div>
               <div>
-                <p className='club-description'>소속 대학교 : </p>
+                <p className='club-affiliation'>소속 대학교 : </p>
                 {Array.isArray(universities) && universities.length > 0 ? (
                   universities.map((university) => (
-                    <span className='club-description' key={university.id}>{university.title} </span>
+                    <span className='club-affiliation' key={university.id}>{university.title} </span>
                   ))
                 ) : (
                   <p></p>
@@ -138,7 +132,19 @@ const Detail=()=>{
           </div>
         </div>
         <br/><br/>
-        <div>
+        <div className='club-details-container'>
+          <p className='club-details-title'>상세정보</p>
+          <div className='club-details-box'>
+            <p className='club-details'>📍 모집 일정 : {club.period}</p>
+            <p className='club-details'>📍 회비 안내 : {club.fee}</p>
+            <p className='club-details'>📍 모집 대상 : {club.target}</p>
+            <p className='club-details'>📍 유의사항 : {club.note}</p>
+            <p className='club-details'>📍 주요 활동 : {club.activity}</p>
+            <p className='club-details'>📍 연락처 : {club.contact}</p>
+            <p className='club-details'>📍 연합동아리 여부 : {formatUnited(club.united)}</p>
+          </div>
+        </div>
+        <div className='detail-image-container'>
           {detailImageList.length > 0 ? (
             detailImageList.map((image, index) => (
               <img key={index} src={image.imageUrl} alt={`Detail ${index + 1}`} className="detail-image"/>

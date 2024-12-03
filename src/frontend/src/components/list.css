@@ -45,8 +45,4 @@
     height: auto;
 }
 
-@media screen and (max-width: 810px) {
-    .clublist-body {
-        padding-top: 10px;
-    }
-}
+

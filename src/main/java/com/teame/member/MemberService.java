@@ -1,5 +1,7 @@
 package com.teame.member;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.teame.club.ClubRepository;
 import com.teame.member.customUser.CustomUserDetails;
 import com.teame.member.membership.Membership;
@@ -13,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -142,6 +146,25 @@ public class MemberService {
       return ResponseEntity.status(HttpStatus.OK).body(clubRepository.findByManagerId(member.getId()));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Club Not Found");
+    }
+  }
+
+  public ResponseEntity<String> findUserPhoneNumberCheck(String request) {
+
+    JsonObject jsonObject = JsonParser.parseString(request).getAsJsonObject();
+    String phoneNumber = jsonObject.get("phoneNumber").getAsString();
+    phoneNumber = URLDecoder.decode(phoneNumber, StandardCharsets.UTF_8);
+
+    if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("전화번호 전송 오류입니다.");
+    }
+
+    boolean exists = memberRepository.existsByPhoneNumber(phoneNumber.trim());
+
+    if (exists) {
+      return ResponseEntity.status(HttpStatus.OK).body(memberRepository.findByPhoneNumber(phoneNumber.trim()).getUsername());
+    } else {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("해당 전화번호의 회원정보가 없습니다.");
     }
   }
 
