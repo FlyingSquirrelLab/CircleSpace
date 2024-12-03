@@ -7,6 +7,17 @@ import './review.css'
 
 const Review = ({id}) => {
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+  };
+
   const {username, role} = useAuth();
   const nav = useNavigate();
   const [reviews, setReviews] = useState([]);
@@ -69,7 +80,7 @@ const Review = ({id}) => {
               <div className='reiview-container'>
                 <div className='review-head'>
                   <div className='reviewer'><p className='review-displayname'>{review.displayName}</p>님의 리뷰</div>
-                  <p className='createdate'>{review.createdAt}</p>
+                  <p className='createdate'>{formatDate(review.createdAt)}</p>
                 </div>
                 <div className='review-tail'>
                   <div className='review-content'>

@@ -15,8 +15,4 @@ public class TeamEApplication {
 		SpringApplication.run(TeamEApplication.class, args);
 	}
 
-	@PostConstruct
-	public void setDefaultTimeZone() {
-		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
-	}
 }
