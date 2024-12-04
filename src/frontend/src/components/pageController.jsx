@@ -1,5 +1,5 @@
 import React from 'react';
-import './PageController.css'
+import './pageController.css'
 
 const PageController = ({ page, setPage, totalPages }) => {
 
