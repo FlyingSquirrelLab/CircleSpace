@@ -8,9 +8,9 @@ group = 'com'
 version = '0.0.1-SNAPSHOT'
 
 configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
 }
 
 java {
@@ -70,6 +70,8 @@ def webappDir = "$projectDir/src/frontend"
 
 def npmPath = System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('mac') ? "/opt/homebrew/bin/npm" : "/usr/bin/npm"
 
+def githubNpmPath = "/opt/hostedtoolcache/node/18.20.5/x64/bin/npm"
+
 sourceSets {
 	main {
 		resources {
@@ -94,8 +96,10 @@ task buildReact(type: Exec) {
 	group = BasePlugin.BUILD_GROUP
 	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
 		commandLine "npm.cmd", "run", "build"
-	} else {
+	} else if(System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('mac')) {
 		commandLine npmPath, "run", "build"
+	} else{
+		commandLine githubNpmPath, "run", "build"
 	}
 }
 
@@ -106,8 +110,11 @@ task installReact(type: Exec) {
 	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
 		commandLine "npm.cmd", "audit", "fix"
 		commandLine "npm.cmd", "install"
-	} else {
+	} else if(System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('mac')) {
 		commandLine npmPath, "audit", "fix"
 		commandLine npmPath, "install"
+	} else{
+		commandLine githubNpmPath, "audit", "fix"
+		commandLine githubNpmPath, "install"
 	}
 }
