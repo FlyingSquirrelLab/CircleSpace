@@ -16,16 +16,13 @@ const DailyUpPage = ({formatDate}) => {
     const fetchDailyUpdates = async () => {
       try {
         const response = await axios.get(`/api/daily-up/fetchAll/${page}/${size}`);
-        console.log(response.status);
         setDailyUpList(response.data._embedded.promoList);
-        console.log(response.data._embedded.promoList);
         setTotalPages(response.data.page.totalPages);
       } catch (error) {
         console.error("Error fetching Daily Updates", error);
       }
     };
     fetchDailyUpdates();
-    console.log(dailyUpList);
     window.scrollTo(0, 0);
   }, [page]);
 

@@ -77,33 +77,26 @@ const MyPage = ({formatDate}) => {
           <div>
             <br/>
             <p>내가 가입한 동아리들</p>
+            <div className='myclub'>
             {Array.isArray(myMemberships) && myMemberships.length > 0 ? (
               myMemberships.map((myMembershipDTO) => (
-                <div key={myMembershipDTO.id}
-                     onClick={() => nav(`/detail/${myMembershipDTO.clubId}`)}>
+                <div className='myclub-container' key={myMembershipDTO.id}>
                   <img src={myMembershipDTO.imageUrl}
-                       width='100px'
-                       alt='이미지'/>
+                       width='100px' height='100px'
+                       alt='이미지'
+                       onClick={() => nav(`/detail/${myMembershipDTO.clubId}`)}/>
                   <p>{myMembershipDTO.title}</p>
-                  <p>{formatDate(myMembershipDTO.approvalDate)}</p>
+                  <p className='review-nav' onClick={() => {nav(`/review/upload/${myMembershipDTO.clubId}`)}}>리뷰 쓰러가기</p>
+                  {/*<p>{formatDate(myMembershipDTO.approvalDate)}</p>*/}
                 </div>
               ))) : <p className='myclub-empty'>내가 가입한 동아리가 없습니다.</p>
             }
-          </div>
-          <div className='mypage-menu-list'>
-            <br/>
-            <br/>
-            <div className='mypage-menu' onClick={() => nav('/editUserInfo')}>
-              <p>회원정보수정</p>
             </div>
-            <br/>
-            <br/>
-            <div className='mypage-menu' onClick={() => nav('/editPassword')}>
-              <p>비밀번호수정</p> </div>
-            <br/>
-            <br/>
-            <div className='mypage-menu' onClick={() => nav('/uploadClub')}>
-              <p>동아리등록하기</p> </div>
+          </div>
+          <div className='mypage-list-bts'>
+            <button className='mypage-list-bt' onClick={() => nav('/editUserInfo')}>회원 정보 수정</button>
+            <button className='mypage-list-bt' onClick={() => nav('/editPassword')}>비밀번호 변경</button>
+            <button className='mypage-list-bt' onClick={() => nav('/uploadClub')}>동아리 등록하기</button>
           </div>
           <div className='mypage-logout'>
             {displayName ? <LogoutButton/> : <p></p>}

@@ -25,6 +25,7 @@ import DailyUpPage from './pages/daily-up/dailyUpPage.jsx';
 import DailyUpDetail from './pages/daily-up/dailyUpDetail.jsx';
 import {useEffect} from "react";
 import FindUserInfo from "./pages/member/findUserInfo.jsx";
+import UploadReview from "./pages/club/uploadReview.jsx";
 
 function App() {
 
@@ -60,6 +61,7 @@ function App() {
           <Route path='/editPassword' element={<EditPassword/>} />
           <Route path='/editUserInfo' element={<EditUserInfo/>} />
           <Route path='/findUserInfo' element={<FindUserInfo/>} />
+          <Route path='/review/upload/:id' element={<UploadReview/>} />
           <Route path='/' element={<Home/>}/>
           <Route path='/likeList' element={<LikeList/>} />
           <Route path='/login' element={<Login/>} />

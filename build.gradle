@@ -57,6 +57,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
 bootJar {
 	archiveFileName = 'circlespace.jar'
 	manifest {

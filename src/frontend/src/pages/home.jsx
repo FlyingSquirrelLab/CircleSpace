@@ -1,4 +1,4 @@
-import BannerMain from '../assets/banner.png';
+import BannerMain from '../assets/banner.webp';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import List from "../components/list.jsx";

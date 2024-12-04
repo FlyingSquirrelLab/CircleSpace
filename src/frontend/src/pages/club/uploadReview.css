@@ -1,0 +1,49 @@
+.temlist, .upload-review-body {
+    width: 80%; /* 두 요소의 너비를 동일하게 설정 */
+    margin: 0 auto; /* 가로 정렬을 중앙으로 */
+}
+
+.upload-review-body {
+    margin-top: 20px;
+}
+
+.temlist {
+    display: flex;
+    gap: 10px; /* 이미지와 텍스트 간 간격 */
+    align-items: center;
+    padding: 15px 0px;
+    border-bottom: 1px solid #ececec;
+    max-width: 1000px;
+    transition: background-color 0.3s ease;
+}
+
+.temlist:hover {
+    background-color: #fafafa;
+}
+
+.temlist-img {
+    cursor: pointer;
+    max-width: 100px;
+    border-radius: 10px;
+}
+
+.temlist-text {
+    flex: 1;
+
+}
+
+.temlist-text h4 {
+    font-size: 1rem;
+    margin: 0;
+    color: #333;
+}
+
+.temlist-text p {
+    font-size: 12px;
+}
+.tem-inf-handle{
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    width: 100%;
+}
