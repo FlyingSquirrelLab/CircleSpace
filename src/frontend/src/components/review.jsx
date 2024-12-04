@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useAuth} from "../authContext.jsx";
-import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import axiosInstance from "../axiosInstance.jsx";
 import './review.css'
 
 const Review = ({id}) => {
@@ -19,47 +17,13 @@ const Review = ({id}) => {
   };
 
   const {username, role} = useAuth();
-  const nav = useNavigate();
   const [reviews, setReviews] = useState([]);
-  const [reviewContent, setReviewContent] = useState('');
-  const [image, setImage] = useState('');
 
   useEffect(() => {
     axios.get(`/api/review/fetchByClubId/${id}`).then((response) => {
       setReviews(response.data);
     })
   }, [id]);
-
-  const handleReviewImageChange = (e) => {
-    setImage((e.target.files[0]));
-  };
-
-  const reviewUploadHandler = async (e) => {
-    e.preventDefault();
-
-    try {
-      const path = `${Date.now()}-${image.name}`;
-      const preSignedUrlResponse = await axios.post('/api/s3/getPreSignedUrl', { path });
-      const preSignedUrl = preSignedUrlResponse.data.url;
-
-      await axios.put(preSignedUrl, image, {
-        headers: {
-          'Content-Type': image.type
-        }
-      });
-
-      const reviewData = {
-        clubId: id,
-        reviewContent,
-        imagePath: path,
-      };
-
-      await axiosInstance.post('/review/add', reviewData);
-      nav('/');
-    } catch (error) {
-      console.error('Error uploading Review', error);
-    }
-  };
 
   const deleteReviewHandler = async (reviewId) => {
     try {
@@ -85,7 +49,7 @@ const Review = ({id}) => {
                 <div className='review-tail'>
                   <div className='review-content'>
                     <p>{review.content}</p>
-                    <img className='review-img' src={review.imageUrl}/>
+                    {review.imageUrl ? <img className='review-img' src={review.imageUrl} alt=''/> : <></>}
                   </div>
                   {username === review.username || role === 'ROLE_ADMIN' ? (
                     <p className='review-delete' onClick={() => {
@@ -104,28 +68,6 @@ const Review = ({id}) => {
           <p>후기가 없습니다.</p>
         )}
       </div>
-      <form className='upload-review-body' onSubmit={reviewUploadHandler}>
-        <p className='upload-review-title'>리뷰 작성</p>
-        <div className='upload-review-container'>
-          <textarea
-            className='upload-review-input'
-            type='text'
-            onChange={(e) => setReviewContent(e.target.value)}
-            placeholder='내용을 입력해주세요'
-          />
-        </div>
-        <div className='upload-review-img'>
-          <p>사진 업로드</p>
-          <input
-            className='upload-review-file'
-            type="file"
-            onChange={handleReviewImageChange}
-          />
-        </div>
-        <div className='submit-review'>
-          <button className='submit-review-bt' type="submit">작성완료</button>
-        </div>
-      </form>
     </div>
   );
 

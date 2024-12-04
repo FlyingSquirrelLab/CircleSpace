@@ -61,3 +61,46 @@
         display: none;
     }
 }
+
+.myclub {
+    display: flex;
+    margin-bottom: 70px;
+}
+
+.myclub div {
+    margin: 10px 10px;
+    cursor: pointer;
+}
+.mypage-list-bt{
+    background-color: white;
+    border-radius: 50px;
+    border: 1px solid black;
+    padding: 10px 0px;
+    width: 150px;
+    cursor: pointer;
+    color: black;
+    font-size: 0.85rem;
+    align-items: center;
+    text-align: center;
+}
+.mypage-list-bts{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.mypage-list-bt:hover{
+    background-color: black;
+    color: white;
+}
+
+.myclub-container {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+.review-nav:hover {
+    text-decoration: underline;
+}
