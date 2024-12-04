@@ -3,7 +3,7 @@ import {useState} from "react";
 import axiosInstance from "../../axiosInstance.jsx";
 import {useNavigate} from "react-router-dom";
 import {setCookie} from "../../cookieUtil.jsx";
-import {useAuth} from "../../AuthContext.jsx";
+import {useAuth} from "../../authContext.jsx";
 
 const FindUserInfo = () => {
 

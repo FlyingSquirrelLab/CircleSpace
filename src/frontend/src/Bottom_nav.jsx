@@ -1,7 +1,7 @@
 import "./bottom-nav.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from "../AuthContext.jsx";
+import { useAuth } from "../authContext.jsx";
 
 const BottomNav = () => {
   const nav = useNavigate();
