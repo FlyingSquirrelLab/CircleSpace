@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import axiosInstance from "../../axiosInstance.jsx";
-import {useAuth} from "../../AuthContext.jsx";
+import {useAuth} from "../../authContext.jsx";
 import {useNavigate, useParams} from "react-router-dom";
-import './UploadReview.css';
+import './uploadReview.css';
 
 const UploadReview = () => {
 
