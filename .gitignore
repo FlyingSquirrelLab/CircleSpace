@@ -43,3 +43,6 @@ output.txt
 
 ### static ###
 src/main/resources/static
+
+### ENV ###
+.env
