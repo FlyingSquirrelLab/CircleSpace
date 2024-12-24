@@ -110,3 +110,26 @@ CircleSpace follows a full-stack architecture with the following key components:
 1. [Selenium Documentation](https://www.selenium.dev/documentation/)
 2. [React and Vite Documentation](https://vitejs.dev/)
 3. [Spring Boot Documentation](https://spring.io/projects/spring-boot)
+
+## Preview
+![image](https://github.com/user-attachments/assets/3af15b9d-e688-429b-b45b-583d9795f7ff)
+![image](https://github.com/user-attachments/assets/8c27d589-f57f-4f9b-b0c5-ccfc0b433704)
+![image](https://github.com/user-attachments/assets/20b05077-22a7-4fbf-921a-3a0c4309bfad)
+
+![image](https://github.com/user-attachments/assets/3a7d0c24-3c49-4f3b-8b72-826e05c70634)
+![image](https://github.com/user-attachments/assets/c05993c3-0afd-46dd-a898-18724d668c39)
+
+![image](https://github.com/user-attachments/assets/ce8fb1f8-6c32-43fb-9ea2-05029c4758d6)
+
+
+![image](https://github.com/user-attachments/assets/b4e5f2ec-025c-4bc5-884b-a434ca19a339)
+
+
+
+![image](https://github.com/user-attachments/assets/0f71bdc8-987b-44cd-94fc-ea8dc7d61946)
+![image](https://github.com/user-attachments/assets/fca93dc8-e542-4e18-a528-79537d0bc9c7)
+![image](https://github.com/user-attachments/assets/72f8df70-be1b-49e4-8cdb-0aadefa2595c)
+
+
+
+
